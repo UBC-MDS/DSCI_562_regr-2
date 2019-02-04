@@ -1,4 +1,4 @@
-# DSCI 562 Lecture 1
+# Lecture 1 Landing Page
 
 ## Agenda
 
@@ -19,9 +19,9 @@
 
 ## Readings
 
-- Tasks that motivate Regression
-- The Restricted Range Problem: Transformations
-- The Types and Value of Parametric Assumptions
+- Tasks that motivate Regression (TBD)
+- [The Restricted Range Problem: Transformations](089-transformations.md)
+- [The Types and Value of Parametric Assumptions](088-parametric.md)
 
 ## Concepts
 
