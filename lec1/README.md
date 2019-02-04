@@ -5,8 +5,8 @@
 1. Syllabus:
 	- Assessments
 	- Course topics
-2. ["Quiz"](./quiz.md) for review and orientation
-3. [Case Study](./case_study.html)
+2. ["Quiz"](./quiz.html) for review and orientation
+3. [Case Study](./case_study.nb.html)
 4. End of class: choose block rep
 
 ## Learning Objectives

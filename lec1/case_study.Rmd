@@ -1,6 +1,6 @@
 ---
 title: "Care and Value of Model Assumptions: Case study"
-output: html_document
+output: html_notebook
 ---
 
 ```{r}
