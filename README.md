@@ -7,7 +7,7 @@ Approaches when faced with special conditions in regression, and consequences of
 
 By the end of the course, students are expected to:
 
-- Describe the value of making parametric assumptions in regression.
+- Describe the risk and value of making parametric assumptions in regression.
 - Fit model functions that represent probabilistic quantities besides the mean.
 - Identify situations where standard linear regression is sub-optimal, and apply alternative regression methods that better address the situation.
 - Link the bias-variance tradeoff to the fundamental tradeoff of machine learning.
@@ -28,16 +28,16 @@ By the end of the course, students are expected to:
 
 Note: Topics covered are conditional on time available.
 
-| Lecture| Date | Topic | Reading/notes |
-|-------|-------------|-------------|------------|
-| [1](./lec1) | 2019-02-04 | The role of assumptions in statistical modelling | |
-| 2 | 2019-02-06 | Regression on different numeric scales: GLM and transformations | |
-| 3 | 2019-02-11 | Regression beyond the mean | |
-| 4 | 2019-02-13 | Regression in the presence of outliers: robust regression | |
-| 5 | 2019-02-25 | Regression on censored response data: survival analysis   | |
-| 6 | 2019-02-27 | Regression on ordinal response data: proportional odds model | |
-| 7 | 2019-03-04 | Regression when data are missing | |
-| 8 | 2019-03-06 | Regression in many groups: mixed effects models | |
+| Lecture| Date | Topic |
+|-------|-------------|-------------|
+| [1](./lec1) | 2019-02-04 | Model functions in regression |
+| [2](./lec2) | 2019-02-06 | Regression on restricted scales: GLM and transformations |
+| 3 | 2019-02-11 | Regression beyond the mean |
+| 4 | 2019-02-13 | Regression in the presence of outliers: robust regression |
+| 5 | 2019-02-25 | Regression on censored response data: survival analysis   |
+| 6 | 2019-02-27 | Regression on ordinal response data: proportional odds model |
+| 7 | 2019-03-04 | Regression when data are missing |
+| 8 | 2019-03-06 | Regression in many groups: mixed effects models |
 
 If time remains, here are some topics we could cover:
 

@@ -20,7 +20,7 @@ Me: Write on board.
 Class: Use slack, or raise hand.   
 Me: Write on board.
 
-Check out the [about](./about.md) page for the course for more details on what we'll be focussing on in this course, and why.
+Check out the [about](../about.md) page for the course for more details on what we'll be focussing on in this course, and why.
 
 # Review Questions
 

@@ -1,13 +1,15 @@
 ---
-title: "Care and Value of Model Assumptions: Case study"
+title: "Horeshoe crab case study: local regression"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
-Case study: how do features of nesting female horseshoe crabs influence the number of males found nearby?
+Case study: how do features of nesting female horseshoe crabs influence the number of males found nearby? Today, we'll check understanding of local regression concepts.
 
 Load the data. Here are the top six rows of 173 rows:
 
@@ -37,9 +39,7 @@ plotly::ggplotly(p)
 Data source: [H. Jane Brockmann's 1996 paper](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x); found online [here](https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt); another regression demo with this data is found [here](https://newonlinecourses.science.psu.edu/stat504/node/169/).
 
 
-## Approach 1: Estimate regression curve / model function locally
-
-### Preliminary questions
+## Local Regression Questions
 
 These questions are meant to check your understanding of local regression.
 
@@ -64,45 +64,6 @@ What is the estimated mean number of nearby males for nesting females having a c
 ```
 
 4\. Using local polynomials with a radius of 2.4 and a flat kernel, first with degree 1, then with degree 2.
-
-```{r}
-
-```
-
-### Fit a smoother by eye
-
-Optimize the loess fit by-eye. Just modify span, to keep things simple.
-
-```{r, fig.width=6, fig.height=4}
-grid <- seq(min(crab$width), max(crab$width), length.out=100)
-grid_df <- tibble(width = grid)
-# FIT_MODEL_HERE
-# PLOT_CURVE_HERE
-```
-
-What's the error of this model? Training error is fine.
-
-```{r}
-
-```
-
-How well does this model answer our original question?
-
-## Approach 2: Linear Regression
-
-### Fit a linear regression model
-
-Fit a linear regression model. What's the error?
-
-```{r}
-
-```
-
-How well does this model answer our original question? Do you see a potential problem with this model? Are any assumptions of linear regression not true? Brainstorm ideas for how to deal with the problems.
-
-## Approach 3: Link Function
-
-Fit a GLM. What's the error?
 
 ```{r}
 

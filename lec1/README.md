@@ -1,25 +1,29 @@
 # Lecture 1 Landing Page
 
+Topic: Model functions in regression
+
 ## Agenda
 
 1. Syllabus:
 	- Assessments
 	- Course topics
 2. ["Quiz"](./quiz.html) for review and orientation
-3. [Case Study](./case_study.nb.html)
+3. [Case Study, Part 1](./case_study.nb.html)
 4. End of class: choose block rep
 
 ## Learning Objectives
 
-- Explain the value of making parametric assumptions in regression. 
-- Identify the assumptions that are made in GLM's, and why we assume them.
-- Review of local regression: how they are fit, and what we obtain after fitting.
-- Interpret parameters in a log and logit link function model.
-- Fit GLM's in R.
+- Define a model function.
+- Identify the two main objectives that regression can address.
+- Identify the value that linear regression holds, even if its fit is sub-par to some other machine learning method.
+- Demonstrate how to fit a regression model function using local regression methods: kNN and loess, including kernel functions and local polynomials.
+- Identify the shape of a model function resulting from local regression methods, specifically as a function that is not interpretable.
+- Recall what makes an estimator "valid".
 
 ## Readings
 
-- Tasks that motivate Regression (TBD)
+- [About the course](../about.md)
+- [Tasks that motivate Regression](00-tasks.md)
 - [The Restricted Range Problem: Transformations](089-transformations.md)
 - [The Types and Value of Parametric Assumptions](088-parametric.md)
 
@@ -28,18 +32,11 @@
 Here are the concepts of today's lecture, distilled into a list.
 
 - Two main overarching objectives that regression can address are
-    1. __predicting__ values of a response, sometimes also describing uncertainty of the prediction; and 
+    1. __predicting/estimating__ values of a response, sometimes also describing uncertainty of the prediction/estimate; and 
     2. __interpreting__ the relationship between predictors and response.
-- A model can be _parametric_ (i.e., containing parameters) in roughly two ways: 
-    1. When defining the __model function__ (or other related functions, such as the conditional variance). Computer scientists tend to mean this when they say "parametric".
-    2. When defining __probability distributions__. Statisticians tend to mean to this when they say "parametric".
-- We add parameters to our model for the following reasons:
-    1. to give us a quantity that we can interpret (this usually corresponds to parameters in the model function); and/or
-    2. to reduce error (this usually corresponds to parametes in the probability distributions).
-- A parametric form for model functions that's different from linear is assumed in these two common cases:
-    1. When there's a scientifically motivated functional form (such as the [Michaelis-Menten equation](https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Michaelis-Menten_Equation.pdf), Beverton-Holt model, Lotka-Volterra model, etc.); or
-    2. When it doesn't make sense for the range of the model function to take on any number.
-- We can "use" the model function parameters by minimizing the squared errors (in the case of mean regression).
-- A parametric form for the conditional distributions (of the response given the predictors) is assumed most commonly in the situation where making the assumption results in a dramatic decrease in estimator variance. Usually, when the conditional distributions are quite different from Gaussian. This is the idea behind _Generalized Linear Models_ (GLM).
-- We can "use" the probabilistic parameter assumptions by maximizing the likelihood.
-- In R, use the `glm()` function to fit a GLM. Specify family with the `family` argument. When predicting, the `predict()` generic function requires `type="response"`, and `broom::augment()` requires `type.predict="response"`.
+- A model function is a function of the predictors, that evaluates to some probabilistic quantity (that we choose) of the conditional response.
+- In linear regression (and most often when people talk about regression), the model function is the mean of the response given values of the predictors. This is also called the "conditional response" for short. 
+- Regression can be defined as fitting a model function to the data when the response variable is numeric. (When the response is categorical, it's called classification).
+- Even if linear regression does not result in the best fitting model function, it's still valuable because we are able to interpret the parameters to gain insight into the relationship between predictors and response.
+- The slope parameter in linear regression is the average change in response associated with a change by one unit of the corresponding predictor.
+- An estimator is "valid" if it converges to the actual probabilistic quantity as the sample size increases.
