@@ -8,9 +8,9 @@ Topic: Regression on restricted scales: GLM and transformations
 
 ## Agenda
 
-- Assignment 1 hints
+- Review / Assignment 1 hints
 	- What is a null model?
-	- binarification
+	- Making a binary response numeric.
 	- loess on male/female.
 	- When is a model function parametric?
 - [Case Study, Part 2](./case_study.nb.html)
