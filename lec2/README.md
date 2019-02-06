@@ -19,10 +19,9 @@ Topic: Regression on restricted scales: GLM and transformations
 ## Learning Objectives
 
 - Interpret the mean of a binary response as a probability after transforming the data into 0's and 1's.
-- Interpret the model function (as a conditional mean) when it's fit using least squares.
 - Define a link function, and identify its usefulness when the range of the mean response is limited.
 - Interpret coefficient parameters when the conditional mean response is transformed by a log and logit link function.
-- Identify when a log link function is suitable, and when a logit link is suitable.
+- Identify whether a link function solves the restricted range problem (which is when the mean of Y is restricted).
 - Select appropriate distributional assumptions for the conditional response, particularly in the case of a binary response and a count response.
 - Explain the risk and value of making parametric assumptions on the model function.
 - Explain the risk and value of making parametric assumptions on the conditional distributions. 
@@ -34,7 +33,7 @@ Topic: Regression on restricted scales: GLM and transformations
 
 ### Concepts
 
-- The model function is a "valid" estimate of the mean conditional response when it minimizes the sum of squared errors (i.e., when it's the least squares estimator).
+- The model function is a "valid" estimate of the mean conditional response when it minimizes the sum of squared errors (i.e., when it's the least squares estimator). (We'll elaborate in Week 2).
 	- If a parameteric model function is assumed, then this result is conditional on the assumption being true.
 	- Many resources will tell you that we also need the conditional response to be Gaussian. This is not true. It's more accurate to say that, if the conditional response is not Gaussian, then we might be able to estimate the model function better than least squares can, by using MLE (this is _if_ we can identify a decent distribution that's alternative to Gaussian!)
 - A model can be _parametric_ (i.e., containing parameters) in roughly two ways: 
