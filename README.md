@@ -2,6 +2,8 @@
 
 Approaches when faced with special conditions in regression, and consequences of ignoring these conditions.
 
+Check out the [About](about.md) page for a description of the course.
+
 
 ## Course Learning Objectives
 
