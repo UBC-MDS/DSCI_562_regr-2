@@ -55,8 +55,8 @@ By the end of this lecture, students are expected to be able to:
 
 ## Readings
 
-- [032-probabilistic_forecasting](./lec3/032-probabilistic_forecasting.html)
-- [033-quantile_regression](./lec3/033-quantile_regression.html)
+- [032-probabilistic_forecasting](./032-probabilistic_forecasting.html)
+- [033-quantile_regression](./033-quantile_regression.html)
 
 ## Concepts
 
