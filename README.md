@@ -20,7 +20,7 @@ By the end of the course, students are expected to:
 | Deliverable | Weight   | Deadline | Submit to... |
 |------------|----------|----------|--------------|
 | [lab assignment 1](./lab1/lab1.md) | 15% | February 9, 2019 at 18:00 | github.ubc.ca |
-| lab assignment 2 | 15% | February 16, 2019 at 18:00 | github.ubc.ca |
+| [lab assignment 2](./lab2/lab2.md) | 15% | February 16, 2019 at 18:00 | github.ubc.ca |
 | quiz 1           | 20% | February 25, 2019 from 14:00-14:32 | canvas (write in your lab room) |
 | lab assignment 3 | 15% | **March 3, 2019 at 15:00** | github.ubc.ca |
 | lab assignment 4 | 15% | March 9, 2019 at 18:00 | github.ubc.ca |
