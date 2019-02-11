@@ -17,7 +17,7 @@ This worksheet explores regression outside of estimating the conditional mean.
 We'll work with the flu data:
 
 ```{r}
-flu <- read_csv("../data/flu-train.csv") %>% 
+flu <- read_csv("~/git_docs/DSCI_562/data/flu-train.csv") %>% 
     select(positive = PERCENT_POSITIVES, week = WEEK, year = YEAR)
 head(flu)
 ```
@@ -31,17 +31,17 @@ mean_lo <- loess(positive ~ week, data = flu, span = 0.2) %>%
     predict()
 flu <- flu %>% 
     mutate(mean_lo = mean_lo)
-(p <- ggplot(flu, aes(week)) +
+p0 <- ggplot(flu, aes(week)) +
     geom_line(aes(y = positive, group = year), alpha=0.5) +
     theme_bw() +
-    labs(x="Week", y="Percent Positives") +
-    geom_line(aes(y = mean_lo), colour = "blue", size = 1))
+    labs(x="Week", y="Percent Positives")
+(p <-  p0 + geom_line(aes(y = mean_lo), colour = "blue", size = 1))
 ```
 
 Calculate the conditional variance for each row of the data, also using `loess()`.
 
 ```{r}
-var_lo <- loess(FILL_THIS_IN, data = flu, span = 0.2) %>% 
+var_lo <- loess((positive - mean_lo)^2 ~ week, data = flu, span = 0.2) %>% 
     predict()
 flu <- flu %>% 
     mutate(var_lo = var_lo,
@@ -69,12 +69,31 @@ What would a 95% prediction interval be, if we were to assume the conditional di
 p + geom_ribbon(
     data = flu_unique,
     mapping = aes(
-        ymin = mean_lo + FILL_THIS_IN,
-        ymax = mean_lo + FILL_THIS_IN
+        ymin = mean_lo - 1.96 * sqrt(var_lo),
+        ymax = mean_lo + 1.96 * sqrt(var_lo)
     ),
-    alpha = 0.01, fill = "blue", colour = "blue"
+    alpha = 0.1, fill = "blue", colour = "blue"
 )
 ```
+
+**NEW** Let's assume a Beta distribution instead. Its parameters are alpha and beta, which we can compute from the mean and variance:
+
+```{r}
+flu_unique <- flu_unique %>% 
+	mutate(
+		alpha = ((1-mean_lo)/var_lo - 1/mean_lo) * mean_lo^2,
+		beta  = alpha * (1/mean_lo - 1)
+	)
+p + geom_ribbon(
+    data = flu_unique,
+    mapping = aes(
+        ymin = qbeta(0.025, alpha, beta),
+        ymax = qbeta(0.975, alpha, beta)
+    ),
+    alpha = 0.1, fill = "blue", colour = "blue"
+)
+```
+
 
 Questions:
 
@@ -89,8 +108,8 @@ Use the above estimates of mean and variance, together with a Gaussian assumptio
 
 ```{r}
 flu <- flu %>% 
-    mutate(q75_gauss = FILL_THIS_IN)
-p + geom_line(
+    mutate(q75_gauss = qnorm(0.75, mean = mean_lo, sd = sd_lo))
+p0 + geom_line(
     data = flu, colour = "blue", size = 1,
     mapping = aes(y = q75_gauss)
 )
@@ -99,16 +118,16 @@ p + geom_line(
 Let's try doing the same thing, without making any assumptions. But first, let's gain familiarity with the `quantile()` function: estimate the 0.75-quantile model function for the null model.
 
 ```{r}
-quantile(flu$positive, FILL_THIS_IN)
+quantile(flu$positive, probs = 0.75)
 ```
 
 Now for regression across "week". We'll just use a "by-hand" local method: a moving window with a radius <1 week.
 
 ```{r}
 flu <- flu %>% 
-    group_by(FILL_THIS_IN) %>% 
-    mutate(q75_local = FILL_THIS_IN)
-p + geom_line(
+    group_by(week) %>% 
+    mutate(q75_local = quantile(positive, probs = 0.75))
+p0 + geom_line(
     data = flu, colour = "blue", size = 1,
     mapping = aes(y = q75_local)
 )
@@ -119,7 +138,8 @@ p + geom_line(
 Let's use the horseshoe crab data from last time. Load it in:
 
 ```{r}
-crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", col_names = FALSE) %>% 
+crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", 
+				   col_names = FALSE) %>% 
   select(-1) %>% 
   setNames(c("colour","spine","width","weight","n_male")) %>% 
   mutate(colour = factor(colour),
@@ -146,9 +166,10 @@ Use this model (under the Poisson assumption) to plot the 0.75-quantile model fu
 
 ```{r}
 crab <- crab %>% 
-    mutate(q75_glm = FILL_THIS_IN)
+    mutate(q75_glm = qpois(0.75, lambda = mean))
 p_crab +
-    geom_line(aes(y = q75_glm), colour = "blue", size = 1)
+    geom_line(data = crab,
+    		  mapping = aes(y = q75_glm), colour = "blue", size = 1)
 ```
 
 Use the horseshoe crab data again to fit a linear 0.75-quantile regression model. Use the `quantreg::rq()` function.

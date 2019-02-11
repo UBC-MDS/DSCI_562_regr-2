@@ -17,10 +17,10 @@ Fitting a model function involves separate consideration of the model function a
 
 | Model function assumption? | Distributional Assumption? | Method |
 |----|----|----|
-| no | no |  |
-| yes | no |  |
-| yes | yes |  |
-| no | yes |  |
+| no | no | kNN, loess, random forests, other "machine learning" techniques |
+| yes | no | least squares (example: linear regression) |
+| yes | yes | MLE (example: GLM, including linear regression) |
+| no | yes | Machine learning techniques, with likelihood loss function (which often amounts to least squares, as usual, when estimating mean) |
 
 Lecture 2: 
 
