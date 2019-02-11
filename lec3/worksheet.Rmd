@@ -1,0 +1,251 @@
+---
+title: "Lec 3: Regression Beyond the Mean: Worksheet"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(broom))
+suppressPackageStartupMessages(library(quantreg))  # For quantile regression
+suppressPackageStartupMessages(library(testthat))
+```
+
+This worksheet explores regression outside of estimating the conditional mean.
+
+We'll work with the flu data:
+
+```{r}
+flu <- read_csv("../data/flu-train.csv") %>% 
+    select(positive = PERCENT_POSITIVES, week = WEEK, year = YEAR)
+head(flu)
+```
+
+## Variance Regression
+
+We'll first investigate how to estimate the conditional variance. We'll first need the mean; let's use `loess()` to get at it:
+
+```{r}
+mean_lo <- loess(positive ~ week, data = flu, span = 0.2) %>% 
+    predict()
+flu <- flu %>% 
+    mutate(mean_lo = mean_lo)
+(p <- ggplot(flu, aes(week)) +
+    geom_line(aes(y = positive, group = year), alpha=0.5) +
+    theme_bw() +
+    labs(x="Week", y="Percent Positives") +
+    geom_line(aes(y = mean_lo), colour = "blue", size = 1))
+```
+
+Calculate the conditional variance for each row of the data, also using `loess()`.
+
+```{r}
+var_lo <- loess(FILL_THIS_IN, data = flu, span = 0.2) %>% 
+    predict()
+flu <- flu %>% 
+    mutate(var_lo = var_lo,
+           sd_lo  = sqrt(var_lo))
+flu_unique <- flu %>% 
+        group_by(week) %>% 
+        summarize(mean_lo = unique(mean_lo),
+                  var_lo = unique(var_lo),
+                  sd_lo = unique(sd_lo))
+```
+
+Here's a plot of the model function:
+
+```{r}
+ggplot(flu, aes(week, (mean_lo - positive)^2)) +
+    geom_point(alpha=0.2) +
+    theme_bw() +
+    ylab("Squared Residuals") +
+    geom_line(aes(y = var_lo), colour = "blue", size = 1)
+```
+
+What would a 95% prediction interval be, if we were to assume the conditional distributions are Gaussian? It's a bad assumption, but let's try it anyway. Plot the interval as a ribbon.
+
+```{r}
+p + geom_ribbon(
+    data = flu_unique,
+    mapping = aes(
+        ymin = mean_lo + FILL_THIS_IN,
+        ymax = mean_lo + FILL_THIS_IN
+    ),
+    alpha = 0.01, fill = "blue", colour = "blue"
+)
+```
+
+Questions:
+
+1. If you assume homoskedasticity, how would you estimate variance then?
+2. If you assume the variance increases linearly, how would you estimate variance then? 
+    - Why might this not be a good idea for this dataset, besides the trend not looking linear?
+3. If we fit a Poisson regression model, would it make sense to estimate the variance in this way?
+
+## Quantile Regression: No Assumption on the Model Function
+
+Use the above estimates of mean and variance, together with a Gaussian assumption, to plot the 0.75-quantile regression model function.
+
+```{r}
+flu <- flu %>% 
+    mutate(q75_gauss = FILL_THIS_IN)
+p + geom_line(
+    data = flu, colour = "blue", size = 1,
+    mapping = aes(y = q75_gauss)
+)
+```
+
+Let's try doing the same thing, without making any assumptions. But first, let's gain familiarity with the `quantile()` function: estimate the 0.75-quantile model function for the null model.
+
+```{r}
+quantile(flu$positive, FILL_THIS_IN)
+```
+
+Now for regression across "week". We'll just use a "by-hand" local method: a moving window with a radius <1 week.
+
+```{r}
+flu <- flu %>% 
+    group_by(FILL_THIS_IN) %>% 
+    mutate(q75_local = FILL_THIS_IN)
+p + geom_line(
+    data = flu, colour = "blue", size = 1,
+    mapping = aes(y = q75_local)
+)
+```
+
+## Quantile Regression: Assumptions on the Model Function 
+
+Let's use the horseshoe crab data from last time. Load it in:
+
+```{r}
+crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", col_names = FALSE) %>% 
+  select(-1) %>% 
+  setNames(c("colour","spine","width","weight","n_male")) %>% 
+  mutate(colour = factor(colour),
+         spine  = factor(spine))
+head(crab)
+```
+
+Recall last time we fit a Poisson regression model with a log link:
+
+```{r}
+crab <- glm(n_male ~ width, data = crab, family = poisson) %>% 
+    augment(type.predict = "response") %>% 
+    select(n_male, width, mean = .fitted)
+p_crab <- ggplot(crab, aes(width, n_male)) +
+    geom_point(alpha = 0.25) +
+    theme_bw() +
+    labs(x = "Carapace Width", 
+         y = "# Nearby Males")
+p_crab +
+    geom_line(aes(y = mean), colour = "blue", size = 1)
+```
+
+Use this model (under the Poisson assumption) to plot the 0.75-quantile model function.
+
+```{r}
+crab <- crab %>% 
+    mutate(q75_glm = FILL_THIS_IN)
+p_crab +
+    geom_line(aes(y = q75_glm), colour = "blue", size = 1)
+```
+
+Use the horseshoe crab data again to fit a linear 0.75-quantile regression model. Use the `quantreg::rq()` function.
+
+```{r}
+crab_rq <- rq(FILL_THIS_IN, data = crab, FILL_THIS_IN)
+crab <- crab %>% 
+    mutate(q75_rq = predict(crab_rq))
+p_crab +
+    geom_line(aes(y = q75_rq), colour = "blue", size = 1)
+```
+
+Use `ggplot2::geom_quantile()` to plot a 90% prediction band. (Notice the problem for small quantiles here -- linear is probably just not a good assumption!)
+
+```{r}
+p_crab +
+    geom_quantile(FILL_THIS_IN)
+```
+
+Calculate the error of the two 0.75-quantile regression models here. First, define the model function.
+
+```{r}
+# Function that accepts vector of residuals (y - yhat), and produces a vector of scores
+#  corresponding to each residual, assuming tau-quantile regression, where tau is a single
+#  numeric.
+rho <- function(resid, tau) {
+    if (length(tau) != 1) stop("Expecting exactly one value for tau.")
+    FILL_THIS_IN
+}
+test_that("Non-screw-up-able", {
+    expect_error(rho(10, 1:10))
+    expect_true(is.na(rho(NA, 0.6)))
+})
+test_that("Values are sensible", {
+    expect_identical(rho(-2:2, 0.5), 0.5*abs(-2:2))
+    expect_identical(rho(0, 0.743), 0)
+})
+crab %>% 
+    summarize(score_rq = FILL_THIS_IN,
+              score_glm = FILL_THIS_IN) %>% 
+    knitr::kable()
+```
+
+## Probabilistic Forecasting
+
+Flu data:
+
+Produce a predictive distribution for Week 10, under no assumptions. Use a "moving window" approach, using a week or two radius. Compare it to the Gaussian distribution under the loess mean and variance we computed earlier.
+
+```{r}
+radius <- 2
+flu_10 <- flu %>% 
+    filter(week == 10) %>% 
+    summarize(mean_lo = unique(mean_lo),
+              sd_lo   = unique(sd_lo))
+flu %>% 
+    filter(FILL_THIS_IN) %>% 
+    ggplot(FILL_THIS_IN) +
+    FILL_THIS_IN +
+    stat_function(fun = dnorm, 
+                  mean = flu_10$mean_lo,
+                  sd = flu_10$sd_lo)
+```
+
+Crab data:
+
+Under the Poisson model, what's the distribution of the number of male crabs nearby a nesting crab with carapace width 25? Do we need more information aside from the mean?
+
+```{r}
+(mean_25 <- crab %>% 
+    filter(width == 25) %>% 
+    summarize(unique(mean)) %>% 
+    .[[1]])
+tibble(width = 0:10,
+       pmf = FILL_THIS_IN) %>% 
+    ggplot(aes(width, pmf)) +
+    geom_col() +
+    theme_bw()
+```
+
+Is the Poisson assumption good? Try the following three options:
+
+1. Generate data under the assumed model and provided width vales. Compare the scatterplot to the actual scatterplot.
+
+```{r}
+crab %>% 
+    mutate(generated = FILL_THIS_IN) %>% 
+    rename(actual = n_male) %>% 
+    gather(key = "data", value = "n_male", actual, generated) %>%
+    ggplot(aes(width, n_male)) +
+    facet_wrap(~ data) +
+    geom_point(alpha = 0.25) +
+    theme_bw() +
+    labs(x = "Carapace Width",
+         y = "# Nearby Males")
+```
+
+2. BONUS: Check the calibration of the pmf at width=25: plot the observed nearby points under the pmf.
+
+3. BONUS: calculate the PIT scores of all observations. Are they Unif(0,1)?
