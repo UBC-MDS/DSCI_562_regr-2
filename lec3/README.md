@@ -3,7 +3,7 @@
 ## Agenda:
 
 - GLM tie-up; re-orientation (below)
-- [Worksheet (Part 2)](https://ubc-mds.github.io/DSCI_562/lec4/worksheet.nb.html);  [(Raw .Rmd version)](https://raw.githubusercontent.com/UBC-MDS/DSCI_562/master/lec4/worksheet.Rmd) -- Variance Regression
+- [Worksheet (Part 1)](https://ubc-mds.github.io/DSCI_562/lec3/worksheet.nb.html);  [(Raw .Rmd version)](https://raw.githubusercontent.com/UBC-MDS/DSCI_562/master/lec3/worksheet.Rmd) -- Variance Regression
 - Discussion: 
     - The case for Quantile Regression. 
     - Interpretation of mean and quantiles.
