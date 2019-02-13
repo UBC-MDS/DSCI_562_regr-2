@@ -34,7 +34,7 @@ First, let's talk about that table from last time, but in the univariate setting
 
 | Distributional Assumption? | Estimation Method |
 |---|---|
-| No  | "sample versions": \bar$y$, $s^2$, `quantile()`, ...    |
+| No  | "sample versions": ybar, s^2, `quantile()`, ...    |
 | Yes | Use MLE to estimate distribution; extract desired quantity. |
 
 Here's a more accurate version of the regression version of the table.
