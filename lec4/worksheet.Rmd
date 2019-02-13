@@ -38,9 +38,15 @@ head(crab)
 Use the horseshoe crab data again to fit a linear 0.75-quantile regression model. Use the `quantreg::rq()` function.
 
 ```{r}
-crab_rq <- rq(FILL_THIS_IN, data = crab, FILL_THIS_IN)
+crab_rq <- rq(n_male ~ width, data = crab, tau = 0.75)
+crab_rq
 crab <- crab %>% 
     mutate(q75_rq = predict(crab_rq))
+p_crab <- ggplot(crab, aes(width, n_male)) +
+    geom_point(alpha = 0.25) +
+    theme_bw() +
+    labs(x = "Carapace Width", 
+         y = "# Nearby Males")
 p_crab +
     geom_line(aes(y = q75_rq), colour = "blue", size = 1)
 ```
@@ -49,7 +55,7 @@ Use `ggplot2::geom_quantile()` to plot a 90% prediction band. (Notice the proble
 
 ```{r}
 p_crab +
-    geom_quantile(FILL_THIS_IN)
+    geom_quantile(quantiles=c(0.05, 0.95))
 ```
 
 ## Error Calculation
@@ -62,7 +68,7 @@ Calculate the error of the 0.75-quantile regression model here. First, we'll def
 #  numeric.
 rho <- function(resid, tau) {
     if (length(tau) != 1) stop("Expecting exactly one value for tau.")
-    FILL_THIS_IN
+    (tau - (resid<0)) * resid
 }
 test_that("Non-screw-up-able", {
     expect_error(rho(10, 1:10))
@@ -73,9 +79,7 @@ test_that("Values are sensible", {
     expect_identical(rho(0, 0.743), 0)
 })
 crab %>% 
-    summarize(score_rq = FILL_THIS_IN,
-              score_glm = FILL_THIS_IN) %>% 
-    knitr::kable()
+    summarize(score_rq = mean(rho(n_male - q75_rq, 0.75)))
 ```
 
 ## Probabilistic Forecasting
@@ -92,24 +96,24 @@ First, let's not assume anything along the predictor space, and use a local meth
 radius <- 2
 flu_10 <- flu %>% 
     filter(abs(week - 10) <= radius)
-ggplot(flu_10, aes(FILL_THIS_IN)) +
+ggplot(flu_10, aes(positive)) +
     # No distributional assumption:
-    FILL_THIS_IN(aes(
-        colour = "No Assumption",
-        FILL_THIS_IN
+    geom_density(aes(
+        colour = "No Assumption"
     )) +  
     # Gaussian assumption:
     stat_function(
         mapping = aes(colour = "Gaussian"),
         fun     = dnorm,
         args    = list(
-            mean = FILL_THIS_IN,
-            sd   = FILL_THIS_IN
+            mean = mean(flu_10$positive),
+            sd   = sd(flu_10$positive)
         )
     ) + 
     theme_bw() +
     labs(x = "Percent Positives",
-         y = "density")
+         y = "density") +
+	scale_colour_discrete("")
 ```
 
 2. Produce a predictive distribution as a cdf instead of a density.
@@ -118,13 +122,13 @@ ggplot(flu_10, aes(FILL_THIS_IN)) +
 ggplot(flu_10, aes(positive)) +
     # No distributional assumption:
     stat_function(
-        fun = FILL_THIS_IN, 
+        fun = ecdf(flu_10$positive), 
         mapping = aes(colour = "No Assumption")
     ) +  
     # Gaussian assumption:
     stat_function(
         mapping = aes(colour = "Gaussian"),
-        fun     = FILL_THIS_IN,
+        fun     = pnorm,
         args    = list(
             mean = mean(flu_10$positive),
             sd   = sd(flu_10$positive)
@@ -132,7 +136,8 @@ ggplot(flu_10, aes(positive)) +
     ) +
     theme_bw() +
     labs(x = "Percent Positives",
-         y = "cdf")
+         y = "cdf") +
+	scale_colour_discrete("")
 ```
 
 ### Distributional assumption with additional assumptions on parameters
@@ -161,7 +166,7 @@ Use this model to produce a probabilistic forecast for `n_male` at `width=25`.
      .[[1]])
 pmf <- tibble(
     n_male = 0:10,
-    pmf    = dpois(n_male, FILL_THIS_IN)
+    pmf    = dpois(n_male, lambda = mean_at_25)
 )
 ggplot(pmf, aes(n_male, pmf)) +
     geom_col() +
@@ -174,7 +179,7 @@ Is the Poisson assumption good? Try the following three options:
 
 ```{r}
 crab %>% 
-    mutate(generated = FILL_THIS_IN) %>% 
+    mutate(generated = rpois(length(mean), lambda = mean)) %>% 
     rename(actual = n_male) %>% 
     gather(key = "data", value = "n_male", actual, generated) %>%
     ggplot(aes(width, n_male)) +
