@@ -6,7 +6,7 @@
 - Discussion: 
     - Quantile regression as an optimization problem. 
     - Proper Scoring Rules (error measurements)
-- Worksheet Part 2 -- finish QR
+- [Worksheet Part 2](https://ubc-mds.github.io/DSCI_562/lec4/worksheet.nb.html); ([raw .rmd version](https://raw.githubusercontent.com/UBC-MDS/DSCI_562/master/lec4/worksheet.Rmd)) -- finish QR
 - Discussion:
     - The case for probabilistic forecasting.
 - Worksheet continuation -- Probabilistic Forecasting
