@@ -13,6 +13,8 @@
 
 Fitting a model function involves separate consideration of the model function and conditional distributions:
 
+**See Lecture 4 for a better version of this table**
+
 | Model function assumption? | Distributional Assumption? | Method |
 |----|----|----|
 | no | no | kNN, loess, random forests, other "machine learning" techniques |
