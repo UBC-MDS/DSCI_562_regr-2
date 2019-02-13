@@ -1,5 +1,5 @@
 ---
-title: "Lec 3: Regression Beyond the Mean: Worksheet"
+title: "Regression Beyond the Mean Worksheet, Part 1 of 2 (Lec 3)"
 output: html_notebook
 editor_options: 
   chunk_output_type: inline
@@ -9,17 +9,32 @@ editor_options:
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(broom))
 suppressPackageStartupMessages(library(quantreg))  # For quantile regression
-suppressPackageStartupMessages(library(testthat))
 ```
+
+[(Link to Part 2 of the Worksheet)](https://ubc-mds.github.io/DSCI_562/lec4/worksheet.nb.html)
 
 This worksheet explores regression outside of estimating the conditional mean.
 
-We'll work with the flu data:
+We'll work with two data sets: 
+
+Flu data:
 
 ```{r}
-flu <- read_csv("~/git_docs/DSCI_562/data/flu-train.csv") %>% 
+flu <- read_csv("../data/flu-train.csv") %>% 
     select(positive = PERCENT_POSITIVES, week = WEEK, year = YEAR)
 head(flu)
+```
+
+The horeshoe crab data from last time:
+
+```{r}
+crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", 
+				   col_names = FALSE) %>% 
+  select(-1) %>% 
+  setNames(c("colour","spine","width","weight","n_male")) %>% 
+  mutate(colour = factor(colour),
+         spine  = factor(spine))
+head(crab)
 ```
 
 ## Variance Regression
@@ -98,11 +113,21 @@ p + geom_ribbon(
 Questions:
 
 1. If you assume homoskedasticity, how would you estimate variance then?
+
+> Just take the mean of all squared residuals (=null model).
+
 2. If you assume the variance increases linearly, how would you estimate variance then? 
     - Why might this not be a good idea for this dataset, besides the trend not looking linear?
-3. If we fit a Poisson regression model, would it make sense to estimate the variance in this way?
+    
+> Linear regression. Not a good idea, because the data are actually cyclic (the predictor space loops around).
 
-## Quantile Regression: No Assumption on the Model Function
+3. If we fit an Exponential regression model, would it make sense to estimate the variance in this way?
+
+> No, because since we already have the mean estimated, we have the full distribution estimated, from which we can derive any quantity, including the variance. 
+
+## Quantile Regression
+
+### No Assumption on the Model Function
 
 Use the above estimates of mean and variance, together with a Gaussian assumption, to plot the 0.75-quantile regression model function.
 
@@ -133,19 +158,9 @@ p0 + geom_line(
 )
 ```
 
-## Quantile Regression: Assumptions on the Model Function 
+### Assumption on the Model Function; distributional assumption
 
 Let's use the horseshoe crab data from last time. Load it in:
-
-```{r}
-crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", 
-				   col_names = FALSE) %>% 
-  select(-1) %>% 
-  setNames(c("colour","spine","width","weight","n_male")) %>% 
-  mutate(colour = factor(colour),
-         spine  = factor(spine))
-head(crab)
-```
 
 Recall last time we fit a Poisson regression model with a log link:
 
@@ -172,101 +187,7 @@ p_crab +
     		  mapping = aes(y = q75_glm), colour = "blue", size = 1)
 ```
 
-Use the horseshoe crab data again to fit a linear 0.75-quantile regression model. Use the `quantreg::rq()` function.
+### Assumption on the Model Function; No Distributional Assumption
 
-```{r}
-crab_rq <- rq(FILL_THIS_IN, data = crab, FILL_THIS_IN)
-crab <- crab %>% 
-    mutate(q75_rq = predict(crab_rq))
-p_crab +
-    geom_line(aes(y = q75_rq), colour = "blue", size = 1)
-```
+For this, we will need to turn quantile regression into an optimization problem. We'll discuss this in Lecture 4.
 
-Use `ggplot2::geom_quantile()` to plot a 90% prediction band. (Notice the problem for small quantiles here -- linear is probably just not a good assumption!)
-
-```{r}
-p_crab +
-    geom_quantile(FILL_THIS_IN)
-```
-
-Calculate the error of the two 0.75-quantile regression models here. First, define the model function.
-
-```{r}
-# Function that accepts vector of residuals (y - yhat), and produces a vector of scores
-#  corresponding to each residual, assuming tau-quantile regression, where tau is a single
-#  numeric.
-rho <- function(resid, tau) {
-    if (length(tau) != 1) stop("Expecting exactly one value for tau.")
-    FILL_THIS_IN
-}
-test_that("Non-screw-up-able", {
-    expect_error(rho(10, 1:10))
-    expect_true(is.na(rho(NA, 0.6)))
-})
-test_that("Values are sensible", {
-    expect_identical(rho(-2:2, 0.5), 0.5*abs(-2:2))
-    expect_identical(rho(0, 0.743), 0)
-})
-crab %>% 
-    summarize(score_rq = FILL_THIS_IN,
-              score_glm = FILL_THIS_IN) %>% 
-    knitr::kable()
-```
-
-## Probabilistic Forecasting
-
-Flu data:
-
-Produce a predictive distribution for Week 10, under no assumptions. Use a "moving window" approach, using a week or two radius. Compare it to the Gaussian distribution under the loess mean and variance we computed earlier.
-
-```{r}
-radius <- 2
-flu_10 <- flu %>% 
-    filter(week == 10) %>% 
-    summarize(mean_lo = unique(mean_lo),
-              sd_lo   = unique(sd_lo))
-flu %>% 
-    filter(FILL_THIS_IN) %>% 
-    ggplot(FILL_THIS_IN) +
-    FILL_THIS_IN +
-    stat_function(fun = dnorm, 
-                  mean = flu_10$mean_lo,
-                  sd = flu_10$sd_lo)
-```
-
-Crab data:
-
-Under the Poisson model, what's the distribution of the number of male crabs nearby a nesting crab with carapace width 25? Do we need more information aside from the mean?
-
-```{r}
-(mean_25 <- crab %>% 
-    filter(width == 25) %>% 
-    summarize(unique(mean)) %>% 
-    .[[1]])
-tibble(width = 0:10,
-       pmf = FILL_THIS_IN) %>% 
-    ggplot(aes(width, pmf)) +
-    geom_col() +
-    theme_bw()
-```
-
-Is the Poisson assumption good? Try the following three options:
-
-1. Generate data under the assumed model and provided width vales. Compare the scatterplot to the actual scatterplot.
-
-```{r}
-crab %>% 
-    mutate(generated = FILL_THIS_IN) %>% 
-    rename(actual = n_male) %>% 
-    gather(key = "data", value = "n_male", actual, generated) %>%
-    ggplot(aes(width, n_male)) +
-    facet_wrap(~ data) +
-    geom_point(alpha = 0.25) +
-    theme_bw() +
-    labs(x = "Carapace Width",
-         y = "# Nearby Males")
-```
-
-2. BONUS: Check the calibration of the pmf at width=25: plot the observed nearby points under the pmf.
-
-3. BONUS: calculate the PIT scores of all observations. Are they Unif(0,1)?

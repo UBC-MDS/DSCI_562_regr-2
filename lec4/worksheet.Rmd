@@ -1,0 +1,190 @@
+---
+title: "Regression Beyond the Mean Worksheet, Part 2 of 2 (Lec 4)"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(broom))
+suppressPackageStartupMessages(library(quantreg))  # For quantile regression
+suppressPackageStartupMessages(library(testthat))
+```
+
+[(Link to Part 1 of the Worksheet)](https://ubc-mds.github.io/DSCI_562/lec3/worksheet.nb.html)
+
+We will continue working with the flu data and horeshoe crab data:
+
+```{r}
+flu <- read_csv("../data/flu-train.csv") %>% 
+    select(positive = PERCENT_POSITIVES, week = WEEK, year = YEAR)
+head(flu)
+```
+```{r}
+crab <- read_table("https://newonlinecourses.science.psu.edu/stat504/sites/onlinecourses.science.psu.edu.stat504/files/lesson07/crab/index.txt", 
+				   col_names = FALSE) %>% 
+  select(-1) %>% 
+  setNames(c("colour","spine","width","weight","n_male")) %>% 
+  mutate(colour = factor(colour),
+         spine  = factor(spine))
+head(crab)
+```
+
+## Quantile Regression as an Optimization Problem
+
+(Useful when we have an assumption on the model function, but NOT a distributional assumption).
+
+Use the horseshoe crab data again to fit a linear 0.75-quantile regression model. Use the `quantreg::rq()` function.
+
+```{r}
+crab_rq <- rq(FILL_THIS_IN, data = crab, FILL_THIS_IN)
+crab <- crab %>% 
+    mutate(q75_rq = predict(crab_rq))
+p_crab +
+    geom_line(aes(y = q75_rq), colour = "blue", size = 1)
+```
+
+Use `ggplot2::geom_quantile()` to plot a 90% prediction band. (Notice the problem for small quantiles here -- linear is probably just not a good assumption!)
+
+```{r}
+p_crab +
+    geom_quantile(FILL_THIS_IN)
+```
+
+## Error Calculation
+
+Calculate the error of the 0.75-quantile regression model here. First, we'll define the error function.
+
+```{r}
+# Function that accepts vector of residuals (y - yhat), and produces a vector of scores
+#  corresponding to each residual, assuming tau-quantile regression, where tau is a single
+#  numeric.
+rho <- function(resid, tau) {
+    if (length(tau) != 1) stop("Expecting exactly one value for tau.")
+    FILL_THIS_IN
+}
+test_that("Non-screw-up-able", {
+    expect_error(rho(10, 1:10))
+    expect_true(is.na(rho(NA, 0.6)))
+})
+test_that("Values are sensible", {
+    expect_identical(rho(-2:2, 0.5), 0.5*abs(-2:2))
+    expect_identical(rho(0, 0.743), 0)
+})
+crab %>% 
+    summarize(score_rq = FILL_THIS_IN,
+              score_glm = FILL_THIS_IN) %>% 
+    knitr::kable()
+```
+
+## Probabilistic Forecasting
+
+### Local Method
+
+We'll use the flu data to produce a predictive distribution for "percent positives" (column `positive`) on Week 10, under various assumption frameworks.
+
+First, let's not assume anything along the predictor space, and use a local method for estimation. Specifically, let's use a "moving window" approach, using a two week radius.
+
+1. Display the predictive distribution as a density function, using two models: one without assuming any distribution, and another assuming a Gaussian.
+
+```{r}
+radius <- 2
+flu_10 <- flu %>% 
+    filter(abs(week - 10) <= radius)
+ggplot(flu_10, aes(FILL_THIS_IN)) +
+    # No distributional assumption:
+    FILL_THIS_IN(aes(
+        colour = "No Assumption",
+        FILL_THIS_IN
+    )) +  
+    # Gaussian assumption:
+    stat_function(
+        mapping = aes(colour = "Gaussian"),
+        fun     = dnorm,
+        args    = list(
+            mean = FILL_THIS_IN,
+            sd   = FILL_THIS_IN
+        )
+    ) + 
+    theme_bw() +
+    labs(x = "Percent Positives",
+         y = "density")
+```
+
+2. Produce a predictive distribution as a cdf instead of a density.
+
+```{r}
+ggplot(flu_10, aes(positive)) +
+    # No distributional assumption:
+    stat_function(
+        fun = FILL_THIS_IN, 
+        mapping = aes(colour = "No Assumption")
+    ) +  
+    # Gaussian assumption:
+    stat_function(
+        mapping = aes(colour = "Gaussian"),
+        fun     = FILL_THIS_IN,
+        args    = list(
+            mean = mean(flu_10$positive),
+            sd   = sd(flu_10$positive)
+        )
+    ) +
+    theme_bw() +
+    labs(x = "Percent Positives",
+         y = "cdf")
+```
+
+### Distributional assumption with additional assumptions on parameters
+
+Recall assuming a Poisson distribution for the crab data (`Y|X=x`), whose mean is exponential in `x`:
+
+```{r}
+crab <- glm(n_male ~ width, data = crab, family = poisson) %>% 
+    augment(type.predict = "response") %>% 
+    select(n_male, width, mean = .fitted)
+p_crab <- ggplot(crab, aes(width, n_male)) +
+    geom_point(alpha = 0.25) +
+    theme_bw() +
+    labs(x = "Carapace Width", 
+         y = "# Nearby Males")
+p_crab +
+    geom_line(aes(y = mean), colour = "blue", size = 1)
+```
+
+Use this model to produce a probabilistic forecast for `n_male` at `width=25`.
+
+```{r}
+(mean_at_25 <- crab %>% 
+     filter(width == 25) %>% 
+     summarize(unique(mean)) %>% 
+     .[[1]])
+pmf <- tibble(
+    n_male = 0:10,
+    pmf    = dpois(n_male, FILL_THIS_IN)
+)
+ggplot(pmf, aes(n_male, pmf)) +
+    geom_col() +
+    theme_bw()
+```
+
+Is the Poisson assumption good? Try the following three options:
+
+1. Generate data under the assumed model and the `width` values that come with the data. Compare the scatterplot to the actual scatterplot.
+
+```{r}
+crab %>% 
+    mutate(generated = FILL_THIS_IN) %>% 
+    rename(actual = n_male) %>% 
+    gather(key = "data", value = "n_male", actual, generated) %>%
+    ggplot(aes(width, n_male)) +
+    facet_wrap(~ data) +
+    geom_point(alpha = 0.25) +
+    theme_bw() +
+    labs(x = "Carapace Width",
+         y = "# Nearby Males")
+```
+
+2. BONUS: Check the calibration of the pmf at width=25: plot the observed nearby points under the pmf.
+
+3. BONUS: calculate the PIT scores of all observations. Are they Unif(0,1)?

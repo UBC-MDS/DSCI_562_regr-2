@@ -4,12 +4,10 @@
 
 - GLM tie-up; re-orientation (below)
 - [Worksheet](https://ubc-mds.github.io/DSCI_562/lec3/worksheet.nb.html);  [(Raw .Rmd version)](https://raw.githubusercontent.com/UBC-MDS/DSCI_562/master/lec3/worksheet.Rmd) -- Variance Regression
-- The case for Quantile Regression. Interpretation of mean and quantiles.
-- Worksheet continuation -- until linear QR 
-- Generalize quantile regression by turning it into an optimization problem. Proper Scoring Rules.
-- Worksheet continuation -- finish QR
-- The case for probabilistic forecasting.
-- Worksheet continuation -- Probabilistic Forecasting
+- Discussion: 
+    - The case for Quantile Regression. 
+    - Interpretation of mean and quantiles.
+- Worksheet continuation
 
 ## GLM tie-up; re-orientation
 
@@ -45,17 +43,12 @@ By the end of this lecture, students are expected to be able to:
 
 - Use regression to estimate the conditional variance.
 - Interpret a quantile and mean.
-- Interpret a model function as either a mean or a quantile depending on the loss/objective function.
-- Identify a proper scoring rule for the mean and quantiles.
-- Explain when quantile regression is useful -- particularly with regards to high quantiles, low quantiles, and median. 
-- Explain what probabilistic forecasting is, and interpret the corresponding predictive distributions.
-- Obtain probabilistic forecasts from GLM's.
-- Obtain probabilistic forecasts using local regression methods (kNN and moving-windows).
-- Obtain an empirical cdf estimate from a univariate sample.
+- Explain when quantile regression is useful -- particularly with regards to high quantiles, low quantiles, and median.
+- Use regression to estimate conditional quantiles (except as an optimization problem -- that's for Lecture 4).
+- Use quantile regression to create prediction bands.
 
 ## Readings
 
-- [032-probabilistic_forecasting](./032-probabilistic_forecasting.html)
 - [033-quantile_regression](./033-quantile_regression.html)
 
 ## Concepts
