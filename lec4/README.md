@@ -18,13 +18,11 @@
 ## Learning Objectives
 
 - Match a model function to either a mean or quantile, given the loss/objective function.
-- Identify a proper scoring rule (error measurement) for the mean and quantiles.
+- Identify a proper scoring rule (error measurement) for the mean and quantiles (no need to memorize the formula for quantiles, though).
 - Explain what probabilistic forecasting is, and interpret a predictive distribution.
 - Obtain probabilistic forecasts from GLM's.
 - Obtain probabilistic forecasts using local regression methods (kNN and moving-windows).
-- Obtain an empirical cdf estimate from a univariate sample.
-- Identify what an outlier is (and that it's a nebulous concept).
-- Identify whether a loss function is more robust than least squares.
+- Identify whether a loss function is more robust than squared error / least squares.
 
 ## Concepts
 
@@ -50,7 +48,20 @@ Here's a more accurate version of the regression version of the table.
 
 List of concepts from today:
 
-TBD
+- If there are no distributional assumption, then: 
+	- the model function that minimizes the sum of squared errors (least squares) is an estimate of the conditional mean;
+	- the model function that minimizes the sum of absolute errors (least absolute errors) is an estimate of the conditional median;
+	- the model function that minimizes the sum of the "rho function" is an estimate of a specific conditional quantile.
+- To evaluate error associated with a model function, we (1) calculate the residuals (actual response minus estimate), (2) calculate a "score" or error for each observation, then (3) calculate the average error. The "score"/error should correspond to the loss function:
+	- squared error for mean model functions;
+	- absolute error for median model functions;
+	- rho function for a generic quantile.
+- Using the entire conditional distribution of Y|X as a prediction carries the entire picture of uncertainty about the actual outcome, as opposed to a single number like the mean or a quantile.
+- We can obtain a probabilistic forecast (a "predictive distribution"): 
+	- from a GLM by plugging in the estimated distribution parameter(s) (just the mean in the case of Bernoulli or Poisson) to get the specific distribution, and plotting the distribution.
+	- using a local method by plotting an estimate of the univariate distribution that results from the relevant subsample of `y` occuring near a particular `x` value. 
+- A loss function is more robust than squared error (least squares) if the error function does not grow as fast as a quadratic curve. The Huber loss function is one such example, which is the squared error up until some point `+/-c`, after which the loss function grows linearly.
+
 
 ## Readings
 
