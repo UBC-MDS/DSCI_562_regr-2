@@ -1,6 +1,6 @@
 ---
 title: "The Restricted Range Problem: Transformations"
-output: github_document
+output: html_document
 ---
 
 ```{r}
@@ -70,7 +70,7 @@ Also, transforming the response might not be fruitful. For example, consider a b
 
 ### Solution 2: Link Functions
 
-Instead of transforming the data, why not transform the model function? For example, instead of taking the logarithm of the response, perhaps fit the model $$ E(Y|X=x) = \exp(\beta_0 + \beta x) = \alpha \exp(\beta x) $$. Or, in general, $$ g(E(Y|X=x)) = X^T \beta $$ for some increasing function $g$ called the _link function_. 
+Instead of transforming the data, why not transform the model function? For example, instead of taking the logarithm of the response, perhaps fit the model $$ E(Y|X=x) = \exp(\beta_0 + \beta x) = \alpha \exp(\beta x). $$ Or, in general, $$ g(E(Y|X=x)) = X^{\top} \beta $$ for some increasing function $g$ called the _link function_. 
 
 This has the added advantage that we do not need to be able to transform the response.
 
