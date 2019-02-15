@@ -50,6 +50,19 @@ If time remains, here are some topics we could cover:
 
 ## Reference Material
 
+Readings listed in lectures:
+
+- (Lec 1) [About the course](about.md)
+- (Lec 1) [Tasks that motivate Regression](lec1/00-tasks.md)
+- (Lec 1) [The Types and Value of Parametric Assumptions](lec1/088-parametric.md)
+- (Lec 1) [The Restricted Range Problem: Transformations](lec1/089-transformations.md)
+- (Lec 2) [Fitting GLM's in R](lec2/090-glm_in_r.md)
+- (Lec 3) [033-quantile_regression](lec3/033-quantile_regression.html)
+- (Lec 4) [032-probabilistic_forecasting](lec4/032-probabilistic_forecasting.html)
+
+
+General Resources:
+
 **List under construction**
 
 - Julian J. Faraway. Extending the Linear Model with R: Generalized Linear, Mixed Effects and Nonparametric Regression Models, Second Edition (Chapman & Hall/CRC Texts in Statistical Science), 2016.
