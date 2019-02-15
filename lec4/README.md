@@ -52,6 +52,7 @@ List of concepts from today:
 	- the model function that minimizes the sum of squared errors (least squares) is an estimate of the conditional mean;
 	- the model function that minimizes the sum of absolute errors (least absolute errors) is an estimate of the conditional median;
 	- the model function that minimizes the sum of the "rho function" is an estimate of a specific conditional quantile.
+- If there is a distributional assumption, then we minimize the negative log likelihood to estimate the model function.
 - To evaluate error associated with a model function, we (1) calculate the residuals (actual response minus estimate), (2) calculate a "score" or error for each observation, then (3) calculate the average error. The "score"/error should correspond to the loss function:
 	- squared error for mean model functions;
 	- absolute error for median model functions;
