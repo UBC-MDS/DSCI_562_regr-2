@@ -56,7 +56,7 @@ List of concepts from today:
 	- squared error for mean model functions;
 	- absolute error for median model functions;
 	- rho function for a generic quantile.
-- Using the entire conditional distribution of Y|X as a prediction carries the entire picture of uncertainty about the actual outcome, as opposed to a single number like the mean or a quantile.
+- Using the entire conditional distribution of Y\|X as a prediction carries the entire picture of uncertainty about the actual outcome, as opposed to a single number like the mean or a quantile.
 - We can obtain a probabilistic forecast (a "predictive distribution"): 
 	- from a GLM by plugging in the estimated distribution parameter(s) (just the mean in the case of Bernoulli or Poisson) to get the specific distribution, and plotting the distribution.
 	- using a local method by plotting an estimate of the univariate distribution that results from the relevant subsample of `y` occuring near a particular `x` value. 
