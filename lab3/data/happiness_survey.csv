@@ -1,0 +1,1644 @@
+id,happiness,happy_num,labor,hours,marital,ballot
+1,Pretty happy,2,Working fulltime,50,Married,Ballot a
+2,Pretty happy,2,Working fulltime,42,Never married,Ballot b
+4,Pretty happy,2,Working parttime,30,Married,Ballot a
+5,Very happy,3,Working parttime,5,Married,Ballot c
+7,Pretty happy,2,Working fulltime,55,Married,Ballot a
+8,Very happy,3,Working parttime,30,Married,Ballot c
+9,Pretty happy,2,Working fulltime,80,Married,Ballot a
+13,Very happy,3,Working parttime,39,Married,Ballot b
+16,Pretty happy,2,Working fulltime,42,Never married,Ballot c
+19,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+20,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+21,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+23,Very happy,3,Working parttime,15,Never married,Ballot b
+25,Pretty happy,2,Working fulltime,50,Divorced,Ballot c
+28,Not too happy,1,Working parttime,4,Never married,Ballot b
+32,Pretty happy,2,Working fulltime,50,Married,Ballot c
+33,Pretty happy,2,Working fulltime,40,Married,Ballot a
+36,Not too happy,1,Working fulltime,40,Never married,Ballot b
+37,Not too happy,1,Working parttime,25,Married,Ballot b
+38,Pretty happy,2,Working fulltime,40,Married,Ballot a
+39,Very happy,3,Working fulltime,65,Never married,Ballot c
+41,Pretty happy,2,Working fulltime,39,Never married,Ballot c
+42,Not too happy,1,Working parttime,10,Married,Ballot a
+43,Pretty happy,2,Working parttime,6,Married,Ballot b
+44,Not too happy,1,Working fulltime,45,Never married,Ballot c
+46,Very happy,3,Working fulltime,45,Never married,Ballot c
+47,Pretty happy,2,Working fulltime,44,Never married,Ballot b
+48,Not too happy,1,Working fulltime,40,Married,Ballot a
+50,Very happy,3,Working fulltime,50,Divorced,Ballot b
+51,Very happy,3,Working fulltime,50,Never married,Ballot b
+53,Very happy,3,Working parttime,20,Never married,Ballot b
+54,Very happy,3,Working fulltime,45,Married,Ballot c
+55,Very happy,3,Working parttime,4,Married,Ballot a
+56,Pretty happy,2,Working parttime,35,Married,Ballot b
+57,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+58,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+59,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+61,Pretty happy,2,Working fulltime,37,Never married,Ballot c
+66,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+67,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+72,Very happy,3,Working fulltime,35,Divorced,Ballot a
+75,Very happy,3,Working parttime,14,Married,Ballot a
+77,Pretty happy,2,Working parttime,50,Never married,Ballot a
+78,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+80,Very happy,3,Working fulltime,37,Never married,Ballot c
+81,Pretty happy,2,Working fulltime,45,Married,Ballot a
+82,Not too happy,1,Working fulltime,60,Separated,Ballot c
+83,Very happy,3,Working fulltime,48,Married,Ballot a
+84,Very happy,3,Working fulltime,40,Divorced,Ballot c
+85,Pretty happy,2,Working fulltime,46,Married,Ballot c
+86,Pretty happy,2,Working fulltime,48,Divorced,Ballot a
+87,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+88,Pretty happy,2,Working fulltime,50,Divorced,Ballot a
+89,Very happy,3,Working fulltime,40,Separated,Ballot c
+94,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+95,Pretty happy,2,Working fulltime,70,Never married,Ballot c
+98,Very happy,3,Working fulltime,45,Never married,Ballot b
+99,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+100,Pretty happy,2,Working parttime,30,Never married,Ballot c
+101,Pretty happy,2,Working fulltime,37,Married,Ballot c
+105,Pretty happy,2,Working fulltime,42,Married,Ballot c
+110,Very happy,3,Working parttime,4,Married,Ballot c
+111,Pretty happy,2,Working fulltime,40,Married,Ballot a
+112,Very happy,3,Working fulltime,50,Divorced,Ballot c
+113,Pretty happy,2,Working fulltime,51,Married,Ballot a
+114,Pretty happy,2,Working fulltime,35,Married,Ballot b
+115,Very happy,3,Working fulltime,60,Married,Ballot b
+116,Pretty happy,2,Working parttime,15,Married,Ballot c
+118,Very happy,3,Working fulltime,45,Married,Ballot b
+121,Very happy,3,Working fulltime,40,Married,Ballot a
+122,Very happy,3,Working parttime,20,Never married,Ballot c
+123,Pretty happy,2,Working parttime,25,Never married,Ballot c
+124,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+127,Very happy,3,Working fulltime,40,Married,Ballot a
+128,Very happy,3,Working fulltime,50,Never married,Ballot c
+129,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+130,Pretty happy,2,Working fulltime,65,Married,Ballot a
+132,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+134,Very happy,3,Working fulltime,52,Never married,Ballot a
+135,Not too happy,1,Working fulltime,50,Married,Ballot c
+136,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+139,Very happy,3,Working fulltime,50,Never married,Ballot a
+143,Pretty happy,2,Working fulltime,43,Married,Ballot a
+145,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+146,Very happy,3,Working fulltime,40,Married,Ballot b
+147,Pretty happy,2,Working parttime,45,Married,Ballot c
+148,Pretty happy,2,Working fulltime,60,Married,Ballot b
+149,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+150,Pretty happy,2,Working fulltime,30,Never married,Ballot a
+151,Pretty happy,2,Working fulltime,60,Married,Ballot c
+152,Very happy,3,Working fulltime,40,Never married,Ballot b
+153,Very happy,3,Working parttime,10,Married,Ballot c
+154,Not too happy,1,Working parttime,45,Never married,Ballot a
+155,Pretty happy,2,Working fulltime,30,Married,Ballot c
+156,Very happy,3,Working parttime,35,Never married,Ballot a
+157,Pretty happy,2,Working parttime,20,Married,Ballot c
+159,Pretty happy,2,Working fulltime,40,Married,Ballot b
+160,Very happy,3,Working fulltime,42,Widowed,Ballot a
+161,Very happy,3,Working fulltime,40,Divorced,Ballot b
+162,Very happy,3,Working fulltime,45,Married,Ballot a
+163,Not too happy,1,Working parttime,16,Divorced,Ballot c
+165,Not too happy,1,Working fulltime,40,Never married,Ballot b
+169,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+171,Not too happy,1,Working parttime,60,Never married,Ballot b
+172,Pretty happy,2,Working fulltime,60,Never married,Ballot c
+173,Pretty happy,2,Working parttime,20,Separated,Ballot b
+174,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+176,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+177,Very happy,3,Working parttime,20,Separated,Ballot a
+179,Pretty happy,2,Working parttime,16,Divorced,Ballot c
+180,Pretty happy,2,Working parttime,10,Never married,Ballot a
+185,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+188,Pretty happy,2,Working fulltime,47,Married,Ballot a
+192,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+193,Very happy,3,Working parttime,15,Divorced,Ballot c
+194,Very happy,3,Working fulltime,40,Married,Ballot a
+195,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+196,Very happy,3,Working fulltime,40,Married,Ballot b
+198,Very happy,3,Working fulltime,40,Never married,Ballot a
+199,Pretty happy,2,Working parttime,25,Never married,Ballot a
+200,Pretty happy,2,Working fulltime,40,Married,Ballot a
+201,Pretty happy,2,Working fulltime,60,Married,Ballot a
+202,Pretty happy,2,Working fulltime,35,Separated,Ballot b
+203,Very happy,3,Working fulltime,75,Never married,Ballot b
+204,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+205,Very happy,3,Working fulltime,60,Never married,Ballot c
+206,Pretty happy,2,Working parttime,10,Never married,Ballot b
+207,Pretty happy,2,Working fulltime,40,Separated,Ballot a
+209,Pretty happy,2,Working parttime,12,Separated,Ballot b
+211,Very happy,3,Working fulltime,55,Divorced,Ballot b
+213,Very happy,3,Working parttime,6,Married,Ballot a
+217,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+218,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+219,Very happy,3,Working fulltime,45,Divorced,Ballot a
+220,Very happy,3,Working fulltime,40,Married,Ballot c
+222,Very happy,3,Working fulltime,42,Married,Ballot c
+223,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+224,Very happy,3,Working fulltime,50,Married,Ballot c
+225,Pretty happy,2,Working parttime,30,Never married,Ballot b
+226,Very happy,3,Working fulltime,40,Married,Ballot a
+227,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+228,Very happy,3,Working fulltime,40,Never married,Ballot b
+229,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+233,Very happy,3,Working fulltime,45,Married,Ballot b
+235,Pretty happy,2,Working parttime,25,Never married,Ballot b
+236,Not too happy,1,Working fulltime,60,Divorced,Ballot a
+237,Pretty happy,2,Working parttime,23,Married,Ballot c
+238,Pretty happy,2,Working fulltime,40,Married,Ballot c
+239,Very happy,3,Working fulltime,30,Never married,Ballot a
+240,Very happy,3,Working fulltime,40,Married,Ballot b
+241,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+242,Very happy,3,Working fulltime,42,Never married,Ballot a
+243,Very happy,3,Working fulltime,40,Separated,Ballot b
+244,Very happy,3,Working fulltime,48,Widowed,Ballot b
+248,Pretty happy,2,Working fulltime,55,Married,Ballot b
+249,Very happy,3,Working fulltime,49,Married,Ballot b
+250,Pretty happy,2,Working fulltime,42,Married,Ballot c
+251,Pretty happy,2,Working fulltime,40,Married,Ballot b
+252,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+253,Very happy,3,Working parttime,30,Never married,Ballot c
+254,Pretty happy,2,Working fulltime,40,Married,Ballot b
+257,Very happy,3,Working fulltime,40,Divorced,Ballot a
+259,Pretty happy,2,Working fulltime,50,Married,Ballot c
+260,Very happy,3,Working fulltime,60,Separated,Ballot a
+262,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+263,Very happy,3,Working fulltime,40,Never married,Ballot b
+265,Pretty happy,2,Working parttime,28,Separated,Ballot b
+266,Not too happy,1,Working parttime,34,Divorced,Ballot b
+269,Pretty happy,2,Working fulltime,52,Married,Ballot c
+272,Very happy,3,Working parttime,16,Married,Ballot b
+274,Very happy,3,Working fulltime,35,Married,Ballot b
+276,Pretty happy,2,Working fulltime,60,Divorced,Ballot c
+277,Pretty happy,2,Working fulltime,55,Married,Ballot b
+278,Very happy,3,Working fulltime,40,Married,Ballot c
+279,Pretty happy,2,Working fulltime,40,Married,Ballot b
+280,Very happy,3,Working fulltime,70,Married,Ballot b
+284,Very happy,3,Working fulltime,40,Married,Ballot a
+286,Pretty happy,2,Working fulltime,75,Divorced,Ballot c
+287,Very happy,3,Working fulltime,81,Married,Ballot b
+288,Pretty happy,2,Working fulltime,65,Married,Ballot c
+289,Pretty happy,2,Working fulltime,40,Widowed,Ballot a
+290,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+291,Very happy,3,Working fulltime,40,Married,Ballot b
+292,Pretty happy,2,Working fulltime,40,Married,Ballot b
+293,Very happy,3,Working fulltime,55,Married,Ballot a
+295,Very happy,3,Working fulltime,46,Married,Ballot c
+296,Pretty happy,2,Working parttime,27,Never married,Ballot b
+299,Pretty happy,2,Working fulltime,40,Married,Ballot a
+300,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+304,Very happy,3,Working fulltime,68,Never married,Ballot a
+305,Pretty happy,2,Working fulltime,32,Married,Ballot a
+306,Very happy,3,Working fulltime,40,Married,Ballot a
+308,Pretty happy,2,Working fulltime,30,Never married,Ballot b
+309,Not too happy,1,Working fulltime,48,Never married,Ballot a
+311,Pretty happy,2,Working fulltime,60,Married,Ballot b
+313,Very happy,3,Working fulltime,50,Widowed,Ballot c
+314,Pretty happy,2,Working fulltime,40,Married,Ballot b
+316,Very happy,3,Working fulltime,40,Married,Ballot b
+317,Very happy,3,Working fulltime,40,Divorced,Ballot a
+318,Very happy,3,Working fulltime,26,Married,Ballot b
+327,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+328,Very happy,3,Working parttime,30,Never married,Ballot a
+329,Very happy,3,Working fulltime,51,Divorced,Ballot a
+330,Pretty happy,2,Working fulltime,50,Married,Ballot a
+332,Very happy,3,Working fulltime,40,Married,Ballot b
+333,Very happy,3,Working fulltime,50,Never married,Ballot b
+334,Very happy,3,Working fulltime,30,Married,Ballot a
+335,Not too happy,1,Working fulltime,60,Married,Ballot c
+336,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+337,Very happy,3,Working fulltime,60,Married,Ballot c
+338,Pretty happy,2,Working fulltime,1,Married,Ballot b
+341,Very happy,3,Working fulltime,55,Married,Ballot c
+342,Pretty happy,2,Working parttime,20,Married,Ballot b
+343,Very happy,3,Working fulltime,48,Married,Ballot c
+344,Pretty happy,2,Working parttime,28,Never married,Ballot b
+345,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+346,Pretty happy,2,Working fulltime,43,Never married,Ballot b
+347,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+348,Not too happy,1,Working fulltime,40,Divorced,Ballot a
+349,Pretty happy,2,Working fulltime,41,Never married,Ballot b
+350,Pretty happy,2,Working fulltime,80,Divorced,Ballot a
+351,Very happy,3,Working parttime,30,Married,Ballot c
+353,Pretty happy,2,Working fulltime,45,Married,Ballot b
+354,Pretty happy,2,Working fulltime,45,Married,Ballot a
+356,Pretty happy,2,Working fulltime,32,Married,Ballot c
+357,Pretty happy,2,Working parttime,20,Married,Ballot c
+358,Pretty happy,2,Working fulltime,42,Never married,Ballot b
+359,Pretty happy,2,Working fulltime,50,Separated,Ballot c
+360,Very happy,3,Working fulltime,60,Widowed,Ballot a
+361,Pretty happy,2,Working fulltime,60,Married,Ballot c
+362,Pretty happy,2,Working fulltime,54,Never married,Ballot b
+364,Pretty happy,2,Working fulltime,34,Married,Ballot c
+365,Very happy,3,Working fulltime,60,Married,Ballot a
+366,Not too happy,1,Working fulltime,45,Divorced,Ballot b
+369,Very happy,3,Working fulltime,50,Married,Ballot a
+370,Very happy,3,Working fulltime,60,Married,Ballot c
+371,Very happy,3,Working fulltime,36,Married,Ballot c
+373,Very happy,3,Working parttime,16,Married,Ballot c
+376,Pretty happy,2,Working fulltime,42,Married,Ballot b
+377,Very happy,3,Working fulltime,40,Never married,Ballot b
+379,Pretty happy,2,Working fulltime,70,Married,Ballot c
+380,Pretty happy,2,Working fulltime,24,Married,Ballot b
+384,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+385,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+386,Pretty happy,2,Working fulltime,55,Married,Ballot a
+387,Pretty happy,2,Working parttime,20,Married,Ballot c
+388,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+390,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+392,Pretty happy,2,Working parttime,12,Married,Ballot c
+393,Pretty happy,2,Working fulltime,40,Married,Ballot c
+394,Pretty happy,2,Working fulltime,60,Separated,Ballot b
+396,Pretty happy,2,Working fulltime,52,Never married,Ballot a
+398,Very happy,3,Working fulltime,40,Married,Ballot a
+399,Very happy,3,Working fulltime,40,Married,Ballot b
+400,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+401,Pretty happy,2,Working fulltime,40,Married,Ballot c
+403,Pretty happy,2,Working fulltime,40,Married,Ballot c
+404,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+405,Pretty happy,2,Working fulltime,40,Married,Ballot a
+408,Very happy,3,Working fulltime,30,Divorced,Ballot b
+409,Very happy,3,Working fulltime,35,Married,Ballot a
+410,Not too happy,1,Working fulltime,35,Never married,Ballot a
+412,Pretty happy,2,Working fulltime,40,Married,Ballot c
+413,Pretty happy,2,Working fulltime,70,Married,Ballot b
+414,Pretty happy,2,Working fulltime,50,Married,Ballot a
+415,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+416,Pretty happy,2,Working fulltime,40,Married,Ballot c
+417,Pretty happy,2,Working fulltime,41,Divorced,Ballot a
+419,Pretty happy,2,Working fulltime,49,Never married,Ballot b
+421,Pretty happy,2,Working parttime,32,Never married,Ballot b
+422,Very happy,3,Working fulltime,40,Married,Ballot a
+423,Pretty happy,2,Working parttime,26,Married,Ballot b
+424,Very happy,3,Working fulltime,40,Married,Ballot c
+427,Pretty happy,2,Working fulltime,60,Married,Ballot a
+428,Pretty happy,2,Working fulltime,50,Married,Ballot a
+429,Pretty happy,2,Working parttime,30,Never married,Ballot b
+430,Not too happy,1,Working fulltime,32,Married,Ballot a
+431,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+432,Pretty happy,2,Working parttime,25,Never married,Ballot b
+434,Very happy,3,Working fulltime,40,Married,Ballot c
+435,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+436,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+440,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+441,Very happy,3,Working fulltime,40,Never married,Ballot c
+442,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+444,Pretty happy,2,Working parttime,32,Married,Ballot c
+445,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+446,Very happy,3,Working fulltime,40,Married,Ballot b
+448,Very happy,3,Working fulltime,40,Married,Ballot b
+449,Very happy,3,Working fulltime,50,Married,Ballot a
+450,Pretty happy,2,Working parttime,25,Never married,Ballot b
+452,Pretty happy,2,Working fulltime,44,Married,Ballot c
+453,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+454,Not too happy,1,Working parttime,11,Never married,Ballot b
+457,Very happy,3,Working fulltime,75,Married,Ballot a
+458,Very happy,3,Working fulltime,40,Married,Ballot c
+459,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+461,Pretty happy,2,Working fulltime,35,Married,Ballot c
+462,Pretty happy,2,Working fulltime,60,Divorced,Ballot b
+463,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+464,Pretty happy,2,Working parttime,15,Married,Ballot b
+465,Very happy,3,Working fulltime,35,Never married,Ballot c
+466,Very happy,3,Working parttime,10,Married,Ballot b
+467,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+468,Pretty happy,2,Working fulltime,50,Married,Ballot c
+469,Pretty happy,2,Working fulltime,44,Married,Ballot b
+470,Pretty happy,2,Working fulltime,50,Married,Ballot a
+471,Pretty happy,2,Working fulltime,50,Married,Ballot c
+472,Pretty happy,2,Working parttime,30,Married,Ballot b
+473,Not too happy,1,Working fulltime,67,Married,Ballot b
+474,Pretty happy,2,Working fulltime,55,Never married,Ballot a
+475,Very happy,3,Working fulltime,40,Married,Ballot c
+480,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+482,Pretty happy,2,Working fulltime,38,Never married,Ballot c
+483,Very happy,3,Working fulltime,65,Never married,Ballot c
+484,Pretty happy,2,Working fulltime,40,Married,Ballot a
+485,Pretty happy,2,Working fulltime,55,Married,Ballot b
+488,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+489,Pretty happy,2,Working fulltime,89,Married,Ballot c
+491,Very happy,3,Working fulltime,48,Never married,Ballot c
+493,Not too happy,1,Working parttime,21,Never married,Ballot b
+496,Very happy,3,Working fulltime,40,Divorced,Ballot a
+497,Very happy,3,Working fulltime,45,Married,Ballot a
+498,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+499,Very happy,3,Working parttime,18,Married,Ballot c
+500,Pretty happy,2,Working parttime,35,Divorced,Ballot b
+503,Pretty happy,2,Working parttime,17,Never married,Ballot c
+505,Very happy,3,Working fulltime,40,Never married,Ballot a
+507,Pretty happy,2,Working fulltime,45,Married,Ballot c
+508,Not too happy,1,Working parttime,20,Never married,Ballot b
+509,Very happy,3,Working fulltime,51,Married,Ballot a
+510,Pretty happy,2,Working fulltime,45,Divorced,Ballot c
+513,Very happy,3,Working parttime,32,Married,Ballot c
+514,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+515,Pretty happy,2,Working fulltime,48,Never married,Ballot c
+516,Pretty happy,2,Working fulltime,20,Married,Ballot b
+517,Very happy,3,Working fulltime,48,Married,Ballot a
+521,Pretty happy,2,Working fulltime,50,Married,Ballot a
+522,Very happy,3,Working fulltime,45,Married,Ballot a
+523,Very happy,3,Working fulltime,46,Married,Ballot a
+524,Pretty happy,2,Working fulltime,70,Married,Ballot a
+526,Very happy,3,Working parttime,23,Divorced,Ballot b
+527,Pretty happy,2,Working parttime,23,Never married,Ballot a
+528,Pretty happy,2,Working fulltime,50,Married,Ballot c
+529,Not too happy,1,Working parttime,10,Married,Ballot a
+530,Pretty happy,2,Working fulltime,35,Divorced,Ballot a
+532,Very happy,3,Working fulltime,45,Married,Ballot c
+537,Pretty happy,2,Working fulltime,89,Married,Ballot c
+540,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+541,Pretty happy,2,Working parttime,4,Never married,Ballot b
+542,Pretty happy,2,Working fulltime,48,Married,Ballot c
+543,Pretty happy,2,Working fulltime,40,Married,Ballot b
+544,Pretty happy,2,Working parttime,32,Never married,Ballot b
+545,Not too happy,1,Working fulltime,35,Never married,Ballot c
+547,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+548,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+550,Not too happy,1,Working fulltime,28,Never married,Ballot c
+551,Not too happy,1,Working fulltime,30,Divorced,Ballot b
+554,Pretty happy,2,Working fulltime,36,Never married,Ballot b
+555,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+556,Pretty happy,2,Working fulltime,53,Married,Ballot a
+557,Pretty happy,2,Working fulltime,40,Separated,Ballot a
+559,Pretty happy,2,Working parttime,30,Married,Ballot c
+564,Not too happy,1,Working fulltime,42,Never married,Ballot c
+567,Very happy,3,Working fulltime,40,Separated,Ballot c
+568,Very happy,3,Working fulltime,50,Divorced,Ballot a
+569,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+570,Pretty happy,2,Working parttime,25,Married,Ballot c
+571,Not too happy,1,Working fulltime,35,Divorced,Ballot b
+573,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+574,Not too happy,1,Working parttime,50,Separated,Ballot b
+580,Very happy,3,Working parttime,7,Divorced,Ballot a
+581,Pretty happy,2,Working parttime,25,Married,Ballot c
+583,Pretty happy,2,Working fulltime,24,Widowed,Ballot a
+590,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+592,Pretty happy,2,Working parttime,20,Married,Ballot c
+594,Very happy,3,Working fulltime,70,Never married,Ballot a
+600,Pretty happy,2,Working fulltime,45,Married,Ballot b
+602,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+603,Pretty happy,2,Working fulltime,40,Married,Ballot a
+606,Very happy,3,Working parttime,16,Never married,Ballot b
+607,Pretty happy,2,Working parttime,30,Never married,Ballot a
+609,Pretty happy,2,Working fulltime,40,Married,Ballot a
+610,Pretty happy,2,Working fulltime,20,Never married,Ballot b
+612,Very happy,3,Working parttime,26,Separated,Ballot a
+613,Pretty happy,2,Working parttime,27,Never married,Ballot c
+615,Very happy,3,Working fulltime,1,Married,Ballot c
+616,Very happy,3,Working parttime,32,Married,Ballot a
+618,Pretty happy,2,Working fulltime,55,Divorced,Ballot a
+619,Pretty happy,2,Working parttime,30,Married,Ballot c
+624,Pretty happy,2,Working fulltime,40,Widowed,Ballot c
+625,Very happy,3,Working parttime,24,Married,Ballot b
+627,Pretty happy,2,Working parttime,26,Married,Ballot a
+628,Pretty happy,2,Working parttime,15,Married,Ballot b
+632,Pretty happy,2,Working parttime,35,Married,Ballot c
+633,Pretty happy,2,Working fulltime,60,Married,Ballot b
+634,Very happy,3,Working parttime,8,Married,Ballot a
+636,Pretty happy,2,Working fulltime,40,Married,Ballot b
+637,Very happy,3,Working fulltime,41,Married,Ballot c
+638,Pretty happy,2,Working fulltime,45,Married,Ballot a
+639,Very happy,3,Working parttime,16,Married,Ballot c
+640,Pretty happy,2,Working parttime,20,Married,Ballot b
+641,Pretty happy,2,Working parttime,26,Married,Ballot c
+642,Very happy,3,Working parttime,30,Married,Ballot b
+643,Pretty happy,2,Working fulltime,45,Married,Ballot a
+647,Pretty happy,2,Working fulltime,40,Married,Ballot b
+648,Very happy,3,Working fulltime,60,Married,Ballot a
+650,Pretty happy,2,Working fulltime,45,Married,Ballot b
+651,Very happy,3,Working fulltime,40,Married,Ballot b
+652,Pretty happy,2,Working parttime,50,Never married,Ballot a
+654,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+657,Pretty happy,2,Working parttime,16,Never married,Ballot c
+659,Pretty happy,2,Working fulltime,60,Married,Ballot b
+660,Very happy,3,Working fulltime,40,Separated,Ballot a
+663,Very happy,3,Working parttime,20,Never married,Ballot b
+665,Very happy,3,Working fulltime,40,Married,Ballot a
+666,Very happy,3,Working fulltime,38,Married,Ballot c
+669,Not too happy,1,Working fulltime,55,Never married,Ballot c
+670,Pretty happy,2,Working parttime,34,Divorced,Ballot b
+672,Very happy,3,Working fulltime,43,Divorced,Ballot a
+673,Pretty happy,2,Working parttime,22,Never married,Ballot c
+675,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+676,Very happy,3,Working fulltime,50,Married,Ballot c
+677,Pretty happy,2,Working fulltime,42,Never married,Ballot b
+678,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+679,Pretty happy,2,Working fulltime,70,Never married,Ballot c
+680,Pretty happy,2,Working fulltime,35,Never married,Ballot b
+681,Very happy,3,Working fulltime,40,Married,Ballot c
+686,Not too happy,1,Working fulltime,40,Separated,Ballot c
+687,Very happy,3,Working fulltime,40,Never married,Ballot b
+689,Not too happy,1,Working fulltime,36,Married,Ballot c
+690,Pretty happy,2,Working fulltime,40,Married,Ballot c
+691,Pretty happy,2,Working fulltime,30,Married,Ballot a
+693,Very happy,3,Working fulltime,40,Separated,Ballot a
+695,Pretty happy,2,Working parttime,8,Never married,Ballot c
+696,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+697,Pretty happy,2,Working fulltime,84,Married,Ballot b
+698,Not too happy,1,Working fulltime,40,Never married,Ballot b
+699,Not too happy,1,Working parttime,25,Separated,Ballot a
+700,Pretty happy,2,Working fulltime,40,Married,Ballot c
+701,Not too happy,1,Working fulltime,84,Never married,Ballot b
+705,Pretty happy,2,Working fulltime,1,Divorced,Ballot b
+706,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+707,Very happy,3,Working fulltime,54,Married,Ballot c
+708,Not too happy,1,Working fulltime,45,Married,Ballot b
+709,Very happy,3,Working fulltime,40,Separated,Ballot a
+711,Pretty happy,2,Working fulltime,72,Married,Ballot c
+712,Not too happy,1,Working fulltime,77,Divorced,Ballot b
+713,Very happy,3,Working fulltime,50,Married,Ballot a
+714,Very happy,3,Working fulltime,40,Separated,Ballot c
+716,Not too happy,1,Working fulltime,65,Separated,Ballot a
+719,Pretty happy,2,Working fulltime,40,Married,Ballot a
+721,Very happy,3,Working fulltime,48,Never married,Ballot a
+722,Very happy,3,Working fulltime,68,Married,Ballot c
+724,Not too happy,1,Working parttime,10,Never married,Ballot c
+726,Very happy,3,Working fulltime,40,Divorced,Ballot b
+727,Very happy,3,Working parttime,10,Married,Ballot c
+728,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+731,Not too happy,1,Working parttime,25,Never married,Ballot b
+734,Pretty happy,2,Working fulltime,40,Married,Ballot b
+736,Very happy,3,Working fulltime,45,Married,Ballot b
+737,Very happy,3,Working fulltime,60,Married,Ballot b
+740,Very happy,3,Working fulltime,32,Married,Ballot c
+741,Pretty happy,2,Working fulltime,48,Married,Ballot a
+742,Pretty happy,2,Working fulltime,58,Divorced,Ballot a
+745,Very happy,3,Working parttime,20,Married,Ballot a
+746,Not too happy,1,Working parttime,30,Never married,Ballot c
+747,Pretty happy,2,Working fulltime,70,Never married,Ballot a
+748,Pretty happy,2,Working fulltime,55,Never married,Ballot c
+749,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+750,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+751,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+752,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+753,Pretty happy,2,Working parttime,33,Never married,Ballot b
+755,Pretty happy,2,Working parttime,16,Widowed,Ballot b
+757,Pretty happy,2,Working fulltime,40,Married,Ballot c
+758,Very happy,3,Working fulltime,40,Married,Ballot a
+759,Very happy,3,Working fulltime,75,Never married,Ballot c
+760,Very happy,3,Working fulltime,46,Married,Ballot a
+763,Pretty happy,2,Working fulltime,40,Married,Ballot a
+764,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+766,Very happy,3,Working fulltime,60,Divorced,Ballot c
+768,Not too happy,1,Working parttime,20,Never married,Ballot b
+769,Pretty happy,2,Working fulltime,39,Married,Ballot c
+770,Pretty happy,2,Working fulltime,40,Married,Ballot a
+771,Pretty happy,2,Working fulltime,60,Married,Ballot c
+773,Pretty happy,2,Working fulltime,24,Divorced,Ballot a
+774,Pretty happy,2,Working fulltime,40,Married,Ballot a
+775,Pretty happy,2,Working parttime,21,Divorced,Ballot c
+778,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+779,Very happy,3,Working fulltime,40,Never married,Ballot a
+782,Pretty happy,2,Working fulltime,55,Never married,Ballot b
+784,Very happy,3,Working fulltime,50,Married,Ballot b
+785,Pretty happy,2,Working fulltime,55,Married,Ballot b
+786,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+788,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+789,Not too happy,1,Working fulltime,80,Divorced,Ballot c
+790,Pretty happy,2,Working fulltime,35,Married,Ballot b
+791,Pretty happy,2,Working fulltime,40,Married,Ballot a
+795,Very happy,3,Working parttime,26,Never married,Ballot a
+796,Pretty happy,2,Working fulltime,80,Divorced,Ballot b
+797,Very happy,3,Working fulltime,36,Never married,Ballot c
+798,Pretty happy,2,Working parttime,27,Divorced,Ballot b
+801,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+803,Pretty happy,2,Working parttime,33,Never married,Ballot b
+804,Very happy,3,Working fulltime,40,Married,Ballot a
+807,Pretty happy,2,Working fulltime,45,Married,Ballot a
+809,Pretty happy,2,Working fulltime,60,Married,Ballot a
+812,Very happy,3,Working fulltime,40,Married,Ballot a
+813,Very happy,3,Working fulltime,40,Divorced,Ballot c
+814,Very happy,3,Working fulltime,50,Married,Ballot b
+816,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+820,Very happy,3,Working fulltime,48,Married,Ballot a
+821,Pretty happy,2,Working fulltime,70,Separated,Ballot c
+824,Not too happy,1,Working fulltime,50,Never married,Ballot c
+825,Pretty happy,2,Working fulltime,50,Married,Ballot b
+827,Not too happy,1,Working fulltime,24,Never married,Ballot b
+828,Not too happy,1,Working fulltime,40,Separated,Ballot a
+829,Not too happy,1,Working fulltime,62,Never married,Ballot c
+830,Pretty happy,2,Working fulltime,61,Married,Ballot a
+831,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+832,Very happy,3,Working fulltime,40,Married,Ballot c
+834,Not too happy,1,Working fulltime,40,Widowed,Ballot c
+835,Pretty happy,2,Working fulltime,50,Married,Ballot b
+836,Very happy,3,Working parttime,25,Married,Ballot a
+838,Pretty happy,2,Working fulltime,64,Never married,Ballot c
+841,Pretty happy,2,Working fulltime,40,Married,Ballot c
+844,Pretty happy,2,Working parttime,20,Divorced,Ballot b
+846,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+847,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+848,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+849,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+850,Pretty happy,2,Working fulltime,32,Never married,Ballot a
+852,Not too happy,1,Working fulltime,50,Never married,Ballot b
+854,Very happy,3,Working parttime,15,Never married,Ballot c
+855,Pretty happy,2,Working fulltime,40,Married,Ballot b
+858,Pretty happy,2,Working fulltime,56,Never married,Ballot c
+859,Very happy,3,Working fulltime,40,Never married,Ballot a
+860,Very happy,3,Working fulltime,48,Married,Ballot c
+863,Very happy,3,Working fulltime,60,Married,Ballot c
+866,Pretty happy,2,Working fulltime,35,Divorced,Ballot c
+867,Not too happy,1,Working fulltime,40,Never married,Ballot a
+868,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+870,Pretty happy,2,Working fulltime,45,Married,Ballot c
+875,Not too happy,1,Working fulltime,40,Married,Ballot b
+880,Pretty happy,2,Working parttime,28,Never married,Ballot b
+881,Pretty happy,2,Working fulltime,40,Married,Ballot a
+882,Very happy,3,Working parttime,16,Married,Ballot b
+883,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+884,Pretty happy,2,Working fulltime,45,Never married,Ballot c
+885,Very happy,3,Working fulltime,40,Married,Ballot a
+887,Pretty happy,2,Working fulltime,40,Married,Ballot a
+888,Pretty happy,2,Working fulltime,55,Married,Ballot c
+889,Not too happy,1,Working parttime,30,Widowed,Ballot b
+890,Not too happy,1,Working fulltime,38,Never married,Ballot a
+891,Very happy,3,Working fulltime,36,Never married,Ballot b
+899,Pretty happy,2,Working parttime,6,Never married,Ballot b
+900,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+901,Not too happy,1,Working fulltime,60,Never married,Ballot a
+903,Pretty happy,2,Working parttime,65,Never married,Ballot a
+904,Pretty happy,2,Working fulltime,34,Never married,Ballot c
+908,Pretty happy,2,Working fulltime,55,Divorced,Ballot b
+909,Pretty happy,2,Working fulltime,45,Never married,Ballot c
+913,Very happy,3,Working parttime,33,Never married,Ballot a
+914,Pretty happy,2,Working fulltime,50,Married,Ballot b
+916,Pretty happy,2,Working fulltime,70,Divorced,Ballot c
+918,Pretty happy,2,Working fulltime,32,Married,Ballot c
+920,Very happy,3,Working fulltime,40,Married,Ballot a
+921,Not too happy,1,Working fulltime,45,Divorced,Ballot c
+924,Very happy,3,Working fulltime,80,Married,Ballot b
+926,Pretty happy,2,Working fulltime,89,Married,Ballot a
+927,Pretty happy,2,Working fulltime,40,Married,Ballot c
+928,Very happy,3,Working fulltime,50,Married,Ballot c
+929,Very happy,3,Working fulltime,55,Married,Ballot a
+930,Very happy,3,Working fulltime,40,Married,Ballot b
+932,Very happy,3,Working parttime,30,Never married,Ballot b
+934,Very happy,3,Working fulltime,50,Married,Ballot a
+937,Not too happy,1,Working fulltime,48,Married,Ballot c
+938,Very happy,3,Working fulltime,45,Married,Ballot a
+939,Very happy,3,Working fulltime,40,Never married,Ballot a
+940,Pretty happy,2,Working fulltime,50,Married,Ballot a
+941,Pretty happy,2,Working fulltime,50,Divorced,Ballot a
+942,Pretty happy,2,Working fulltime,40,Married,Ballot b
+944,Very happy,3,Working fulltime,36,Married,Ballot b
+945,Pretty happy,2,Working parttime,10,Never married,Ballot c
+948,Very happy,3,Working fulltime,40,Divorced,Ballot c
+949,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+951,Very happy,3,Working parttime,37,Separated,Ballot c
+953,Not too happy,1,Working fulltime,70,Never married,Ballot c
+954,Very happy,3,Working fulltime,60,Widowed,Ballot a
+957,Not too happy,1,Working parttime,22,Never married,Ballot a
+962,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+964,Pretty happy,2,Working parttime,7,Divorced,Ballot a
+966,Pretty happy,2,Working parttime,33,Never married,Ballot b
+967,Pretty happy,2,Working fulltime,36,Married,Ballot a
+968,Very happy,3,Working fulltime,40,Married,Ballot b
+969,Pretty happy,2,Working fulltime,52,Married,Ballot c
+974,Not too happy,1,Working fulltime,40,Married,Ballot b
+975,Not too happy,1,Working parttime,8,Never married,Ballot a
+976,Pretty happy,2,Working fulltime,60,Divorced,Ballot c
+977,Pretty happy,2,Working parttime,12,Married,Ballot b
+978,Very happy,3,Working parttime,30,Divorced,Ballot a
+980,Very happy,3,Working fulltime,40,Married,Ballot a
+981,Very happy,3,Working parttime,32,Separated,Ballot b
+982,Very happy,3,Working fulltime,40,Married,Ballot c
+983,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+985,Pretty happy,2,Working fulltime,50,Married,Ballot a
+987,Not too happy,1,Working fulltime,40,Divorced,Ballot c
+992,Pretty happy,2,Working fulltime,40,Separated,Ballot a
+994,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+997,Very happy,3,Working fulltime,35,Never married,Ballot a
+999,Very happy,3,Working fulltime,40,Married,Ballot c
+1001,Very happy,3,Working fulltime,40,Never married,Ballot c
+1003,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1004,Pretty happy,2,Working fulltime,5,Married,Ballot a
+1005,Not too happy,1,Working fulltime,42,Divorced,Ballot b
+1007,Very happy,3,Working parttime,8,Married,Ballot c
+1008,Pretty happy,2,Working fulltime,60,Divorced,Ballot b
+1009,Very happy,3,Working fulltime,50,Never married,Ballot a
+1012,Pretty happy,2,Working parttime,35,Never married,Ballot c
+1013,Pretty happy,2,Working fulltime,57,Never married,Ballot b
+1016,Very happy,3,Working fulltime,40,Widowed,Ballot b
+1017,Pretty happy,2,Working fulltime,70,Never married,Ballot a
+1018,Very happy,3,Working fulltime,40,Never married,Ballot c
+1019,Not too happy,1,Working fulltime,42,Never married,Ballot b
+1020,Pretty happy,2,Working parttime,55,Married,Ballot c
+1021,Pretty happy,2,Working fulltime,72,Married,Ballot b
+1022,Not too happy,1,Working parttime,36,Never married,Ballot b
+1023,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1024,Pretty happy,2,Working parttime,37,Never married,Ballot c
+1025,Very happy,3,Working fulltime,45,Married,Ballot b
+1027,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1028,Pretty happy,2,Working fulltime,46,Married,Ballot a
+1029,Not too happy,1,Working parttime,16,Never married,Ballot b
+1030,Very happy,3,Working fulltime,44,Married,Ballot c
+1031,Very happy,3,Working fulltime,40,Divorced,Ballot b
+1033,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1034,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1035,Very happy,3,Working fulltime,40,Married,Ballot c
+1036,Very happy,3,Working fulltime,60,Married,Ballot b
+1037,Pretty happy,2,Working parttime,70,Divorced,Ballot c
+1038,Very happy,3,Working fulltime,35,Never married,Ballot b
+1039,Very happy,3,Working fulltime,30,Married,Ballot a
+1041,Pretty happy,2,Working parttime,83,Never married,Ballot b
+1042,Not too happy,1,Working fulltime,50,Divorced,Ballot a
+1044,Very happy,3,Working parttime,38,Never married,Ballot c
+1045,Very happy,3,Working fulltime,43,Married,Ballot a
+1046,Pretty happy,2,Working fulltime,52,Divorced,Ballot c
+1047,Very happy,3,Working fulltime,40,Married,Ballot a
+1048,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1050,Very happy,3,Working fulltime,60,Married,Ballot c
+1052,Pretty happy,2,Working parttime,30,Never married,Ballot a
+1056,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1057,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1059,Pretty happy,2,Working fulltime,48,Never married,Ballot c
+1060,Pretty happy,2,Working parttime,60,Never married,Ballot a
+1061,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+1062,Pretty happy,2,Working parttime,32,Never married,Ballot a
+1065,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1068,Pretty happy,2,Working fulltime,32,Married,Ballot c
+1069,Pretty happy,2,Working fulltime,45,Divorced,Ballot a
+1070,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1071,Very happy,3,Working fulltime,47,Married,Ballot a
+1073,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+1074,Pretty happy,2,Working fulltime,55,Married,Ballot c
+1078,Pretty happy,2,Working fulltime,40,Separated,Ballot b
+1079,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1080,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1081,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1082,Pretty happy,2,Working fulltime,38,Never married,Ballot a
+1086,Very happy,3,Working fulltime,40,Married,Ballot c
+1087,Pretty happy,2,Working parttime,25,Never married,Ballot b
+1088,Pretty happy,2,Working fulltime,60,Never married,Ballot a
+1089,Pretty happy,2,Working fulltime,70,Divorced,Ballot c
+1091,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1092,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1095,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1096,Pretty happy,2,Working fulltime,20,Divorced,Ballot b
+1097,Not too happy,1,Working fulltime,55,Never married,Ballot c
+1098,Very happy,3,Working parttime,30,Never married,Ballot b
+1100,Very happy,3,Working fulltime,32,Divorced,Ballot c
+1104,Very happy,3,Working fulltime,45,Married,Ballot c
+1106,Pretty happy,2,Working fulltime,55,Married,Ballot b
+1107,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+1113,Pretty happy,2,Working parttime,8,Married,Ballot c
+1115,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+1116,Pretty happy,2,Working parttime,5,Widowed,Ballot b
+1122,Very happy,3,Working parttime,30,Married,Ballot a
+1123,Very happy,3,Working fulltime,50,Married,Ballot c
+1126,Pretty happy,2,Working parttime,15,Married,Ballot c
+1128,Pretty happy,2,Working parttime,36,Divorced,Ballot b
+1130,Very happy,3,Working fulltime,60,Married,Ballot a
+1131,Very happy,3,Working fulltime,84,Never married,Ballot c
+1132,Pretty happy,2,Working fulltime,60,Divorced,Ballot a
+1134,Pretty happy,2,Working fulltime,58,Divorced,Ballot c
+1135,Very happy,3,Working parttime,37,Married,Ballot b
+1136,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1137,Very happy,3,Working fulltime,45,Married,Ballot c
+1138,Pretty happy,2,Working fulltime,50,Married,Ballot a
+1139,Pretty happy,2,Working fulltime,30,Married,Ballot c
+1142,Very happy,3,Working parttime,42,Never married,Ballot c
+1144,Very happy,3,Working parttime,6,Separated,Ballot a
+1145,Not too happy,1,Working fulltime,40,Separated,Ballot c
+1146,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1147,Pretty happy,2,Working fulltime,60,Divorced,Ballot c
+1148,Very happy,3,Working fulltime,40,Married,Ballot b
+1150,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+1151,Pretty happy,2,Working fulltime,46,Never married,Ballot c
+1152,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1154,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1156,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1157,Pretty happy,2,Working fulltime,68,Never married,Ballot a
+1158,Not too happy,1,Working fulltime,38,Divorced,Ballot c
+1159,Pretty happy,2,Working fulltime,43,Separated,Ballot a
+1161,Very happy,3,Working fulltime,50,Divorced,Ballot b
+1162,Pretty happy,2,Working fulltime,60,Never married,Ballot a
+1163,Very happy,3,Working fulltime,70,Married,Ballot c
+1165,Very happy,3,Working fulltime,50,Married,Ballot a
+1167,Very happy,3,Working fulltime,40,Married,Ballot b
+1168,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1170,Very happy,3,Working fulltime,60,Married,Ballot a
+1171,Very happy,3,Working fulltime,42,Married,Ballot c
+1172,Pretty happy,2,Working fulltime,45,Married,Ballot c
+1175,Pretty happy,2,Working fulltime,37,Never married,Ballot a
+1178,Pretty happy,2,Working fulltime,4,Married,Ballot a
+1187,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1189,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+1191,Not too happy,1,Working fulltime,40,Married,Ballot b
+1192,Pretty happy,2,Working fulltime,1,Married,Ballot c
+1193,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1194,Pretty happy,2,Working fulltime,60,Divorced,Ballot a
+1195,Pretty happy,2,Working fulltime,63,Divorced,Ballot c
+1196,Pretty happy,2,Working fulltime,50,Married,Ballot c
+1197,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1198,Not too happy,1,Working parttime,28,Never married,Ballot c
+1200,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1201,Pretty happy,2,Working parttime,16,Married,Ballot c
+1203,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+1205,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1207,Pretty happy,2,Working parttime,10,Married,Ballot c
+1209,Pretty happy,2,Working fulltime,53,Divorced,Ballot a
+1211,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+1212,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+1214,Not too happy,1,Working fulltime,42,Married,Ballot b
+1216,Pretty happy,2,Working fulltime,46,Never married,Ballot b
+1219,Pretty happy,2,Working fulltime,55,Married,Ballot a
+1220,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1221,Pretty happy,2,Working parttime,20,Divorced,Ballot c
+1222,Pretty happy,2,Working fulltime,42,Divorced,Ballot b
+1224,Pretty happy,2,Working fulltime,41,Married,Ballot a
+1225,Very happy,3,Working fulltime,35,Married,Ballot b
+1226,Very happy,3,Working parttime,30,Married,Ballot c
+1227,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+1230,Very happy,3,Working fulltime,50,Married,Ballot c
+1231,Pretty happy,2,Working parttime,40,Never married,Ballot b
+1234,Very happy,3,Working fulltime,35,Married,Ballot c
+1235,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1236,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1237,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1238,Not too happy,1,Working fulltime,40,Never married,Ballot b
+1239,Pretty happy,2,Working parttime,15,Married,Ballot a
+1240,Very happy,3,Working fulltime,40,Married,Ballot a
+1242,Pretty happy,2,Working fulltime,10,Never married,Ballot b
+1243,Very happy,3,Working fulltime,50,Never married,Ballot c
+1244,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1245,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1246,Pretty happy,2,Working fulltime,32,Married,Ballot c
+1247,Very happy,3,Working parttime,21,Never married,Ballot b
+1248,Very happy,3,Working fulltime,60,Married,Ballot c
+1249,Very happy,3,Working fulltime,55,Married,Ballot c
+1250,Pretty happy,2,Working fulltime,45,Married,Ballot b
+1251,Pretty happy,2,Working fulltime,45,Married,Ballot b
+1253,Pretty happy,2,Working parttime,12,Never married,Ballot b
+1254,Very happy,3,Working fulltime,57,Married,Ballot c
+1255,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1256,Pretty happy,2,Working fulltime,39,Married,Ballot b
+1258,Very happy,3,Working fulltime,55,Married,Ballot b
+1259,Pretty happy,2,Working fulltime,70,Married,Ballot a
+1262,Very happy,3,Working fulltime,40,Separated,Ballot c
+1263,Not too happy,1,Working fulltime,40,Divorced,Ballot b
+1264,Not too happy,1,Working parttime,16,Widowed,Ballot c
+1265,Pretty happy,2,Working fulltime,35,Married,Ballot a
+1268,Not too happy,1,Working fulltime,40,Never married,Ballot c
+1269,Pretty happy,2,Working fulltime,56,Divorced,Ballot b
+1270,Not too happy,1,Working fulltime,70,Divorced,Ballot c
+1273,Pretty happy,2,Working fulltime,70,Divorced,Ballot c
+1276,Not too happy,1,Working fulltime,40,Married,Ballot c
+1279,Pretty happy,2,Working parttime,25,Married,Ballot b
+1281,Pretty happy,2,Working fulltime,54,Married,Ballot c
+1282,Pretty happy,2,Working fulltime,48,Separated,Ballot b
+1284,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+1285,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1287,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1289,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+1291,Pretty happy,2,Working fulltime,20,Never married,Ballot b
+1292,Pretty happy,2,Working fulltime,60,Married,Ballot a
+1294,Not too happy,1,Working parttime,30,Never married,Ballot a
+1296,Pretty happy,2,Working parttime,25,Never married,Ballot b
+1297,Pretty happy,2,Working fulltime,54,Never married,Ballot a
+1298,Not too happy,1,Working fulltime,40,Married,Ballot b
+1299,Pretty happy,2,Working fulltime,36,Married,Ballot b
+1301,Not too happy,1,Working parttime,25,Divorced,Ballot c
+1302,Pretty happy,2,Working parttime,25,Never married,Ballot b
+1303,Pretty happy,2,Working parttime,18,Married,Ballot c
+1306,Very happy,3,Working fulltime,40,Divorced,Ballot c
+1307,Pretty happy,2,Working parttime,9,Never married,Ballot a
+1309,Very happy,3,Working parttime,25,Widowed,Ballot b
+1310,Very happy,3,Working parttime,28,Married,Ballot a
+1311,Pretty happy,2,Working fulltime,36,Never married,Ballot c
+1312,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+1313,Very happy,3,Working fulltime,30,Separated,Ballot b
+1314,Pretty happy,2,Working parttime,18,Married,Ballot a
+1316,Very happy,3,Working fulltime,42,Never married,Ballot c
+1322,Very happy,3,Working fulltime,40,Married,Ballot a
+1323,Very happy,3,Working fulltime,50,Married,Ballot c
+1324,Very happy,3,Working fulltime,40,Married,Ballot a
+1327,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1328,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1329,Pretty happy,2,Working fulltime,40,Separated,Ballot a
+1331,Very happy,3,Working fulltime,40,Married,Ballot b
+1332,Very happy,3,Working fulltime,50,Separated,Ballot c
+1333,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1334,Not too happy,1,Working fulltime,10,Divorced,Ballot c
+1338,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1340,Pretty happy,2,Working parttime,35,Never married,Ballot b
+1341,Pretty happy,2,Working fulltime,50,Married,Ballot a
+1342,Very happy,3,Working parttime,30,Married,Ballot c
+1344,Not too happy,1,Working fulltime,50,Widowed,Ballot a
+1345,Pretty happy,2,Working fulltime,41,Divorced,Ballot b
+1346,Pretty happy,2,Working fulltime,42,Married,Ballot a
+1349,Very happy,3,Working fulltime,40,Married,Ballot c
+1350,Not too happy,1,Working fulltime,40,Divorced,Ballot c
+1354,Pretty happy,2,Working fulltime,48,Divorced,Ballot b
+1355,Pretty happy,2,Working fulltime,62,Married,Ballot c
+1356,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+1362,Pretty happy,2,Working fulltime,50,Married,Ballot a
+1363,Very happy,3,Working fulltime,55,Divorced,Ballot b
+1364,Very happy,3,Working fulltime,40,Married,Ballot a
+1371,Pretty happy,2,Working fulltime,45,Divorced,Ballot a
+1372,Not too happy,1,Working fulltime,84,Married,Ballot b
+1373,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+1377,Very happy,3,Working fulltime,40,Never married,Ballot c
+1378,Pretty happy,2,Working parttime,15,Never married,Ballot b
+1379,Pretty happy,2,Working parttime,30,Separated,Ballot c
+1380,Very happy,3,Working fulltime,40,Never married,Ballot b
+1381,Pretty happy,2,Working parttime,15,Never married,Ballot a
+1384,Pretty happy,2,Working parttime,25,Never married,Ballot a
+1385,Very happy,3,Working fulltime,70,Married,Ballot c
+1386,Very happy,3,Working parttime,8,Never married,Ballot b
+1387,Pretty happy,2,Working fulltime,24,Divorced,Ballot b
+1388,Pretty happy,2,Working fulltime,50,Married,Ballot a
+1389,Very happy,3,Working fulltime,65,Married,Ballot c
+1390,Not too happy,1,Working fulltime,70,Never married,Ballot b
+1391,Pretty happy,2,Working fulltime,48,Married,Ballot c
+1397,Very happy,3,Working parttime,20,Married,Ballot a
+1398,Not too happy,1,Working parttime,20,Never married,Ballot c
+1399,Not too happy,1,Working parttime,16,Never married,Ballot b
+1401,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1402,Not too happy,1,Working parttime,20,Never married,Ballot c
+1403,Very happy,3,Working fulltime,50,Divorced,Ballot a
+1405,Pretty happy,2,Working fulltime,60,Never married,Ballot a
+1406,Pretty happy,2,Working fulltime,86,Married,Ballot c
+1408,Not too happy,1,Working fulltime,35,Never married,Ballot b
+1409,Very happy,3,Working fulltime,36,Married,Ballot c
+1410,Very happy,3,Working fulltime,52,Married,Ballot a
+1415,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+1419,Pretty happy,2,Working fulltime,45,Married,Ballot b
+1421,Very happy,3,Working fulltime,40,Married,Ballot b
+1424,Pretty happy,2,Working fulltime,36,Married,Ballot c
+1425,Very happy,3,Working fulltime,55,Married,Ballot b
+1426,Pretty happy,2,Working fulltime,24,Divorced,Ballot a
+1429,Pretty happy,2,Working parttime,20,Divorced,Ballot a
+1430,Pretty happy,2,Working fulltime,35,Married,Ballot b
+1431,Pretty happy,2,Working fulltime,48,Divorced,Ballot b
+1432,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1433,Pretty happy,2,Working fulltime,38,Married,Ballot c
+1434,Not too happy,1,Working fulltime,40,Widowed,Ballot a
+1435,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1436,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1437,Pretty happy,2,Working fulltime,48,Married,Ballot c
+1439,Very happy,3,Working fulltime,32,Married,Ballot b
+1440,Pretty happy,2,Working fulltime,60,Married,Ballot b
+1443,Very happy,3,Working fulltime,40,Never married,Ballot a
+1444,Pretty happy,2,Working fulltime,32,Never married,Ballot c
+1446,Pretty happy,2,Working fulltime,60,Never married,Ballot a
+1447,Pretty happy,2,Working parttime,20,Married,Ballot c
+1451,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1453,Pretty happy,2,Working fulltime,50,Married,Ballot c
+1454,Very happy,3,Working fulltime,55,Married,Ballot b
+1455,Pretty happy,2,Working fulltime,56,Never married,Ballot a
+1457,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1459,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1460,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1461,Very happy,3,Working fulltime,32,Divorced,Ballot a
+1462,Pretty happy,2,Working fulltime,44,Never married,Ballot b
+1463,Pretty happy,2,Working parttime,23,Never married,Ballot c
+1464,Not too happy,1,Working fulltime,27,Never married,Ballot b
+1465,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1469,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1470,Pretty happy,2,Working parttime,26,Married,Ballot a
+1471,Pretty happy,2,Working fulltime,46,Divorced,Ballot a
+1476,Pretty happy,2,Working parttime,30,Married,Ballot a
+1478,Very happy,3,Working fulltime,60,Married,Ballot c
+1480,Pretty happy,2,Working fulltime,55,Married,Ballot b
+1481,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1482,Pretty happy,2,Working fulltime,80,Married,Ballot b
+1483,Very happy,3,Working fulltime,42,Married,Ballot a
+1484,Pretty happy,2,Working parttime,35,Married,Ballot c
+1485,Pretty happy,2,Working parttime,7,Never married,Ballot b
+1486,Not too happy,1,Working fulltime,53,Divorced,Ballot c
+1487,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1489,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1490,Very happy,3,Working fulltime,40,Married,Ballot c
+1491,Very happy,3,Working fulltime,27,Never married,Ballot b
+1493,Not too happy,1,Working fulltime,55,Never married,Ballot a
+1494,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1495,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+1496,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1497,Not too happy,1,Working fulltime,38,Divorced,Ballot c
+1499,Pretty happy,2,Working fulltime,53,Never married,Ballot a
+1500,Very happy,3,Working fulltime,60,Never married,Ballot c
+1501,Very happy,3,Working fulltime,45,Divorced,Ballot b
+1502,Very happy,3,Working fulltime,50,Never married,Ballot c
+1503,Pretty happy,2,Working fulltime,55,Married,Ballot a
+1504,Very happy,3,Working fulltime,40,Never married,Ballot b
+1505,Pretty happy,2,Working parttime,32,Married,Ballot a
+1506,Pretty happy,2,Working fulltime,56,Never married,Ballot c
+1508,Pretty happy,2,Working parttime,25,Never married,Ballot c
+1510,Very happy,3,Working fulltime,60,Divorced,Ballot c
+1512,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1513,Pretty happy,2,Working fulltime,50,Divorced,Ballot c
+1516,Very happy,3,Working parttime,32,Never married,Ballot a
+1519,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1523,Pretty happy,2,Working fulltime,60,Married,Ballot a
+1530,Very happy,3,Working fulltime,60,Never married,Ballot c
+1531,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1533,Pretty happy,2,Working fulltime,43,Divorced,Ballot b
+1536,Pretty happy,2,Working fulltime,35,Never married,Ballot a
+1537,Not too happy,1,Working fulltime,35,Never married,Ballot c
+1538,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+1541,Not too happy,1,Working fulltime,38,Divorced,Ballot b
+1542,Very happy,3,Working parttime,27,Widowed,Ballot c
+1545,Not too happy,1,Working parttime,89,Never married,Ballot b
+1547,Pretty happy,2,Working parttime,20,Divorced,Ballot c
+1548,Not too happy,1,Working parttime,4,Separated,Ballot b
+1549,Very happy,3,Working fulltime,39,Married,Ballot c
+1552,Pretty happy,2,Working fulltime,89,Married,Ballot b
+1553,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+1554,Not too happy,1,Working fulltime,34,Never married,Ballot c
+1555,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1556,Pretty happy,2,Working fulltime,48,Never married,Ballot a
+1557,Not too happy,1,Working parttime,17,Divorced,Ballot c
+1560,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+1562,Not too happy,1,Working parttime,16,Widowed,Ballot a
+1565,Pretty happy,2,Working fulltime,54,Married,Ballot a
+1568,Pretty happy,2,Working fulltime,40,Widowed,Ballot c
+1570,Pretty happy,2,Working parttime,15,Widowed,Ballot c
+1571,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1572,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1573,Very happy,3,Working fulltime,40,Married,Ballot c
+1574,Very happy,3,Working fulltime,48,Divorced,Ballot c
+1575,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+1581,Pretty happy,2,Working fulltime,68,Separated,Ballot a
+1583,Pretty happy,2,Working fulltime,37,Never married,Ballot c
+1585,Pretty happy,2,Working fulltime,85,Never married,Ballot a
+1587,Not too happy,1,Working fulltime,40,Married,Ballot c
+1588,Pretty happy,2,Working parttime,18,Never married,Ballot c
+1589,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+1590,Very happy,3,Working fulltime,25,Married,Ballot a
+1594,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1595,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1596,Pretty happy,2,Working fulltime,48,Married,Ballot c
+1599,Pretty happy,2,Working fulltime,50,Divorced,Ballot c
+1600,Very happy,3,Working fulltime,40,Married,Ballot a
+1602,Pretty happy,2,Working fulltime,32,Married,Ballot b
+1603,Very happy,3,Working fulltime,40,Divorced,Ballot c
+1605,Pretty happy,2,Working parttime,32,Never married,Ballot c
+1607,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+1611,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+1612,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+1613,Very happy,3,Working fulltime,62,Never married,Ballot a
+1614,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1615,Pretty happy,2,Working parttime,16,Divorced,Ballot c
+1617,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1618,Very happy,3,Working fulltime,35,Divorced,Ballot b
+1620,Pretty happy,2,Working parttime,40,Married,Ballot c
+1621,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1622,Very happy,3,Working fulltime,60,Widowed,Ballot c
+1625,Pretty happy,2,Working parttime,20,Divorced,Ballot c
+1628,Very happy,3,Working parttime,20,Never married,Ballot b
+1630,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1632,Not too happy,1,Working fulltime,80,Divorced,Ballot c
+1635,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+1637,Pretty happy,2,Working fulltime,47,Divorced,Ballot b
+1640,Pretty happy,2,Working fulltime,56,Married,Ballot b
+1642,Very happy,3,Working fulltime,40,Married,Ballot b
+1644,Very happy,3,Working fulltime,43,Never married,Ballot a
+1645,Pretty happy,2,Working parttime,30,Married,Ballot b
+1651,Very happy,3,Working parttime,20,Married,Ballot c
+1654,Pretty happy,2,Working parttime,20,Married,Ballot a
+1655,Very happy,3,Working fulltime,54,Divorced,Ballot c
+1657,Very happy,3,Working fulltime,33,Married,Ballot a
+1658,Not too happy,1,Working fulltime,40,Never married,Ballot c
+1662,Pretty happy,2,Working parttime,30,Married,Ballot a
+1663,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1664,Very happy,3,Working fulltime,40,Never married,Ballot c
+1665,Pretty happy,2,Working fulltime,48,Married,Ballot b
+1666,Very happy,3,Working fulltime,73,Never married,Ballot c
+1669,Very happy,3,Working fulltime,70,Married,Ballot c
+1670,Pretty happy,2,Working parttime,30,Never married,Ballot b
+1671,Not too happy,1,Working fulltime,32,Never married,Ballot c
+1672,Pretty happy,2,Working parttime,3,Divorced,Ballot b
+1675,Pretty happy,2,Working fulltime,50,Divorced,Ballot a
+1676,Not too happy,1,Working fulltime,43,Separated,Ballot c
+1677,Pretty happy,2,Working fulltime,42,Divorced,Ballot b
+1678,Pretty happy,2,Working fulltime,60,Never married,Ballot c
+1679,Very happy,3,Working fulltime,40,Married,Ballot a
+1682,Not too happy,1,Working parttime,20,Never married,Ballot a
+1685,Pretty happy,2,Working fulltime,52,Separated,Ballot b
+1686,Very happy,3,Working parttime,18,Divorced,Ballot a
+1687,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1688,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+1690,Not too happy,1,Working parttime,40,Never married,Ballot c
+1691,Pretty happy,2,Working fulltime,46,Never married,Ballot a
+1692,Pretty happy,2,Working fulltime,47,Divorced,Ballot a
+1696,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+1699,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1700,Very happy,3,Working fulltime,40,Married,Ballot c
+1703,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+1706,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1710,Very happy,3,Working fulltime,40,Married,Ballot a
+1714,Very happy,3,Working fulltime,56,Never married,Ballot b
+1715,Very happy,3,Working fulltime,40,Married,Ballot c
+1716,Pretty happy,2,Working fulltime,36,Divorced,Ballot b
+1718,Pretty happy,2,Working fulltime,24,Never married,Ballot c
+1721,Not too happy,1,Working fulltime,39,Never married,Ballot c
+1723,Pretty happy,2,Working fulltime,40,Separated,Ballot b
+1725,Pretty happy,2,Working parttime,17,Never married,Ballot b
+1726,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1730,Very happy,3,Working fulltime,35,Married,Ballot c
+1732,Not too happy,1,Working parttime,8,Widowed,Ballot c
+1735,Not too happy,1,Working fulltime,40,Married,Ballot b
+1737,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1738,Pretty happy,2,Working fulltime,25,Never married,Ballot b
+1740,Very happy,3,Working fulltime,40,Married,Ballot b
+1745,Pretty happy,2,Working fulltime,44,Married,Ballot b
+1746,Very happy,3,Working fulltime,60,Never married,Ballot a
+1748,Pretty happy,2,Working fulltime,55,Never married,Ballot b
+1749,Pretty happy,2,Working fulltime,65,Never married,Ballot c
+1752,Not too happy,1,Working fulltime,40,Separated,Ballot c
+1753,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1755,Pretty happy,2,Working fulltime,50,Divorced,Ballot c
+1757,Very happy,3,Working fulltime,50,Divorced,Ballot a
+1758,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1764,Very happy,3,Working fulltime,45,Married,Ballot c
+1766,Pretty happy,2,Working fulltime,60,Married,Ballot c
+1768,Not too happy,1,Working fulltime,40,Divorced,Ballot c
+1772,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+1773,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1774,Pretty happy,2,Working fulltime,55,Never married,Ballot a
+1775,Very happy,3,Working fulltime,50,Never married,Ballot b
+1776,Pretty happy,2,Working fulltime,41,Never married,Ballot a
+1777,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1779,Not too happy,1,Working parttime,20,Divorced,Ballot a
+1780,Not too happy,1,Working parttime,20,Divorced,Ballot c
+1781,Pretty happy,2,Working fulltime,65,Never married,Ballot c
+1786,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1787,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1792,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+1798,Very happy,3,Working fulltime,47,Never married,Ballot a
+1799,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+1801,Very happy,3,Working fulltime,40,Married,Ballot a
+1802,Very happy,3,Working fulltime,46,Married,Ballot b
+1804,Pretty happy,2,Working parttime,10,Married,Ballot c
+1807,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1808,Very happy,3,Working fulltime,40,Married,Ballot b
+1810,Very happy,3,Working fulltime,36,Divorced,Ballot a
+1812,Not too happy,1,Working fulltime,45,Divorced,Ballot c
+1813,Pretty happy,2,Working parttime,4,Divorced,Ballot c
+1814,Pretty happy,2,Working fulltime,47,Married,Ballot b
+1816,Pretty happy,2,Working fulltime,30,Married,Ballot b
+1822,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1825,Very happy,3,Working fulltime,40,Never married,Ballot c
+1826,Pretty happy,2,Working fulltime,36,Never married,Ballot b
+1827,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1829,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+1830,Very happy,3,Working fulltime,50,Divorced,Ballot c
+1835,Not too happy,1,Working fulltime,40,Married,Ballot a
+1837,Pretty happy,2,Working fulltime,40,Separated,Ballot b
+1838,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1839,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1840,Pretty happy,2,Working parttime,25,Married,Ballot a
+1843,Very happy,3,Working fulltime,40,Married,Ballot a
+1844,Very happy,3,Working parttime,65,Married,Ballot c
+1846,Very happy,3,Working fulltime,40,Married,Ballot a
+1847,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+1848,Very happy,3,Working fulltime,40,Married,Ballot b
+1850,Pretty happy,2,Working fulltime,30,Never married,Ballot c
+1852,Pretty happy,2,Working fulltime,33,Married,Ballot b
+1854,Not too happy,1,Working fulltime,50,Divorced,Ballot a
+1855,Pretty happy,2,Working fulltime,41,Never married,Ballot b
+1858,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1859,Pretty happy,2,Working parttime,2,Widowed,Ballot c
+1860,Pretty happy,2,Working parttime,20,Widowed,Ballot a
+1861,Very happy,3,Working fulltime,48,Never married,Ballot c
+1862,Pretty happy,2,Working parttime,25,Widowed,Ballot b
+1873,Not too happy,1,Working fulltime,40,Married,Ballot a
+1878,Very happy,3,Working fulltime,45,Married,Ballot c
+1880,Pretty happy,2,Working fulltime,50,Married,Ballot a
+1885,Pretty happy,2,Working fulltime,50,Married,Ballot b
+1889,Very happy,3,Working fulltime,40,Married,Ballot b
+1893,Pretty happy,2,Working fulltime,89,Married,Ballot a
+1894,Pretty happy,2,Working fulltime,60,Never married,Ballot b
+1896,Pretty happy,2,Working parttime,24,Widowed,Ballot c
+1898,Pretty happy,2,Working parttime,40,Never married,Ballot a
+1899,Pretty happy,2,Working fulltime,45,Married,Ballot c
+1900,Pretty happy,2,Working fulltime,45,Married,Ballot b
+1901,Not too happy,1,Working fulltime,65,Divorced,Ballot a
+1902,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+1904,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1906,Pretty happy,2,Working fulltime,40,Married,Ballot a
+1907,Pretty happy,2,Working fulltime,40,Widowed,Ballot b
+1910,Pretty happy,2,Working fulltime,18,Never married,Ballot b
+1913,Very happy,3,Working fulltime,46,Married,Ballot a
+1916,Pretty happy,2,Working fulltime,50,Separated,Ballot c
+1917,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+1919,Very happy,3,Working fulltime,40,Married,Ballot b
+1922,Pretty happy,2,Working parttime,35,Divorced,Ballot a
+1928,Pretty happy,2,Working fulltime,32,Divorced,Ballot a
+1929,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1932,Pretty happy,2,Working parttime,25,Never married,Ballot a
+1934,Pretty happy,2,Working fulltime,55,Married,Ballot b
+1937,Very happy,3,Working fulltime,40,Separated,Ballot a
+1938,Very happy,3,Working fulltime,40,Married,Ballot c
+1939,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+1942,Pretty happy,2,Working parttime,16,Never married,Ballot b
+1943,Pretty happy,2,Working fulltime,45,Never married,Ballot a
+1945,Not too happy,1,Working fulltime,40,Never married,Ballot c
+1948,Pretty happy,2,Working fulltime,48,Never married,Ballot c
+1949,Very happy,3,Working fulltime,40,Divorced,Ballot a
+1951,Pretty happy,2,Working fulltime,56,Married,Ballot c
+1952,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1954,Pretty happy,2,Working fulltime,45,Separated,Ballot b
+1955,Pretty happy,2,Working fulltime,45,Never married,Ballot c
+1956,Very happy,3,Working fulltime,38,Married,Ballot b
+1960,Not too happy,1,Working fulltime,40,Widowed,Ballot b
+1964,Pretty happy,2,Working fulltime,53,Never married,Ballot a
+1965,Pretty happy,2,Working fulltime,65,Married,Ballot a
+1967,Very happy,3,Working fulltime,50,Divorced,Ballot b
+1968,Very happy,3,Working fulltime,50,Married,Ballot c
+1971,Pretty happy,2,Working fulltime,45,Married,Ballot b
+1972,Very happy,3,Working parttime,20,Married,Ballot a
+1973,Pretty happy,2,Working parttime,33,Widowed,Ballot c
+1974,Pretty happy,2,Working fulltime,32,Divorced,Ballot b
+1975,Pretty happy,2,Working fulltime,62,Married,Ballot c
+1979,Very happy,3,Working fulltime,40,Divorced,Ballot c
+1982,Not too happy,1,Working fulltime,40,Divorced,Ballot b
+1984,Not too happy,1,Working fulltime,50,Married,Ballot a
+1985,Pretty happy,2,Working fulltime,40,Married,Ballot c
+1989,Not too happy,1,Working fulltime,50,Married,Ballot b
+1991,Pretty happy,2,Working fulltime,32,Married,Ballot c
+1998,Pretty happy,2,Working fulltime,40,Married,Ballot b
+1999,Not too happy,1,Working fulltime,40,Divorced,Ballot c
+2000,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2002,Pretty happy,2,Working fulltime,54,Never married,Ballot c
+2004,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2007,Very happy,3,Working parttime,29,Married,Ballot c
+2008,Pretty happy,2,Working fulltime,60,Married,Ballot a
+2009,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2010,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+2011,Pretty happy,2,Working parttime,4,Married,Ballot a
+2012,Very happy,3,Working fulltime,60,Never married,Ballot b
+2015,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2016,Very happy,3,Working fulltime,40,Married,Ballot a
+2019,Pretty happy,2,Working fulltime,37,Married,Ballot b
+2030,Pretty happy,2,Working fulltime,41,Married,Ballot b
+2032,Pretty happy,2,Working fulltime,42,Married,Ballot a
+2033,Very happy,3,Working parttime,30,Married,Ballot c
+2035,Pretty happy,2,Working parttime,24,Never married,Ballot a
+2036,Pretty happy,2,Working parttime,20,Never married,Ballot b
+2038,Not too happy,1,Working fulltime,42,Never married,Ballot a
+2039,Very happy,3,Working fulltime,40,Married,Ballot a
+2042,Very happy,3,Working parttime,22,Married,Ballot c
+2043,Not too happy,1,Working parttime,28,Never married,Ballot b
+2044,Very happy,3,Working fulltime,32,Married,Ballot a
+2045,Pretty happy,2,Working parttime,36,Never married,Ballot c
+2046,Very happy,3,Working fulltime,40,Divorced,Ballot c
+2047,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2051,Pretty happy,2,Working fulltime,50,Married,Ballot c
+2055,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+2056,Not too happy,1,Working fulltime,45,Married,Ballot a
+2057,Very happy,3,Working parttime,19,Never married,Ballot b
+2058,Not too happy,1,Working parttime,35,Never married,Ballot c
+2059,Very happy,3,Working parttime,22,Married,Ballot a
+2060,Very happy,3,Working fulltime,40,Widowed,Ballot c
+2062,Very happy,3,Working parttime,20,Married,Ballot a
+2063,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2066,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2068,Pretty happy,2,Working fulltime,43,Divorced,Ballot b
+2072,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2073,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2075,Pretty happy,2,Working fulltime,60,Married,Ballot c
+2077,Very happy,3,Working fulltime,54,Never married,Ballot a
+2078,Not too happy,1,Working fulltime,40,Never married,Ballot c
+2079,Pretty happy,2,Working parttime,30,Married,Ballot a
+2080,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2082,Pretty happy,2,Working fulltime,36,Married,Ballot c
+2084,Pretty happy,2,Working fulltime,72,Divorced,Ballot a
+2085,Pretty happy,2,Working parttime,22,Married,Ballot c
+2086,Not too happy,1,Working parttime,30,Never married,Ballot b
+2087,Very happy,3,Working fulltime,40,Married,Ballot c
+2088,Pretty happy,2,Working fulltime,60,Married,Ballot a
+2089,Very happy,3,Working fulltime,70,Married,Ballot c
+2093,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+2097,Pretty happy,2,Working fulltime,36,Divorced,Ballot c
+2099,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2100,Pretty happy,2,Working parttime,10,Married,Ballot a
+2101,Pretty happy,2,Working parttime,25,Married,Ballot c
+2105,Pretty happy,2,Working fulltime,41,Married,Ballot a
+2107,Very happy,3,Working fulltime,40,Married,Ballot a
+2108,Very happy,3,Working parttime,25,Divorced,Ballot a
+2110,Pretty happy,2,Working parttime,6,Never married,Ballot a
+2113,Pretty happy,2,Working fulltime,14,Separated,Ballot b
+2114,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2115,Pretty happy,2,Working parttime,31,Never married,Ballot b
+2116,Not too happy,1,Working parttime,19,Never married,Ballot c
+2118,Pretty happy,2,Working fulltime,50,Divorced,Ballot a
+2121,Very happy,3,Working fulltime,63,Divorced,Ballot b
+2122,Not too happy,1,Working fulltime,60,Never married,Ballot b
+2125,Very happy,3,Working fulltime,60,Divorced,Ballot a
+2126,Very happy,3,Working parttime,32,Never married,Ballot c
+2128,Pretty happy,2,Working fulltime,50,Married,Ballot a
+2129,Pretty happy,2,Working fulltime,60,Married,Ballot b
+2130,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2133,Very happy,3,Working fulltime,42,Married,Ballot c
+2134,Very happy,3,Working fulltime,44,Married,Ballot b
+2135,Very happy,3,Working fulltime,45,Married,Ballot a
+2136,Pretty happy,2,Working fulltime,42,Married,Ballot c
+2137,Very happy,3,Working parttime,5,Married,Ballot b
+2138,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2139,Very happy,3,Working fulltime,40,Married,Ballot c
+2142,Pretty happy,2,Working fulltime,42,Married,Ballot b
+2143,Pretty happy,2,Working fulltime,45,Married,Ballot b
+2144,Pretty happy,2,Working fulltime,53,Married,Ballot a
+2146,Pretty happy,2,Working parttime,28,Divorced,Ballot b
+2148,Not too happy,1,Working fulltime,40,Divorced,Ballot b
+2149,Very happy,3,Working parttime,12,Married,Ballot a
+2152,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+2154,Pretty happy,2,Working fulltime,70,Never married,Ballot a
+2156,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2157,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2158,Not too happy,1,Working fulltime,40,Never married,Ballot c
+2159,Very happy,3,Working fulltime,40,Widowed,Ballot b
+2160,Pretty happy,2,Working fulltime,52,Divorced,Ballot c
+2161,Very happy,3,Working fulltime,42,Never married,Ballot b
+2162,Very happy,3,Working fulltime,45,Married,Ballot a
+2164,Pretty happy,2,Working fulltime,25,Never married,Ballot c
+2166,Not too happy,1,Working fulltime,40,Never married,Ballot b
+2167,Not too happy,1,Working parttime,35,Married,Ballot c
+2168,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2169,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2170,Very happy,3,Working parttime,28,Married,Ballot b
+2171,Very happy,3,Working fulltime,40,Married,Ballot c
+2174,Pretty happy,2,Working parttime,4,Divorced,Ballot a
+2175,Not too happy,1,Working fulltime,45,Married,Ballot c
+2176,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2177,Pretty happy,2,Working fulltime,30,Never married,Ballot b
+2179,Pretty happy,2,Working fulltime,56,Never married,Ballot c
+2180,Very happy,3,Working fulltime,45,Never married,Ballot c
+2181,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2184,Pretty happy,2,Working fulltime,70,Divorced,Ballot a
+2186,Pretty happy,2,Working fulltime,29,Never married,Ballot b
+2187,Pretty happy,2,Working fulltime,56,Married,Ballot a
+2188,Pretty happy,2,Working parttime,20,Married,Ballot b
+2189,Pretty happy,2,Working fulltime,45,Married,Ballot c
+2190,Pretty happy,2,Working fulltime,8,Married,Ballot b
+2191,Pretty happy,2,Working fulltime,50,Married,Ballot c
+2192,Very happy,3,Working fulltime,46,Never married,Ballot a
+2193,Very happy,3,Working fulltime,45,Married,Ballot c
+2194,Very happy,3,Working fulltime,40,Married,Ballot b
+2196,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+2197,Not too happy,1,Working fulltime,42,Divorced,Ballot a
+2199,Not too happy,1,Working fulltime,40,Married,Ballot b
+2200,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2202,Very happy,3,Working parttime,15,Married,Ballot b
+2205,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2207,Very happy,3,Working fulltime,40,Never married,Ballot b
+2212,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2214,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2218,Pretty happy,2,Working fulltime,37,Separated,Ballot a
+2221,Pretty happy,2,Working parttime,28,Divorced,Ballot c
+2222,Pretty happy,2,Working fulltime,50,Married,Ballot a
+2224,Pretty happy,2,Working parttime,15,Never married,Ballot b
+2229,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2231,Pretty happy,2,Working fulltime,45,Married,Ballot b
+2232,Pretty happy,2,Working fulltime,43,Never married,Ballot b
+2234,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2237,Pretty happy,2,Working parttime,34,Never married,Ballot b
+2238,Not too happy,1,Working parttime,26,Never married,Ballot c
+2239,Not too happy,1,Working fulltime,60,Never married,Ballot b
+2240,Very happy,3,Working fulltime,40,Married,Ballot c
+2241,Pretty happy,2,Working fulltime,47,Married,Ballot b
+2243,Very happy,3,Working fulltime,50,Married,Ballot c
+2245,Pretty happy,2,Working parttime,30,Never married,Ballot a
+2246,Pretty happy,2,Working parttime,30,Never married,Ballot b
+2247,Very happy,3,Working fulltime,32,Divorced,Ballot c
+2248,Pretty happy,2,Working parttime,20,Married,Ballot b
+2251,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+2255,Very happy,3,Working fulltime,30,Never married,Ballot b
+2258,Pretty happy,2,Working parttime,12,Divorced,Ballot a
+2259,Very happy,3,Working fulltime,40,Married,Ballot c
+2263,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2264,Not too happy,1,Working fulltime,89,Separated,Ballot c
+2265,Very happy,3,Working fulltime,70,Married,Ballot a
+2268,Very happy,3,Working fulltime,40,Married,Ballot a
+2272,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2274,Pretty happy,2,Working fulltime,48,Married,Ballot a
+2275,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2276,Pretty happy,2,Working fulltime,40,Separated,Ballot b
+2277,Pretty happy,2,Working fulltime,50,Divorced,Ballot a
+2278,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2280,Not too happy,1,Working fulltime,38,Widowed,Ballot c
+2281,Pretty happy,2,Working fulltime,46,Separated,Ballot a
+2282,Not too happy,1,Working parttime,30,Widowed,Ballot b
+2284,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2287,Pretty happy,2,Working parttime,25,Married,Ballot a
+2288,Pretty happy,2,Working parttime,34,Never married,Ballot c
+2290,Pretty happy,2,Working fulltime,80,Married,Ballot c
+2292,Very happy,3,Working fulltime,70,Never married,Ballot c
+2293,Not too happy,1,Working fulltime,48,Divorced,Ballot c
+2295,Very happy,3,Working fulltime,38,Never married,Ballot c
+2296,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2301,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2303,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2305,Very happy,3,Working fulltime,40,Married,Ballot c
+2306,Pretty happy,2,Working fulltime,47,Never married,Ballot b
+2307,Very happy,3,Working fulltime,40,Married,Ballot a
+2308,Pretty happy,2,Working fulltime,38,Never married,Ballot a
+2309,Not too happy,1,Working parttime,8,Married,Ballot c
+2310,Very happy,3,Working fulltime,37,Married,Ballot c
+2317,Very happy,3,Working fulltime,41,Married,Ballot a
+2318,Very happy,3,Working fulltime,40,Never married,Ballot c
+2319,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+2321,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2322,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2323,Very happy,3,Working fulltime,50,Married,Ballot a
+2324,Pretty happy,2,Working fulltime,36,Never married,Ballot a
+2326,Pretty happy,2,Working fulltime,78,Never married,Ballot a
+2333,Pretty happy,2,Working fulltime,32,Widowed,Ballot a
+2334,Not too happy,1,Working fulltime,70,Never married,Ballot c
+2336,Pretty happy,2,Working parttime,24,Married,Ballot b
+2337,Very happy,3,Working fulltime,55,Married,Ballot a
+2339,Not too happy,1,Working parttime,5,Never married,Ballot a
+2340,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+2341,Pretty happy,2,Working fulltime,32,Divorced,Ballot a
+2344,Pretty happy,2,Working fulltime,43,Separated,Ballot a
+2345,Very happy,3,Working fulltime,50,Divorced,Ballot c
+2346,Pretty happy,2,Working fulltime,30,Never married,Ballot b
+2348,Very happy,3,Working fulltime,68,Married,Ballot b
+2349,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2350,Pretty happy,2,Working parttime,8,Married,Ballot b
+2352,Pretty happy,2,Working fulltime,50,Divorced,Ballot b
+2353,Very happy,3,Working parttime,32,Married,Ballot c
+2354,Pretty happy,2,Working fulltime,45,Divorced,Ballot b
+2356,Very happy,3,Working parttime,20,Married,Ballot c
+2358,Pretty happy,2,Working fulltime,35,Divorced,Ballot b
+2360,Pretty happy,2,Working fulltime,65,Divorced,Ballot c
+2361,Very happy,3,Working fulltime,40,Divorced,Ballot c
+2362,Very happy,3,Working fulltime,45,Married,Ballot b
+2363,Pretty happy,2,Working parttime,20,Never married,Ballot b
+2364,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2368,Very happy,3,Working fulltime,40,Married,Ballot a
+2371,Pretty happy,2,Working parttime,30,Never married,Ballot c
+2373,Pretty happy,2,Working fulltime,60,Married,Ballot a
+2376,Very happy,3,Working fulltime,44,Married,Ballot c
+2378,Pretty happy,2,Working parttime,33,Never married,Ballot b
+2379,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2380,Pretty happy,2,Working fulltime,50,Widowed,Ballot b
+2382,Pretty happy,2,Working parttime,10,Divorced,Ballot c
+2385,Very happy,3,Working fulltime,65,Married,Ballot c
+2386,Pretty happy,2,Working fulltime,55,Married,Ballot a
+2389,Pretty happy,2,Working parttime,30,Married,Ballot c
+2390,Pretty happy,2,Working parttime,20,Never married,Ballot a
+2391,Very happy,3,Working fulltime,40,Married,Ballot c
+2393,Pretty happy,2,Working fulltime,38,Married,Ballot b
+2394,Very happy,3,Working fulltime,47,Married,Ballot a
+2397,Very happy,3,Working fulltime,48,Never married,Ballot a
+2398,Not too happy,1,Working fulltime,40,Married,Ballot b
+2399,Very happy,3,Working parttime,38,Never married,Ballot a
+2404,Very happy,3,Working fulltime,25,Married,Ballot c
+2405,Very happy,3,Working fulltime,40,Married,Ballot b
+2406,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2407,Pretty happy,2,Working parttime,12,Never married,Ballot c
+2410,Very happy,3,Working parttime,26,Never married,Ballot a
+2414,Not too happy,1,Working fulltime,60,Divorced,Ballot b
+2415,Very happy,3,Working fulltime,20,Divorced,Ballot a
+2417,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2419,Pretty happy,2,Working fulltime,35,Separated,Ballot b
+2421,Pretty happy,2,Working fulltime,34,Married,Ballot a
+2422,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2423,Not too happy,1,Working parttime,12,Separated,Ballot c
+2425,Pretty happy,2,Working fulltime,42,Widowed,Ballot a
+2426,Very happy,3,Working fulltime,64,Married,Ballot c
+2427,Pretty happy,2,Working fulltime,60,Divorced,Ballot c
+2430,Pretty happy,2,Working fulltime,39,Widowed,Ballot c
+2431,Very happy,3,Working fulltime,50,Never married,Ballot b
+2438,Very happy,3,Working parttime,30,Never married,Ballot a
+2440,Pretty happy,2,Working fulltime,55,Married,Ballot a
+2441,Not too happy,1,Working fulltime,40,Married,Ballot c
+2442,Very happy,3,Working parttime,25,Married,Ballot b
+2446,Very happy,3,Working fulltime,35,Married,Ballot c
+2448,Pretty happy,2,Working parttime,21,Never married,Ballot a
+2452,Pretty happy,2,Working parttime,16,Married,Ballot b
+2456,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+2458,Very happy,3,Working fulltime,40,Married,Ballot b
+2461,Very happy,3,Working parttime,30,Married,Ballot b
+2462,Very happy,3,Working parttime,30,Separated,Ballot c
+2463,Very happy,3,Working fulltime,32,Married,Ballot b
+2465,Not too happy,1,Working parttime,32,Never married,Ballot a
+2467,Very happy,3,Working fulltime,44,Never married,Ballot a
+2472,Pretty happy,2,Working fulltime,50,Never married,Ballot b
+2473,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2474,Pretty happy,2,Working parttime,28,Never married,Ballot b
+2476,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2477,Pretty happy,2,Working fulltime,27,Married,Ballot a
+2478,Pretty happy,2,Working fulltime,20,Married,Ballot b
+2480,Pretty happy,2,Working fulltime,89,Married,Ballot c
+2486,Very happy,3,Working fulltime,50,Married,Ballot c
+2487,Not too happy,1,Working fulltime,1,Widowed,Ballot a
+2489,Pretty happy,2,Working fulltime,31,Married,Ballot a
+2491,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2496,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2498,Very happy,3,Working parttime,4,Married,Ballot b
+2499,Pretty happy,2,Working fulltime,36,Married,Ballot a
+2500,Pretty happy,2,Working parttime,16,Married,Ballot b
+2502,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2504,Pretty happy,2,Working parttime,15,Divorced,Ballot b
+2505,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2508,Very happy,3,Working fulltime,47,Married,Ballot a
+2509,Not too happy,1,Working fulltime,41,Separated,Ballot c
+2513,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2514,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2515,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2518,Pretty happy,2,Working fulltime,50,Separated,Ballot b
+2519,Not too happy,1,Working fulltime,45,Separated,Ballot c
+2520,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2522,Very happy,3,Working fulltime,37,Married,Ballot b
+2526,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2527,Pretty happy,2,Working fulltime,52,Married,Ballot a
+2528,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2532,Very happy,3,Working fulltime,50,Separated,Ballot a
+2534,Very happy,3,Working fulltime,40,Divorced,Ballot c
+2535,Very happy,3,Working fulltime,49,Divorced,Ballot a
+2536,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2537,Pretty happy,2,Working fulltime,35,Married,Ballot c
+2538,Very happy,3,Working fulltime,40,Married,Ballot b
+2539,Pretty happy,2,Working fulltime,65,Married,Ballot c
+2540,Very happy,3,Working fulltime,40,Married,Ballot c
+2543,Pretty happy,2,Working fulltime,45,Married,Ballot b
+2545,Pretty happy,2,Working fulltime,60,Married,Ballot b
+2546,Pretty happy,2,Working fulltime,45,Never married,Ballot b
+2547,Pretty happy,2,Working fulltime,57,Married,Ballot b
+2549,Very happy,3,Working fulltime,48,Married,Ballot b
+2552,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2554,Very happy,3,Working fulltime,40,Married,Ballot c
+2556,Very happy,3,Working fulltime,45,Married,Ballot a
+2557,Pretty happy,2,Working parttime,17,Never married,Ballot b
+2558,Very happy,3,Working fulltime,60,Married,Ballot c
+2560,Pretty happy,2,Working fulltime,44,Married,Ballot c
+2561,Pretty happy,2,Working fulltime,60,Married,Ballot b
+2562,Very happy,3,Working fulltime,45,Married,Ballot b
+2563,Very happy,3,Working fulltime,45,Married,Ballot a
+2564,Very happy,3,Working fulltime,45,Married,Ballot c
+2566,Very happy,3,Working fulltime,89,Married,Ballot c
+2567,Pretty happy,2,Working parttime,37,Divorced,Ballot b
+2568,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2569,Very happy,3,Working fulltime,40,Never married,Ballot a
+2570,Pretty happy,2,Working fulltime,67,Never married,Ballot c
+2571,Pretty happy,2,Working fulltime,50,Married,Ballot c
+2572,Not too happy,1,Working fulltime,72,Divorced,Ballot b
+2573,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2576,Pretty happy,2,Working parttime,22,Divorced,Ballot b
+2577,Very happy,3,Working parttime,22,Never married,Ballot a
+2579,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2580,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+2583,Very happy,3,Working fulltime,39,Widowed,Ballot b
+2585,Very happy,3,Working fulltime,65,Divorced,Ballot c
+2589,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2590,Pretty happy,2,Working fulltime,36,Divorced,Ballot a
+2591,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2593,Pretty happy,2,Working fulltime,56,Never married,Ballot a
+2594,Very happy,3,Working fulltime,40,Divorced,Ballot c
+2595,Pretty happy,2,Working fulltime,55,Married,Ballot b
+2597,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2603,Not too happy,1,Working parttime,36,Never married,Ballot a
+2606,Very happy,3,Working fulltime,70,Never married,Ballot c
+2610,Very happy,3,Working fulltime,52,Married,Ballot b
+2612,Very happy,3,Working parttime,40,Married,Ballot c
+2615,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2616,Pretty happy,2,Working parttime,45,Never married,Ballot c
+2618,Pretty happy,2,Working parttime,22,Widowed,Ballot a
+2620,Pretty happy,2,Working fulltime,43,Divorced,Ballot a
+2623,Pretty happy,2,Working fulltime,50,Never married,Ballot c
+2624,Pretty happy,2,Working fulltime,52,Married,Ballot a
+2625,Pretty happy,2,Working fulltime,60,Married,Ballot b
+2626,Very happy,3,Working parttime,30,Never married,Ballot a
+2627,Pretty happy,2,Working parttime,15,Married,Ballot b
+2628,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2630,Pretty happy,2,Working parttime,28,Divorced,Ballot a
+2631,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2632,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2633,Very happy,3,Working parttime,25,Married,Ballot a
+2634,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2635,Pretty happy,2,Working parttime,19,Divorced,Ballot b
+2636,Pretty happy,2,Working parttime,34,Never married,Ballot c
+2637,Very happy,3,Working fulltime,40,Married,Ballot b
+2638,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+2639,Pretty happy,2,Working fulltime,35,Married,Ballot c
+2640,Very happy,3,Working fulltime,45,Married,Ballot b
+2643,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2645,Pretty happy,2,Working fulltime,50,Married,Ballot b
+2646,Not too happy,1,Working fulltime,48,Divorced,Ballot c
+2649,Pretty happy,2,Working fulltime,50,Married,Ballot a
+2651,Not too happy,1,Working fulltime,40,Never married,Ballot b
+2652,Pretty happy,2,Working fulltime,39,Divorced,Ballot a
+2656,Pretty happy,2,Working fulltime,45,Married,Ballot c
+2657,Very happy,3,Working fulltime,40,Married,Ballot b
+2664,Pretty happy,2,Working fulltime,39,Divorced,Ballot a
+2667,Very happy,3,Working fulltime,50,Married,Ballot b
+2670,Very happy,3,Working fulltime,89,Married,Ballot c
+2671,Pretty happy,2,Working fulltime,40,Never married,Ballot b
+2672,Very happy,3,Working fulltime,70,Married,Ballot c
+2675,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2677,Pretty happy,2,Working fulltime,75,Divorced,Ballot c
+2678,Pretty happy,2,Working fulltime,40,Divorced,Ballot b
+2679,Very happy,3,Working fulltime,56,Never married,Ballot a
+2682,Very happy,3,Working fulltime,40,Married,Ballot b
+2684,Very happy,3,Working fulltime,50,Never married,Ballot b
+2685,Very happy,3,Working fulltime,35,Married,Ballot a
+2686,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2687,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+2688,Pretty happy,2,Working fulltime,32,Married,Ballot b
+2691,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2693,Pretty happy,2,Working fulltime,35,Married,Ballot a
+2694,Pretty happy,2,Working fulltime,40,Widowed,Ballot c
+2696,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2698,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2700,Pretty happy,2,Working fulltime,28,Never married,Ballot c
+2701,Very happy,3,Working fulltime,49,Married,Ballot b
+2706,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2707,Pretty happy,2,Working fulltime,50,Married,Ballot b
+2708,Not too happy,1,Working fulltime,50,Never married,Ballot a
+2709,Pretty happy,2,Working fulltime,64,Married,Ballot c
+2711,Pretty happy,2,Working fulltime,50,Divorced,Ballot c
+2712,Pretty happy,2,Working parttime,36,Divorced,Ballot c
+2714,Pretty happy,2,Working fulltime,40,Married,Ballot a
+2715,Very happy,3,Working fulltime,45,Married,Ballot c
+2716,Pretty happy,2,Working parttime,30,Never married,Ballot b
+2717,Pretty happy,2,Working fulltime,45,Married,Ballot a
+2718,Very happy,3,Working fulltime,44,Married,Ballot c
+2721,Pretty happy,2,Working fulltime,70,Married,Ballot c
+2722,Pretty happy,2,Working parttime,27,Never married,Ballot c
+2724,Pretty happy,2,Working fulltime,40,Widowed,Ballot a
+2726,Not too happy,1,Working parttime,10,Widowed,Ballot c
+2728,Pretty happy,2,Working fulltime,80,Never married,Ballot a
+2730,Pretty happy,2,Working parttime,36,Married,Ballot c
+2731,Pretty happy,2,Working fulltime,50,Never married,Ballot a
+2732,Not too happy,1,Working parttime,20,Widowed,Ballot b
+2734,Very happy,3,Working fulltime,45,Married,Ballot c
+2735,Pretty happy,2,Working fulltime,41,Married,Ballot b
+2736,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2737,Not too happy,1,Working fulltime,48,Divorced,Ballot c
+2739,Pretty happy,2,Working fulltime,45,Married,Ballot b
+2740,Very happy,3,Working fulltime,40,Divorced,Ballot a
+2745,Very happy,3,Working fulltime,40,Married,Ballot b
+2746,Pretty happy,2,Working fulltime,32,Never married,Ballot c
+2747,Very happy,3,Working fulltime,40,Married,Ballot b
+2751,Very happy,3,Working fulltime,40,Divorced,Ballot b
+2753,Very happy,3,Working fulltime,63,Widowed,Ballot c
+2754,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2756,Very happy,3,Working fulltime,38,Married,Ballot a
+2757,Very happy,3,Working fulltime,60,Never married,Ballot a
+2758,Pretty happy,2,Working fulltime,48,Never married,Ballot b
+2761,Pretty happy,2,Working parttime,30,Widowed,Ballot a
+2762,Very happy,3,Working fulltime,45,Married,Ballot b
+2764,Not too happy,1,Working fulltime,40,Married,Ballot a
+2765,Very happy,3,Working fulltime,40,Never married,Ballot a
+2769,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2771,Pretty happy,2,Working fulltime,40,Married,Ballot b
+2772,Very happy,3,Working parttime,20,Divorced,Ballot a
+2773,Very happy,3,Working fulltime,40,Never married,Ballot b
+2775,Very happy,3,Working fulltime,40,Married,Ballot c
+2776,Very happy,3,Working fulltime,40,Married,Ballot b
+2777,Very happy,3,Working fulltime,60,Never married,Ballot a
+2778,Pretty happy,2,Working parttime,27,Married,Ballot c
+2779,Pretty happy,2,Working fulltime,72,Separated,Ballot c
+2781,Very happy,3,Working fulltime,40,Married,Ballot b
+2782,Pretty happy,2,Working fulltime,50,Married,Ballot a
+2786,Not too happy,1,Working fulltime,40,Married,Ballot c
+2787,Not too happy,1,Working fulltime,32,Never married,Ballot a
+2791,Not too happy,1,Working parttime,30,Married,Ballot b
+2797,Pretty happy,2,Working fulltime,38,Divorced,Ballot c
+2801,Very happy,3,Working fulltime,50,Never married,Ballot b
+2805,Not too happy,1,Working parttime,32,Divorced,Ballot c
+2806,Pretty happy,2,Working fulltime,56,Never married,Ballot b
+2808,Not too happy,1,Working fulltime,40,Divorced,Ballot c
+2810,Pretty happy,2,Working fulltime,40,Never married,Ballot c
+2811,Not too happy,1,Working parttime,40,Never married,Ballot b
+2814,Very happy,3,Working parttime,3,Married,Ballot b
+2816,Pretty happy,2,Working fulltime,50,Married,Ballot b
+2817,Pretty happy,2,Working fulltime,33,Divorced,Ballot b
+2818,Pretty happy,2,Working fulltime,45,Divorced,Ballot a
+2819,Pretty happy,2,Working fulltime,40,Divorced,Ballot c
+2821,Not too happy,1,Working fulltime,40,Married,Ballot b
+2828,Pretty happy,2,Working fulltime,40,Divorced,Ballot a
+2830,Very happy,3,Working fulltime,40,Married,Ballot b
+2831,Pretty happy,2,Working fulltime,30,Married,Ballot b
+2832,Not too happy,1,Working fulltime,50,Never married,Ballot a
+2833,Very happy,3,Working fulltime,50,Married,Ballot c
+2836,Very happy,3,Working fulltime,35,Divorced,Ballot c
+2837,Very happy,3,Working fulltime,40,Married,Ballot a
+2838,Pretty happy,2,Working fulltime,40,Married,Ballot c
+2839,Pretty happy,2,Working fulltime,37,Married,Ballot b
+2840,Pretty happy,2,Working fulltime,3,Married,Ballot b
+2842,Pretty happy,2,Working fulltime,35,Divorced,Ballot c
+2843,Pretty happy,2,Working fulltime,42,Married,Ballot c
+2845,Pretty happy,2,Working fulltime,40,Never married,Ballot a
+2846,Very happy,3,Working parttime,25,Married,Ballot c
+2847,Pretty happy,2,Working parttime,30,Never married,Ballot b
+2848,Very happy,3,Working fulltime,40,Married,Ballot a
+2849,Pretty happy,2,Working parttime,4,Divorced,Ballot c
+2850,Very happy,3,Working fulltime,40,Married,Ballot c
+2851,Pretty happy,2,Working fulltime,60,Married,Ballot a
+2852,Pretty happy,2,Working fulltime,60,Married,Ballot c
+2853,Very happy,3,Working fulltime,40,Married,Ballot b
+2854,Pretty happy,2,Working fulltime,36,Married,Ballot a
+2857,Pretty happy,2,Working fulltime,40,Separated,Ballot a
+2858,Pretty happy,2,Working fulltime,23,Married,Ballot b
+2859,Not too happy,1,Working fulltime,35,Married,Ballot b
+2860,Pretty happy,2,Working parttime,15,Never married,Ballot b
+2863,Pretty happy,2,Working fulltime,30,Married,Ballot b
+2864,Pretty happy,2,Working fulltime,50,Widowed,Ballot a
+2866,Very happy,3,Working fulltime,36,Married,Ballot a
