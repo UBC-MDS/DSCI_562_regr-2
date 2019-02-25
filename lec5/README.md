@@ -34,6 +34,8 @@ TBD
 
 ## Resources
 
+- [Calling bullshit](https://www.youtube.com/watch?v=ITWQ5psx9Sw&list=PLPnZfvKID1Sje5jWxt-4CSZD7bUI4gSPS&index=19&t=0s) video:
+    - Consequences when censoring is ignored.
 - [Princeton resource](https://data.princeton.edu/wws509/notes/c7.pdf)
     - 7.1.1 (Survival function) 
     - 7.1.2 (Hazard function) 
@@ -45,8 +47,8 @@ TBD
     - A quick read if you know about model fitting with the `survival` R package.
     - Interested in `ggfortify`? Check out its many vignettes ([link to CRAN page](https://cran.r-project.org/web/packages/ggfortify/index.html))
 
-
 Other resources:
 
+- [Cox Model Assumptions](https://www.r-bloggers.com/cox-model-assumptions/) and testing from R-bloggers
 - `survminer` R package for survival-related plots ([vignette](https://cran.r-project.org/web/packages/survminer/vignettes/Informative_Survival_Plots.html)) ([cheatsheet](https://rpkgs.datanovia.com/survminer/survminer_cheatsheet.pdf))
     - Maybe you'll have better luck with this package, but I find it to be a bit restrictive because it requires you to interact with `ggplot2` through its own framework.
