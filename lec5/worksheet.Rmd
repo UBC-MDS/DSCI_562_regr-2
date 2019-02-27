@@ -100,7 +100,7 @@ Obtain the Kaplan-Meier estimate of the survival function using `survival::survf
 
 ```{r}
 (fit_km <- survfit(
-    FILL_THIS_IN ~ 1, 
+    Surv(futime, fustat) ~ 1, 
     data = ovarian
 ))
 ```
@@ -200,7 +200,7 @@ Under the Proportional Hazards model, plot the survival function and obtain a me
 ```{r}
 (fit_ph_survfit <- survfit(
     fit_ph, 
-    newdata = FILL_THIS_IN
+    newdata = data.frame(rx = 1)#ovarian[1, ]
 ))
 ```
 
@@ -209,14 +209,14 @@ Under the Proportional Hazards model, plot the survival function and obtain a me
     
 ```{r}
 fit_ph_survfit %>% 
-    FILL_THIS_IN()
+    autoplot()
 ```
 
 3. Obtain a mean estimate using a function from the `broom` package.
 
 ```{r}
 fit_ph_survfit %>% 
-    FILL_THIS_IN()
+    glance()
 ```
 
 4. Obtain a median estimate using the `quantile` function.
@@ -225,4 +225,3 @@ fit_ph_survfit %>%
 fit_ph_survfit %>% 
     quantile(probs = 0.5)
 ```
-
