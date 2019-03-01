@@ -40,7 +40,7 @@ Note: Topics covered are conditional on time available.
 | [3](./lec3) | 2019-02-11 | Regression beyond the mean Part I: variance, quantiles |
 | [4](./lec4) | 2019-02-13 | Regression beyond the mean Part II: probabilistic forecasts, robust regression |
 | [5](./lec5) | 2019-02-25 | Regression on censored response data: survival analysis   |
-| 6 | 2019-02-27 | Regression on ordinal response data: proportional odds model |
+| [6](./lec6) | 2019-02-27 | Regression on ordinal response data: proportional odds model |
 | 7 | 2019-03-04 | Regression when data are missing |
 | 8 | 2019-03-06 | Regression in many groups: mixed effects models |
 
