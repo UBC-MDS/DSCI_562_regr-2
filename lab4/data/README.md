@@ -1,0 +1,3 @@
+The sleep dataset was collected by Khangmin and Jason Lee in February 2019 as a school project. Khangmin granted Vincenzo permission to use the data for this lab assignment.
+
+Participants were asked to wear blue-light-blocking glasses before going to sleep at night, while also spending two hours in front of a blue-light emitting device (such as a laptop or TV). They used a sleep app to record the time it took them to fall asleep. There were two age groups: Grade 7's ("G7") and adults. Volunteer names are replaced with alphabet letters for privacy.

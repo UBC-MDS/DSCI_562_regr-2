@@ -26,7 +26,7 @@ By the end of the course, students are expected to:
 | [lab assignment 2](./lab2/lab2.md) | 15% | February 16, 2019 at 18:00 | github.ubc.ca |
 | quiz 1           | 20% | February 25, 2019 from 14:00-14:32 | canvas (write in your lab room) |
 | [lab assignment 3](./lab3/lab3.md) | 15% | **March 3, 2019 at 15:00** | github.ubc.ca |
-| lab assignment 4 | 15% | March 9, 2019 at 18:00 | github.ubc.ca |
+| [lab assignment 4](./lab4/lab4.md) | 15% | March 9, 2019 at 18:00 | github.ubc.ca |
 | quiz 2           | 20% | March 12, 2019 from 11:00-11:32 | canvas (write in DMP 301)       |
 
 ## Lecture Schedule
@@ -41,8 +41,8 @@ Note: Topics covered are conditional on time available.
 | [4](./lec4) | 2019-02-13 | Regression beyond the mean Part II: probabilistic forecasts, robust regression |
 | [5](./lec5) | 2019-02-25 | Regression on censored response data: survival analysis   |
 | [6](./lec6) | 2019-02-27 | Regression on ordinal response data: proportional odds model |
-| 7 | 2019-03-04 | Regression when data are missing |
-| 8 | 2019-03-06 | Regression in many groups: mixed effects models |
+| [7](./lec7) | 2019-03-04 | Regression in many groups: mixed effects models |
+| 8 | 2019-03-06 | Regression when data are missing |
 
 If time remains, here are some topics we could cover:
 

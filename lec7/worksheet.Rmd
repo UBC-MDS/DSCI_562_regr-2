@@ -1,0 +1,101 @@
+---
+title: "Mixed Effects Models Case Study"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(lme4))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(broom))
+suppressPackageStartupMessages(library(Lahman))
+```
+
+We will use the Baseball dataset `Teams` available in the `Lahman` package in R, with teams having at least 5 years on record.
+
+```{r}
+dat <- Teams %>% 
+    count(teamID) %>% 
+    right_join(Teams, by = "teamID") %>% 
+    filter(n >= 5) %>% 
+    select(team = teamID, runs = R, hits = H, walks = BB) %>% 
+    mutate(hits = scale(hits),
+           walks = scale(walks))
+head(dat)
+```
+
+We will investigate how hits and walks affects total number of runs (data are scaled to improve convergence of model-fitting). 
+
+Here is a plot on the effect of walks on runs:
+
+```{r, warning=FALSE, fig.width=10}
+ggplot(dat, aes(walks, runs)) +
+    facet_wrap(~team, ncol=7) +
+    geom_point(alpha=0.5) +
+    geom_smooth(method="lm", se=FALSE, 
+                fullrange=TRUE, size=1) +
+    theme_bw()
+```
+
+### Two extremes: pooling and separating
+
+Use a linear model to determine the effect of `hits` and `walks` on `runs`, on an average `team`. Best to allow each team to have its own intercept. Note the standard error on `hits` and `walks`.
+
+```{r}
+lm(runs ~ FILL_THIS_IN, data = dat) %>% 
+    tidy() %>% 
+    head()
+```
+
+How would you determine the effect of `hits` and `walks` _for each individual team_? Note the standard error on `hits` on a representative team.
+
+```{r}
+lm(runs ~ FILL_THIS_IN, data = dat) %>% 
+    tidy() %>% 
+    filter(str_detect(term, "hits"))
+```
+
+Which model yields a smaller SE?
+
+"Pooled" model: artificially small, since data are actually correlated.
+
+"Separate" model: artificially large, since we're only using data within a particular group.
+
+### An intermediate: mixed effects models
+
+Fit a mixed effects model with random effects on both `hits` and `walks`. Note the SE's are _in between_ the "pooled" and "separate" linear models.
+
+```{r}
+fit_lme <- lmer(runs ~  FILL_THIS_IN, data = dat)
+tidy(fit_lme)
+```
+
+Obtain estimates on individual teams:
+
+```{r}
+coef(fit_lme)[[1]]
+```
+
+Extract the covariance matrix of the fixed effects:
+
+```{r}
+vcov(fit_lme)
+```
+
+Extract the covariance matrix of the random effects:
+
+```{r}
+summary(fit_lme)$varcor[[1]]
+```
+
+### Questions
+
+1. Order the models in terms of increasing bias (of regression coefficients)
+2. Order the models in terms of increasing variance (of regression coefficients).
+3. What is the effect of `hits` on `runs` for team ARI, using the LME?
+4. What is the exact distribution of effects (slopes) of `hits` on `runs`?
+5. What is the SE of the fixed effect of `hits`?
+6. A new team has an average number of hits and walks. Their expected number of runs has what exact distribution?
+

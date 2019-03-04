@@ -1,0 +1,201 @@
+DSCI 562 Lab Assignment 4
+================
+
+``` r
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+Global Rubrics (16%)
+====================
+
+These rubrics apply to your entire submission.
+
+Tidy Submission (4%)
+--------------------
+
+rubric={mechanics:4}
+
+To get these mechanics marks, you are expected to:
+
+-   Complete the assignment using R.
+-   Submit the assignment by filling in this worksheet with your answers embedded
+-   Be sure to follow the [general lab instructions](https://ubc-mds.github.io/resources_pages/general_lab_instructions/).
+-   Do not include any code that installs packages (this is not good practice anyway) -- note that this is different from loading packages, which is good!
+
+Writing (4%)
+------------
+
+rubric={writing:4}
+
+To get the marks for this writing component, you should:
+
+-   Use proper English, spelling, and grammar throughout your submission.
+-   Be succinct. This means being specific about what you want to communicate, without being superfluous.
+
+Vis (4%)
+--------
+
+rubric={viz:4}
+
+These marks apply to the collective visuals you make in this assignment.
+
+Code Quality (4%)
+-----------------
+
+rubric={quality:4}
+
+These marks apply to the collective code you write in this assignment.
+
+Exercise 1: Mixed Effects Model (40%)
+-------------------------------------
+
+In this exercise, you'll use the sleep data to determine the effect of blue-light-blocking glasses (BBG) on the time it takes the average person to fall asleep, under the scenario that they spend 2+ hours in front of a blue-light emitting device before bed. Feel free to make a distributional assumption (on the conditional response) in this exercise, if you'd like. You can assume that the sample is representative of the population of, say, all people.
+
+``` r
+sleep <- read_csv("data/sleep_data.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   age = col_character(),
+    ##   volunteer = col_character(),
+    ##   method = col_character(),
+    ##   day = col_character(),
+    ##   time_to_sleep = col_integer()
+    ## )
+
+### 1.1 Plot
+
+rubric={viz:5}
+
+Make a plot so that you can see the effect of all variables on the response. Remember, the response should be on the vertical axis.
+
+### 1.2 Linear Model
+
+rubric={accuracy:5, reasoning:5}
+
+Fit a linear model that determines the effect of BBG on the average person's time to fall asleep. Allow for the fact that it takes some people longer to fall asleep than others, and ignore age. What's the effect of BBG? Also provide a 95% CI.
+
+How would we modify the model to allow for the fact that BBG's have a unique effect on each individual? Why would we not want to do this?
+
+### 1.3 LME Model Assumptions
+
+rubric={reasoning:5}
+
+Modify your linear model so that it's a linear mixed effects model, ensuring that the `method` gets a random effect. For now, don't fit the model, just write out the model assumptions. Be sure to indicate:
+
+-   a formula for the model function;
+-   an indication of which variables in your model are random, and what distribution you are supposing they have (if any supposition is made); and
+-   what the parameters are (to be estimated).
+
+### 1.4 LME Model Fitting
+
+rubric={reasoning:5, accuracy:5}
+
+Fit the LME model you specified above. What's the effect of BBG? Also provide a 95% CI.
+
+Which CI is smaller -- the linear model, or LME model? Which would you expect to be wider, and why? Just give a brief reason.
+
+### 1.5 The effect of age
+
+rubric={reasoning:5, accuracy:5}
+
+Modify your LME to determine whether BBG's have a different effect on adults vs. kids (no need to write out the model, just fit it). What is the effect on each age group?
+
+### 1.7 GLMM (Optional)
+
+rubric={reasoning:1}
+
+Fit an appropriate generalized linear mixed effects model to determine the effect of BBG's on sleep time. Ignore age.
+
+Exercise 2: Prediction and Estimation (15%)
+-------------------------------------------
+
+Use your LME model (unless specified otherwise) to predict/estimate the following.
+
+### 2.1
+
+rubric={accuracy:5}
+
+Person A wears BBG's before going to sleep. What's the expected value of their time to sleep?
+
+### 2.2
+
+rubric={accuracy:5}
+
+A new person does not wear BBG's before bed. Their expected value of time to sleep is assumed to be a draw from which (exact) distribution?
+
+### 2.3
+
+rubric={accuracy:5}
+
+A new person decides to wear BBG's before bed. What's their expected time to fall asleep?
+
+### 2.4 (Optional)
+
+rubric={accuracy:1}
+
+A new person decides to wear BBG's before bed. What's their expected time to fall asleep? Use your linear model, not your LME model.
+
+Exercise 3: Missing Data (29%)
+------------------------------
+
+In this exercise, we will work with the Titanic data, using `Survived` as the response variable, and `Age`, `Sex`, and `Fare` as predictors.
+
+``` r
+titanic <- read_csv("data/titanic-train.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   PassengerId = col_integer(),
+    ##   Survived = col_integer(),
+    ##   Pclass = col_integer(),
+    ##   Name = col_character(),
+    ##   Sex = col_character(),
+    ##   Age = col_double(),
+    ##   SibSp = col_integer(),
+    ##   Parch = col_integer(),
+    ##   Ticket = col_character(),
+    ##   Fare = col_double(),
+    ##   Cabin = col_character(),
+    ##   Embarked = col_character()
+    ## )
+
+### 3.1 Type of missingness
+
+rubric={reasoning:4}
+
+The titanic data contains some missing values for the *age* variable. Although we can't say for sure, do you think this is an example of MCAR, MAR, or MNAR? Briefly justify your choice.
+
+### 3.2 Complete Case
+
+rubric={accuracy:5}
+
+Fit a logistic regression model using the complete case method. That is, remove all observations that have missing data. What is the estimated effect of age, and a 95% CI?
+
+### 3.3 Mean Imputation
+
+rubric={accuracy:5, reasoning:5}
+
+Fit a logistic regression model using a mean imputation method. That is, replace a missing observation with an estimate of its expectation.
+
+What is the estimated effect of age, and a 95% CI? How do these quantities differ from the complete-case method? Can you trust the 95% CI? Why or why not?
+
+### 3.4 Multiple Imputation
+
+rubric={accuracy:5, reasoning:5}
+
+Fit a logistic regression model using a multiple imputation method. That is, replace a missing observation with an estimate of its expectation.
+
+What is the estimated effect of age, and a 95% CI? How do these quantities differ from the complete-case method? Can you trust the 95% CI? Why or why not? How does the CI compare to the complete case CI?
+
+### 3.5 Introducing missingness (Optional)
+
+rubric={accuracy:3}
+
+In this exercise, you are asked to introduce arbitrary missingness and to carry out the imputation methods that you tried above.
+
+-   Generate missing data according to either MCAR, MAR, and MNAR for at least two of the variables of your choice. Describe how you generated the data and explain why your data generation process is MCAR, MAR, or MNAR respectively. If it is not possible to generate data according to any of the three cases, specify which one and explain why it is not possible.
+-   Fit a logistic regression on each dataset generated by omitting the missing data.
+-   Perform mean imputation and multiple imputation on the dataset. Fit a logistic regression on each of the imputed dataset. Compare to the logistic regression fit obtained by ignoring the missing data.
