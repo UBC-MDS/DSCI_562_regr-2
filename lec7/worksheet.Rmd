@@ -44,7 +44,7 @@ ggplot(dat, aes(walks, runs)) +
 Use a linear model to determine the effect of `hits` and `walks` on `runs`, on an average `team`. Best to allow each team to have its own intercept. Note the standard error on `hits` and `walks`.
 
 ```{r}
-lm(runs ~ FILL_THIS_IN, data = dat) %>% 
+lm(runs ~ walks + hits + team, data = dat) %>% 
     tidy() %>% 
     head()
 ```
@@ -52,7 +52,7 @@ lm(runs ~ FILL_THIS_IN, data = dat) %>%
 How would you determine the effect of `hits` and `walks` _for each individual team_? Note the standard error on `hits` on a representative team.
 
 ```{r}
-lm(runs ~ FILL_THIS_IN, data = dat) %>% 
+lm(runs ~ walks*team + hits*team, data = dat) %>% 
     tidy() %>% 
     filter(str_detect(term, "hits"))
 ```
@@ -68,7 +68,7 @@ Which model yields a smaller SE?
 Fit a mixed effects model with random effects on both `hits` and `walks`. Note the SE's are _in between_ the "pooled" and "separate" linear models.
 
 ```{r}
-fit_lme <- lmer(runs ~  FILL_THIS_IN, data = dat)
+fit_lme <- lmer(runs ~  walks + hits + (walks + hits | team), data = dat)
 tidy(fit_lme)
 ```
 
