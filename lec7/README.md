@@ -1,5 +1,11 @@
 # Lecture 7: Mixed Effects Models
 
+## Announcements
+
+- Lec 7 and 8 swapped.
+	- Should make lab easier to do.
+	- Should align better with DSCI 553.
+
 ## Agenda
 
 - Discussion/recap: Proportional odds and proportional hazards compared with lm and glm's
