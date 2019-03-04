@@ -102,7 +102,7 @@ rubric={reasoning:5, accuracy:5}
 
 Modify your LME to determine whether BBG's have a different effect on adults vs. kids (no need to write out the model, just fit it). What is the effect on each age group?
 
-### 1.7 GLMM (Optional)
+### 1.6 GLMM (Optional)
 
 rubric={reasoning:1}
 
