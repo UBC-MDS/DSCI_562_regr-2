@@ -9,7 +9,7 @@ suppressPackageStartupMessages(library(broom))
 suppressPackageStartupMessages(library(mice))
 ```
 
-Consider predicting the air quality (ozone levels) in New york mid-year. We'll use the `airquality` dataset, recorded for mid 1973:
+Consider predicting the air quality (ozone levels) in New York mid-year. We'll use the `airquality` dataset, recorded for mid 1973:
 
 ```{r}
 airquality
@@ -25,11 +25,11 @@ md.pattern(airquality)
 
 Fill in the following:
 
-- There are **FILL_THIS_IN** rows of complete data.
-- There are **FILL_THIS_IN** rows where only ozone is missing.
-- There are **FILL_THIS_IN** rows where both ozone and Solar.R are missing.
-- There are **FILL_THIS_IN** rows missing an ozone measurement.
-- There are **FILL_THIS_IN** `NA`'s in the dataset.
+- There are **111** rows of complete data.
+- There are **35** rows where only ozone is missing.
+- There are **2** rows where both ozone and Solar.R are missing.
+- There are **37** rows missing an ozone measurement.
+- There are **44** `NA`'s in the dataset.
 
 ## Step 1: Handling Missing Data
 
@@ -52,6 +52,16 @@ airquality %>%
 
 Discussion: What are some ways of handling the missing data? What are the consequences of these ways?
 
+1. Remove data.
+	- Remove rows with missing data (called the _complete case_).
+		- Consequence: We're throwing away information that could be used to reduce the final model function's SE.
+	- Remove rows where only the response is missing, and don't use `Solar.R` in your regression (because it has some missing values).
+		- Consequence: If `Solar.R` is predictive of `Ozone`, then we'd be losing that predictive power by not including it.
+2. Impute:
+	- Mean imputation: replace an `NA` with a prediction of its mean using other variables as predictors.
+		- Consequence: imputed data would fall artificially close to the center of the "data cloud". This means a fitted model function would have an artificially small SE.
+	- Multiple imputation: impute with multiple draws from a predictive distribution.
+		- A great choice! No real "consequences" here, aside from the inherent risk of biasing the model function that comes with imputing values.
 
 ### `mice`
 
@@ -72,7 +82,7 @@ m <- 10
 Check out the first imputed data set using `mice::complete()`. **WARNING**: there's also a `tidyr::complete()`! Rows 5 and 6, for example, originally contained missing data.
 
 ```{r}
-mice::complete(FILL_THIS_IN, FILL_THIS_IN)
+mice::complete(init, 1)
 ```
 
 Plot one of them:
@@ -89,7 +99,7 @@ mice::complete(init, 1) %>%
 Now, fit a linear model on each data set using the `with()` generic function (method `with.mids()`:
 
 ```{r}
-(fits <- with(FILL_THIS_IN, lm(Ozone ~ Solar.R + Wind + Temp)))
+(fits <- with(init, lm(Ozone ~ Solar.R + Wind + Temp)))
 ```
 
 Looks can be deceiving. This is not actually a list of length `m`! Unveil its true nature:
@@ -102,7 +112,7 @@ unclass(fits) %>%
 It's now easier to find the `lm` fit on the first dataset:
 
 ```{r}
-fits$FILL_THIS_IN[[1]]
+fits$analyses[[1]]
 ```
 
 Or, we can obtain a summary of each fitted model:
@@ -126,7 +136,7 @@ with(init, glm(
 The last step is to pool the results together:
 
 ```{r}
-pool(FILL_THIS_IN)
+pool(fits)
 ```
 
 The `estimate` column you see are just the averages of all `m` models.
