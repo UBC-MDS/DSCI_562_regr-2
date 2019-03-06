@@ -5,7 +5,7 @@
 ## Agenda
 
 - Finish up Survival Analysis (Vincenzo)
-- Ordinal regression discussion (Sunny)
+- Ordinal regression discussion: [notes](https://ubc-mds.github.io/DSCI_562/lec6/OLR_GL.pdf) (Sunny)
 - Ordinal regression live coding: [worksheet.R](https://ubc-mds.github.io/DSCI_562/lec6/worksheet.R) (Sunny)
 
 ## Learning Objectives
