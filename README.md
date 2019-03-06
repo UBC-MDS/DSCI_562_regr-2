@@ -42,7 +42,7 @@ Note: Topics covered are conditional on time available.
 | [5](./lec5) | 2019-02-25 | Regression on censored response data: survival analysis   |
 | [6](./lec6) | 2019-02-27 | Regression on ordinal response data: proportional odds model |
 | [7](./lec7) | 2019-03-04 | Regression in many groups: mixed effects models |
-| 8 | 2019-03-06 | Regression when data are missing |
+| [8](./lec8) | 2019-03-06 | Regression when data are missing |
 
 If time remains, here are some topics we could cover:
 
