@@ -52,14 +52,6 @@ airquality %>%
 
 Discussion: What are some ways of handling the missing data? What are the consequences of these ways?
 
-- Remove data:
-	- Remove rows with missing data (called the _complete case_).
-	- Don't use `Solar.R` in your regression, and use complete cases.
-	- Remove rows with missing Ozone only.
-	- Try to impute missing values.
-- Impute:
-	- Mean imputation: impute with an estimate of its mean.
-	- Multiple imputation: impute with multiple draws from a predictive distribution.
 
 ### `mice`
 
