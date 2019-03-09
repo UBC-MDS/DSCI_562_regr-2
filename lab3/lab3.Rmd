@@ -83,7 +83,7 @@ Choose one regression coefficient to interpret. Ideally, it should be "significa
 ### 1.6 Prediction (11%)
 rubric={accuracy:11}
 
-Use your proportional hazards regression model to obtain an estimate of the survival function associated with one of the patients in the dataset. Of the (hypothetical) population of patients having this same calorie intake and ECOG score, what is the 0.8-quantile?
+Use your proportional hazards regression model to obtain an estimate of the survival function associated with one of the patients in the dataset. Of the (hypothetical) population of patients having these same predictor values, what is the 0.8-quantile?
 
 
 ### 1.7 Probabilistic Forecast of the Density (Optional)
