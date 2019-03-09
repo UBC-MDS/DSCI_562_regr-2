@@ -99,7 +99,7 @@ What is the error of this model? To save time, it's fine to calculate this on th
 
 rubric={accuracy:5, reasoning:5}
 
-Use a non-parametric regression method to provide a 90% prediction interval for flow on each day of the year. Do not make any distributional assumptions. Plot a 90% confidence band overtop of the data.
+Use a non-parametric regression method to provide a 90% prediction interval for flow on each day of the year. Do not make any distributional assumptions. Plot a 90% prediction band overtop of the data.
 
 What is your prediction interval for flow on day 160? Provide an interpretation for the lower limit of the PI; then for the upper limit.
 
@@ -138,7 +138,7 @@ To show that you've estimated the mean and variance, display these on a plot of 
 
 rubric={accuracy:10}
 
-Now, assume that log(fare) on any given day of the year follows a Gaussian distribution. Equivalently, this means that fare follows a *log normal* distribution, denoted in R as `*lnorm()` (such as `dlnorm()`). Provide estimates of the following quantities of flow (*not* log(flow)!). Note that you should not have to fit any more models to answer this question.
+Now, assume that log(flow) on any given day of the year follows a Gaussian distribution. Equivalently, this means that flow follows a *log normal* distribution, denoted in R as `*lnorm()` (such as `dlnorm()`). Provide estimates of the following quantities of flow (*not* log(flow)!). Note that you should not have to fit any more models to answer this question.
 
 -   Median on day 160.
 -   The interquartile range (IQR) on day 160.
