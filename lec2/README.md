@@ -50,8 +50,8 @@ Topic: Regression on restricted scales: GLM and transformations
 	- Equivalently, the conditional mean can be modelled as the inverse link function applied to the linear predictor.
 	- Many resources will talk about link functions as being a solution to non-Gaussian data. This is not true. As mentioned before, 
 - Common examples of link functions: log link for means that can only be positive; logit link for means that are probabilities.
-	- Interpretation of a coefficient with log link: the response is expected to increase by exp(coefficient) times when the corresponding predictor increases by one unit (i.e., the effect is multiplicative).
-	- Interpretation of a coefficient with logit link: the odds of "success" increases exp(coefficient) times when the corresponding predictor increases by one unit (i.e., the effect is multiplicative). The "odds" is defined as 
+	- Interpretation of a coefficient with log link: the mean response is associated with an increase by exp(coefficient) times when the corresponding predictor increases by one unit (i.e., the effect is multiplicative).
+	- Interpretation of a coefficient with logit link: the odds of "success" is associated with an increase by exp(coefficient) times when the corresponding predictor increases by one unit (i.e., the effect is multiplicative). The "odds" is defined as probability of success divided by probability of failure.
 - A parametric form for the conditional distributions (of the response given the predictors) is assumed most commonly in the situation where making the assumption results in a dramatic decrease in estimator variance. Usually, when the conditional distributions are quite different from Gaussian. This is the idea behind _Generalized Linear Models_ (GLM).
 - We can make use of the probabilistic parameter assumptions by maximizing the likelihood.
 - In R, use the `glm()` function to fit a GLM. Specify family with the `family` argument. When predicting, the `predict()` generic function requires `type="response"`, and `broom::augment()` requires `type.predict="response"`.
