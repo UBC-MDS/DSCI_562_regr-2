@@ -67,7 +67,7 @@ Other resources:
     - If a distributional assumption is made, the partial likelihood can be used to fit the distribution, and any quantity can be extracted from that distribution (not necessarily through the survival function).
 - The Kaplan-Meier estimate of the survival function does not always drop to zero (when the largest observation is censored), in which case estimates of some high quantiles and the mean would not exist. A common "fix" is to force the survival function to drop to zero at the largest observation.
     - The mean estimate that results is called the _restricted_ mean.
-- The Cox proportional hazards model is a common model that allows us to interpret how predictors influence a censored response. It models an individual's hazard function as some baseline hazard, multiplied by `exp(eta)`, where `eta` is a linear combination of predictors.
+- The Cox proportional hazards model is a commonly used model that allows us to interpret how predictors influence a censored response. It models an individual's hazard function as some baseline hazard, multiplied by `exp(eta)`, where `eta` is a linear combination of predictors.
     - The coefficient `beta` on a predictor `X` (contained in `eta`) has the following interpretation: an increase in `X` by one unit is associated with an increase in hazard (at any time) by `exp(beta)` times (i.e., the effect is multiplicative).
     - This assumes that any two hazard functions on the predictor space are the same, up to some multiplicative constant.
     - The hazard is useful to model due to its flexibility and interpretability.
