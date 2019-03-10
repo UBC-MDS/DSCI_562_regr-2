@@ -93,9 +93,70 @@ summary(fit_lme)$varcor[[1]]
 ### Questions
 
 1. Order the models in terms of increasing bias (of regression coefficients)
-2. Order the models in terms of increasing variance (of regression coefficients).
+
+separate model -> LME -> pooled model
+
+2. Order the models in terms of increasing (reported) variance (of regression coefficients).
+
+pooled model -> LME -> separate model
+
 3. What is the effect of `hits` on `runs` for team ARI, using the LME?
+
+```{r}
+coef(fit_lme)[[1]] %>% 
+    rownames_to_column("team") %>% 
+    filter(team == "ARI") %>% 
+    .[["hits"]]
+```
+
 4. What is the exact distribution of effects (slopes) of `hits` on `runs`?
+
+> Normal with a mean equal to the fixed effect:
+
+```{r, warning=FALSE}
+fit_lme %>% 
+    tidy() %>% 
+    filter(term == "hits") %>% 
+    .[["estimate"]]
+```
+
+> and a variance equal to the squared sd of the random effect:
+
+```{r, warning=FALSE}
+fit_lme %>% 
+    tidy() %>% 
+    filter(term == "sd_hits.team") %>% 
+    .[["estimate"]] %>% 
+    .^2
+```
+
 5. What is the SE of the fixed effect of `hits`?
+
+```{r, warning=FALSE}
+fit_lme %>% 
+    tidy() %>% 
+    filter(term == "hits") %>% 
+    .[["std.error"]]
+```
+
 6. A new team has an average number of hits and walks. Their expected number of runs has what exact distribution?
+
+> Since we centered both predictors, this is the same as just taking the intercept (both fixed and random effects). This means that this expectation follows a Normal distribution with the following mean:
+
+```{r, warning=FALSE}
+fit_lme %>% 
+    tidy() %>% 
+    filter(term == "(Intercept)") %>% 
+    .[["estimate"]]
+```
+
+> and the following variance:
+
+```{r, warning=FALSE}
+fit_lme %>% 
+    tidy() %>% 
+    filter(term == "sd_(Intercept).team") %>% 
+    .[["estimate"]] %>% 
+    .^2
+```
 

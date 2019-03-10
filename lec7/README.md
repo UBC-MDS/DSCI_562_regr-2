@@ -19,14 +19,16 @@ Worksheet: [html](https://ubc-mds.github.io/DSCI_562/lec7/worksheet.nb.html); [.
 
 ## Lecture Learning Objectives
 
-(to be updated based on what we actually cover)
-
-- Identify how and describe why various ways of modelling groups influences bias and variance of regression coefficients.
-- Fit a mixed effects model in R, and extract various estimates:
+- Identify the model assumptions in a linear mixed effects model.
+- Associate a term (or combination of terms) in a mixed effects model with the following quantities:
     - Fixed effect estimates
-    - Variances of the random effects
-    - Regression coefficients for individuals, and for the population
-- Write out the model assumptions when random effects are involved.
+    - Variances and correlations of the random effects
+    - Regression coefficients for each group, and for the population
+    - Predictions on existing groups and a new group.
+- Fit a linear mixed effects model in R, and extract estimates of the above quantities.
+- Identify the consequences of fitting a (fixed effects) linear regression model when there are groups, whether a slope parameter is pooled or fit separately per group.
+- Explain the difference between the distributional assumption on the random effects, and the sampling distribution of the fixed effects estimates.
+
 
 ## Concepts
 
