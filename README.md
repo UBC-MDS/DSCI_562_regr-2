@@ -2,8 +2,6 @@
 
 Approaches when faced with special conditions in regression, and consequences of ignoring these conditions.
 
-__2018/2019 Instructor__: [Vincenzo Coia](https://vincenzocoia.github.io)
-
 ## Course Learning Objectives
 
 By the end of the course, students are expected to:
