@@ -6,8 +6,6 @@ Check out the [About](about.md) page for a description of the course.
 
 __2018/2019 Instructor__: [Vincenzo Coia](https://vincenzocoia.github.io)
 
-__2018/2019 TA's__: Kateryna Tyshchenko, Sunny Tseng, Julian Ho
-
 ## Course Learning Objectives
 
 By the end of the course, students are expected to:
@@ -20,14 +18,14 @@ By the end of the course, students are expected to:
 
 ## Assessments
 
-| Deliverable | Weight   | Deadline | Submit to... |
-|------------|----------|----------|--------------|
-| [lab assignment 1](./lab1/lab1.md) | 15% | February 9, 2019 at 18:00 | github.ubc.ca |
-| [lab assignment 2](./lab2/lab2.md) | 15% | February 16, 2019 at 18:00 | github.ubc.ca |
-| quiz 1           | 20% | February 25, 2019 from 14:00-14:32 | canvas (write in your lab room) |
-| [lab assignment 3](./lab3/lab3.md) | 15% | **March 3, 2019 at 15:00** | github.ubc.ca |
-| [lab assignment 4](./lab4/lab4.md) | 15% | March 9, 2019 at 18:00 | github.ubc.ca |
-| quiz 2           | 20% | March 12, 2019 from 11:00-11:32 | canvas (write in DMP 301)       |
+| Deliverable | Weight   | 
+|------------|----------|
+| [lab assignment 1](./lab1/lab1.md) | 15% | 
+| [lab assignment 2](./lab2/lab2.md) | 15% | 
+| quiz 1           | 20% | 
+| [lab assignment 3](./lab3/lab3.md) | 15% |
+| [lab assignment 4](./lab4/lab4.md) | 15% | 
+| quiz 2           | 20% | 
 
 ## Lecture Schedule
 
@@ -52,21 +50,6 @@ If time remains, here are some topics we could cover:
 - Heavy-tailed distributions
 
 ## Reference Material
-
-Readings listed in lectures:
-
-- (Lec 1) [About the course](about.md)
-- (Lec 1) [Tasks that motivate Regression](lec1/00-tasks.md)
-- (Lec 1) [The Types and Value of Parametric Assumptions](lec1/088-parametric.md)
-- (Lec 1) [The Restricted Range Problem: Transformations](lec1/089-transformations.md)
-- (Lec 2) [Fitting GLM's in R](lec2/090-glm_in_r.md)
-- (Lec 3) [Quantile Regression](lec3/033-quantile_regression.html)
-- (Lec 4) [Probabilistic Forecasting](lec4/032-probabilistic_forecasting.html)
-
-
-General Resources:
-
-**List under construction**
 
 - Julian J. Faraway. Extending the Linear Model with R: Generalized Linear, Mixed Effects and Nonparametric Regression Models, Second Edition (Chapman & Hall/CRC Texts in Statistical Science), 2016.
 - For survival analysis: [David G. Kleinbaum, Mitchel Klein (2012) Survival analysis: a self-learning text, 3rd edition](http://webcat2.library.ubc.ca/vwebv/holdingsInfo?bibId=5827037)
