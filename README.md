@@ -2,8 +2,6 @@
 
 Approaches when faced with special conditions in regression, and consequences of ignoring these conditions.
 
-Check out the [About](about.md) page for a description of the course.
-
 __2018/2019 Instructor__: [Vincenzo Coia](https://vincenzocoia.github.io)
 
 ## Course Learning Objectives
@@ -15,6 +13,7 @@ By the end of the course, students are expected to:
 - Identify situations where standard linear regression is sub-optimal, and apply alternative regression methods that better address the situation.
 - Link the bias-variance tradeoff to the fundamental tradeoff of machine learning.
 
+Check out the [About](about.md) page for a description of the course.
 
 ## Assessments
 
