@@ -38,5 +38,5 @@ Here are the concepts of today's lecture, distilled into a list.
 - In linear regression (and most often when people talk about regression), the model function is the mean of the response given values of the predictors. This is also called the "conditional response" for short. 
 - Regression can be defined as fitting a model function to the data when the response variable is numeric. (When the response is categorical, it's called classification).
 - Even if linear regression does not result in the best fitting model function, it's still valuable because we are able to interpret the parameters to gain insight into the relationship between predictors and response.
-- The slope parameter in linear regression is the average change in response associated with a change by one unit of the corresponding predictor.
+- The slope parameter in linear regression is the average slope (approximately).
 - An estimator is "valid" if it converges to the actual probabilistic quantity as the sample size increases.
