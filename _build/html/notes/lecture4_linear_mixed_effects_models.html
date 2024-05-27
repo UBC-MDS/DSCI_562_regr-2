@@ -1,0 +1,1489 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 4 - Linear Mixed-Effects Models &#8212; DSCI 562 - Regression II</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notes/lecture4_linear_mixed_effects_models';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 5 - Survival Analysis" href="lecture5_survival_analysis.html" />
+    <link rel="prev" title="Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression" href="lecture3_glm_ordinal_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Welcome to DSCI 562: Regression II
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lecture-learning-objectives.html">Lecture Learning Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture2_glm_model_selection_multinomial.html">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture3_glm_ordinal_regression.html">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lecture 4 - Linear Mixed-Effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture5_survival_analysis.html">Lecture 5 - Survival Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture6_local_regression.html">Lecture 6 - Local Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture7_quantile_regression.html">Lecture 7 - Quantile Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture8_missing_data.html">Lecture 8 - Missing Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students/issues/new?title=Issue%20on%20page%20%2Fnotes/lecture4_linear_mixed_effects_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notes/lecture4_linear_mixed_effects_models.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 4 - Linear Mixed-Effects Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-fixed-effects-model">1. Linear Fixed-Effects Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grunfeld-s-investment-dataset">1.1. Grunfeld’s Investment Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">1.2. Exploratory Data Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-modelling-framework">1.3. OLS Modelling Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-alternatives">1.3.1. Regression Alternatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-ignoring-firm">1.3.2. OLS Ignoring Firm</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression-with-varying-intercept">1.3.3. OLS Regression with Varying Intercept</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression-for-each-firm">1.3.4. OLS Regression for Each Firm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-mixed-effects-model">2. Linear Mixed-Effects Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-this-generic-covariance-matrix-mathbf-d">2.1. What is this Generic Covariance Matrix <span class="math notranslate nohighlight">\(\mathbf{D}\)</span>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fitting-inference-and-coefficient-interpretation">2.2. Model Fitting, Inference, and Coefficient Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">2.3. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">2.4. Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-mixed-effects-modelling">3. Wrapping Up on Mixed-Effects Modelling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-4-linear-mixed-effects-models">
+<h1>Lecture 4 - Linear Mixed-Effects Models<a class="headerlink" href="#lecture-4-linear-mixed-effects-models" title="Permalink to this heading">#</a></h1>
+<section id="today-s-learning-goals">
+<h2>Today’s Learning Goals<a class="headerlink" href="#today-s-learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this lecture, you should be able to:</p>
+<ul class="simple">
+<li><p>Identify the model assumptions in a linear Mixed-Effects model.</p></li>
+<li><p>Associate a term (or combination of terms) in a Mixed-Effects model with the following quantities:</p>
+<ul>
+<li><p>Fixed effect estimates.</p></li>
+<li><p>Variances of the random effects.</p></li>
+<li><p>Regression coefficients for each group and population.</p></li>
+<li><p>Predictions on existing groups and a new group.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Fit a linear Mixed-Effects model in <code class="docutils literal notranslate"><span class="pre">R</span></code>, and extract estimates of the above quantities.</p></li>
+<li><p>Identify the consequences of fitting a fixed-effects linear regression model when there are groups, whether a slope parameter is pooled or fit separately per group.</p></li>
+<li><p>Explain the difference between the distributional assumption on the random effects and the fixed effects estimates’ sampling distribution.</p></li>
+</ul>
+</section>
+<section id="loading-libraries">
+<h2>Loading Libraries<a class="headerlink" href="#loading-libraries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">AER</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">nlme</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">lme4</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">lmerTest</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="linear-fixed-effects-model">
+<h2>1. Linear Fixed-Effects Model<a class="headerlink" href="#linear-fixed-effects-model" title="Permalink to this heading">#</a></h2>
+<p>So far, we have been working with regression models fitted with a <strong>training set</strong> of <span class="math notranslate nohighlight">\(n\)</span> <strong>independent elements</strong>.</p>
+<p>Let us start with different modelling techniques from the ones you learned in <strong>DSCI 561</strong>. <strong>Under a frequentist and classical Ordinary Least-squares (OLS) paradigm</strong>, given a set of <span class="math notranslate nohighlight">\(k\)</span> regressors <span class="math notranslate nohighlight">\(X_{i,j}\)</span> and a continuous response <span class="math notranslate nohighlight">\(Y_i\)</span>, we fit a model</p>
+<div class="math notranslate nohighlight">
+\[Y_i = \beta_0 + \beta_1 X_{i,1} + \beta_2 X_{i,2} + \ldots + \beta_k X_{i,k} + \varepsilon_{i} \; \; \; \; \text{for} \; i = 1, \ldots, n.\]</div>
+<p>Note parameters <span class="math notranslate nohighlight">\(\beta_0, \beta_1, \dots, \beta_k\)</span> are <strong>fixed</strong> and <strong>constant</strong> for <strong>all the observed values</strong> <span class="math notranslate nohighlight">\(\left(x_{i,1}, \dots, x_{i,k}, y_i\right)\)</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Definition of Fixed Effects</p>
+<p>OLS parameters <span class="math notranslate nohighlight">\(\beta_0, \beta_1, \dots, \beta_k\)</span> are called <strong>fixed effects</strong> in Regression Analysis. In an inferential framework, it is our interest to evaluate whether they are statistically significant for the response.</p>
+</div>
+<p>To illustrate today’s topic, let us introduce a suitable dataset.</p>
+<section id="grunfeld-s-investment-dataset">
+<h3>1.1. Grunfeld’s Investment Dataset<a class="headerlink" href="#grunfeld-s-investment-dataset" title="Permalink to this heading">#</a></h3>
+<p>Consider the following example: <strong>to study how gross investment depends on the firm’s value and capital stock, <a class="reference external" href="https://www.proquest.com/openview/780b28fe1f4a3db9ba0b24739e8a23cd/1?pq-origsite=gscholar&amp;cbl=18750&amp;diss=y">Grunfeld (1958)</a> collected data from eleven different American companies over the years 1935-1954.</strong></p>
+<div class="admonition-the-grunfeld-s-investment-dataset admonition">
+<p class="admonition-title">The Grunfeld’s Investment  Dataset</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">Grunfeld</span></code>, from package <code class="docutils literal notranslate"><span class="pre">AER</span></code>, contains 220 observations from a balanced panel of 11 <strong>sampled American firms</strong> from 1935 to 1954 (20 observations per <code class="docutils literal notranslate"><span class="pre">firm</span></code>). The dataset includes a continuous response <code class="docutils literal notranslate"><span class="pre">investment</span></code> subject to two explanatory variables, <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code>.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Definition of Balanced Panel</p>
+<p>In statistical jargon, a <strong>panel</strong> refers to a dataset in which each <strong>individual</strong> (e.g., a firm) is observed within a timeframe. Furthermore, the term <strong>balanced</strong> indicates that we have the same number of observations per individual.</p>
+</div>
+<p>Firstly, we will load the data which has the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">investment</span></code>: the gross investment in millions of American dollars (additions to plant and equipment along with maintenance), <strong>a continuous response</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">market_value</span></code>: the firm’s market value in millions of American dollars, <strong>a continuous explanatory variable</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">capital</span></code>: stock of plant and equipment in millions of American dollars, <strong>a continuous explanatory variable</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">firm</span></code>: <strong>a nominal explanatory variable</strong> with eleven levels indicating the firm (<code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Motors</span></code>, <code class="docutils literal notranslate"><span class="pre">US</span> <span class="pre">Steel</span></code>, <code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Electric</span></code>, <code class="docutils literal notranslate"><span class="pre">Chrysler</span></code>, <code class="docutils literal notranslate"><span class="pre">Atlantic</span> <span class="pre">Refining</span></code>, <code class="docutils literal notranslate"><span class="pre">IBM</span></code>, <code class="docutils literal notranslate"><span class="pre">Union</span> <span class="pre">Oil</span></code>, <code class="docutils literal notranslate"><span class="pre">Westinghouse</span></code>, <code class="docutils literal notranslate"><span class="pre">Goodyear</span></code>, <code class="docutils literal notranslate"><span class="pre">Diamond</span> <span class="pre">Match</span></code>, and <code class="docutils literal notranslate"><span class="pre">American</span> <span class="pre">Steel</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code>: the year of the observation (<em>it will not be used in our analysis, but take it into account for our next in-class question</em>).</p></li>
+</ul>
+<p>The code below only renames some columns from the original dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">data</span><span class="p">(</span><span class="n">Grunfeld</span><span class="p">)</span>
+<span class="n">Grunfeld</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Grunfeld</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">rename</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">invest</span><span class="p">,</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="n">Grunfeld</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 220 × 5</caption>
+<thead>
+	<tr><th></th><th scope=col>investment</th><th scope=col>market_value</th><th scope=col>capital</th><th scope=col>firm</th><th scope=col>year</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>317.6</td><td>3078.5</td><td>  2.8</td><td>General Motors</td><td>1935</td></tr>
+	<tr><th scope=row>2</th><td>391.8</td><td>4661.7</td><td> 52.6</td><td>General Motors</td><td>1936</td></tr>
+	<tr><th scope=row>3</th><td>410.6</td><td>5387.1</td><td>156.9</td><td>General Motors</td><td>1937</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>218</th><td>7.329</td><td>57.616</td><td>78.631</td><td>American Steel</td><td>1952</td></tr>
+	<tr><th scope=row>219</th><td>9.020</td><td>57.441</td><td>80.215</td><td>American Steel</td><td>1953</td></tr>
+	<tr><th scope=row>220</th><td>6.281</td><td>47.165</td><td>83.788</td><td>American Steel</td><td>1954</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>We will start with an in-class question via <a class="reference external" href="https://student.iclicker.com/"><strong>iClicker</strong></a>.</p>
+<div class="exercise admonition" id="lecture4-q1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 12 </span></p>
+<section id="exercise-content">
+<p>What class of <strong>data hierarchy</strong> do you observe in this dataset? Do you expect any class of <strong>correlation</strong> within the data points?</p>
+<p><strong>A.</strong> Yes, we have a data hierarchy with one level: <code class="docutils literal notranslate"><span class="pre">firm</span></code>. Still, there will not be a correlation among subsets of data points.</p>
+<p><strong>B.</strong> Yes, we have a data hierarchy with one level: <code class="docutils literal notranslate"><span class="pre">firm</span></code>. Hence, there will be a correlation among subsets of data points.</p>
+<p><strong>C.</strong> There is no data hierarchy at all. All observations in the training set are independent.</p>
+<p><strong>D.</strong> Yes, we have a data hierarchy with two levels: <code class="docutils literal notranslate"><span class="pre">firm</span></code> (<strong>level 1</strong>) and the corresponding yearly observations (<strong>level 2</strong>). Hence, there will be a correlation among subsets of data points.</p>
+</section>
+</div>
+<div class="admonition-main-statistical-inquiries admonition">
+<p class="admonition-title">Main Statistical Inquiries</p>
+<p>We are interested in assessing the association of gross <code class="docutils literal notranslate"><span class="pre">investment</span></code> with <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> <strong>in the population of American firms</strong>. Then, how can we fit a linear model to this data?</p>
+</div>
+</section>
+<section id="exploratory-data-analysis">
+<h3>1.2. Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this heading">#</a></h3>
+<p>Let us plot the <span class="math notranslate nohighlight">\(n = 220\)</span> data points of <code class="docutils literal notranslate"><span class="pre">investment</span></code> versus <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> but <strong>facetted</strong> by <code class="docutils literal notranslate"><span class="pre">firm</span></code> and use <code class="docutils literal notranslate"><span class="pre">geom_smooth()</span></code> to fit sub-models by <code class="docutils literal notranslate"><span class="pre">firm</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Only for plotting</strong>, we will transform both <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-axes on the logarithmic scale in base 10 (<code class="docutils literal notranslate"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">&quot;log10&quot;</span></code>). This allows us to compare those firms under dissimilar market values, capital, and gross investments.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">scatterplots_firm_market_value</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Grunfeld</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">market_value</span><span class="p">,</span><span class="w"> </span><span class="n">investment</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lm&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fullrange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">firm</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Market Value (Millions of American Dollars on a Log Scale in Base 10)&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gross Investment (Millions of American Dollars on a Log Scale in Base 10)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Scatterplots by Firm of Market Value versus Gross Investments&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span><span class="p">),</span>
+<span class="w">    </span><span class="n">strip.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span><span class="p">),</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;log10&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;log10&quot;</span><span class="p">)</span>
+
+<span class="n">scatterplots_firm_capital</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Grunfeld</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">capital</span><span class="p">,</span><span class="w"> </span><span class="n">investment</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lm&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fullrange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">firm</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Capital (Millions of American Dollars on a Log Scale in Base 10)&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Gross Investment (Millions of American Dollars on a Log Scale in Base 10)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Scatterplots by Firm of Capital versus Gross Investments&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span><span class="p">),</span>
+<span class="w">    </span><span class="n">strip.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span><span class="p">),</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;log10&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;log10&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12.5</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14.5</span><span class="p">)</span>
+
+<span class="n">scatterplots_firm_market_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f610d99dbadde52495185d445f6081e84fd3fda397f035dd7253a5d0e8d3a380.png" src="../_images/f610d99dbadde52495185d445f6081e84fd3fda397f035dd7253a5d0e8d3a380.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">scatterplots_firm_capital</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/efb4aa29d34258c66b2729c06096ecc84217e5577e7f640b087ba6626fc65168.png" src="../_images/efb4aa29d34258c66b2729c06096ecc84217e5577e7f640b087ba6626fc65168.png" />
+</div>
+</div>
+<div class="exercise admonition" id="lecture4-q2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 13 </span></p>
+<section id="exercise-content">
+<p>What do you observe in the plots above?</p>
+</section>
+</div>
+</section>
+<section id="ols-modelling-framework">
+<h3>1.3. OLS Modelling Framework<a class="headerlink" href="#ols-modelling-framework" title="Permalink to this heading">#</a></h3>
+<p>Before digging into today’s new modelling approach, let us try a classical approach via OLS for comparative purposes.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Always</strong> keep in mind the main statistical inquiry when taking any given modelling approach.</p>
+</div>
+<section id="regression-alternatives">
+<h4>1.3.1. Regression Alternatives<a class="headerlink" href="#regression-alternatives" title="Permalink to this heading">#</a></h4>
+<p>Based on what you have seen via OLS in <strong>DSCI 561</strong>, there might be four possible approaches:</p>
+<ul class="simple">
+<li><p>Take the average for each <code class="docutils literal notranslate"><span class="pre">firm</span></code>, and fit an OLS regression on the averages. <strong>This is not an ideal approach</strong>, since we would lose valuable data points if we summarize them using a summary statistic of central tendency such as the average. Recall the frequentist paradigm: the more data points, the better! Therefore, <strong>we will not use this approach in this lecture</strong>.</p></li>
+<li><p><strong>We could ignore <code class="docutils literal notranslate"><span class="pre">firm</span></code></strong>, and fit an OLS regression with the other columns in the training set. Nonetheless, <strong>this is not an ideal approach</strong> since we will not be properly defining the corresponding systematic component of our population of interest: American firms.</p></li>
+<li><p><strong>Allow different intercepts for each <code class="docutils literal notranslate"><span class="pre">firm</span></code>.</strong> This might be an approach worth taking using OLS modelling techniques.</p></li>
+<li><p><strong>Allow a different slope and intercept for each <code class="docutils literal notranslate"><span class="pre">firm</span></code></strong> (i.e., and <strong>interaction model</strong>!). This might be an approach worth taking using OLS modelling techniques.</p></li>
+</ul>
+</section>
+<section id="ols-ignoring-firm">
+<h4>1.3.2. OLS Ignoring Firm<a class="headerlink" href="#ols-ignoring-firm" title="Permalink to this heading">#</a></h4>
+<p>Let us start with this basic OLS model to warm up our modelling skills regarding setting up equations. Suppose we ignore factor <code class="docutils literal notranslate"><span class="pre">firm</span></code>. Then, we will estimate an OLS regression with <code class="docutils literal notranslate"><span class="pre">investment</span></code> as a response to <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> as regressors.</p>
+<p>The regression equation for the <span class="math notranslate nohighlight">\(i\)</span>th sampled observation will be:</p>
+<div class="math notranslate nohighlight">
+\[\texttt{investment}_{i} = \beta_0 + \beta_1 \texttt{marketValue}_{i} + \beta_2\texttt{capital}_{i} + \varepsilon_{i} \; \; \; \; \text{for} \; i = 1, \ldots, 220.\]</div>
+<p>We use <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and <code class="docutils literal notranslate"><span class="pre">glance()</span></code> to get the corresponding outputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ordinary_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">ordinary_model</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">ordinary_model</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 3 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept) </td><td>-38.4101</td><td>8.4134</td><td>-4.5654</td><td>0</td></tr>
+	<tr><td>market_value</td><td>  0.1145</td><td>0.0055</td><td>20.7534</td><td>0</td></tr>
+	<tr><td>capital     </td><td>  0.2275</td><td>0.0242</td><td> 9.3904</td><td>0</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.8179</td><td>0.8162</td><td>90.2806</td><td>487.284</td><td>0</td><td>2</td><td>-1301.299</td><td>2610.598</td><td>2624.173</td><td>1768678</td><td>217</td><td>220</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>With <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>, we have evidence to state see that <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> are statistically associated to <code class="docutils literal notranslate"><span class="pre">investment</span></code> since the <span class="math notranslate nohighlight">\(p\text{-values} &lt; .001\)</span>.</p>
+</section>
+<section id="ols-regression-with-varying-intercept">
+<h4>1.3.3. OLS Regression with Varying Intercept<a class="headerlink" href="#ols-regression-with-varying-intercept" title="Permalink to this heading">#</a></h4>
+<p>Now, let us estimate another OLS regression model with <code class="docutils literal notranslate"><span class="pre">investment</span></code> as a response to <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> as regressors <strong>but with varying intercepts by each <code class="docutils literal notranslate"><span class="pre">firm</span></code></strong>.</p>
+<p>We will do this with the <code class="docutils literal notranslate"><span class="pre">lm()</span></code> function by adding <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">1</span></code> on the right-hand side of the argument <code class="docutils literal notranslate"><span class="pre">formula</span></code>. This <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">1</span></code> will allow the baseline <code class="docutils literal notranslate"><span class="pre">firm</span></code> to have its intercept (i.e., renaming <code class="docutils literal notranslate"><span class="pre">(Intercept)</span></code> in column <code class="docutils literal notranslate"><span class="pre">estimate</span></code> with <code class="docutils literal notranslate"><span class="pre">firmCompanyName</span></code>). In this case, <code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Motors</span></code> is the baseline (it appears on the left-had side of the <code class="docutils literal notranslate"><span class="pre">levels()</span></code> output).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">levels</span><span class="p">(</span><span class="n">Grunfeld</span><span class="o">$</span><span class="n">firm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'General Motors'</li><li>'US Steel'</li><li>'General Electric'</li><li>'Chrysler'</li><li>'Atlantic Refining'</li><li>'IBM'</li><li>'Union Oil'</li><li>'Westinghouse'</li><li>'Goodyear'</li><li>'Diamond Match'</li><li>'American Steel'</li></ol>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">33</span><span class="p">)</span>
+
+<span class="n">model_varying_intercept</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">firm</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">model_varying_intercept</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">model_varying_intercept</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 13 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>market_value         </td><td>   0.1101</td><td> 0.0113</td><td>  9.7461</td><td>0.0000</td></tr>
+	<tr><td>capital              </td><td>   0.3100</td><td> 0.0165</td><td> 18.7439</td><td>0.0000</td></tr>
+	<tr><td>firmGeneral Motors   </td><td> -70.2991</td><td>47.3754</td><td> -1.4839</td><td>0.1394</td></tr>
+	<tr><td>firmUS Steel         </td><td> 101.9047</td><td>23.7687</td><td>  4.2873</td><td>0.0000</td></tr>
+	<tr><td>firmGeneral Electric </td><td>-235.5694</td><td>23.2861</td><td>-10.1163</td><td>0.0000</td></tr>
+	<tr><td>firmChrysler         </td><td> -27.8091</td><td>13.4186</td><td> -2.0724</td><td>0.0395</td></tr>
+	<tr><td>firmAtlantic Refining</td><td>-114.6025</td><td>13.5025</td><td> -8.4875</td><td>0.0000</td></tr>
+	<tr><td>firmIBM              </td><td> -23.1602</td><td>12.0759</td><td> -1.9179</td><td>0.0565</td></tr>
+	<tr><td>firmUnion Oil        </td><td> -66.5442</td><td>12.2420</td><td> -5.4357</td><td>0.0000</td></tr>
+	<tr><td>firmWestinghouse     </td><td> -57.5465</td><td>13.3379</td><td> -4.3145</td><td>0.0000</td></tr>
+	<tr><td>firmGoodyear         </td><td> -87.2145</td><td>12.2887</td><td> -7.0971</td><td>0.0000</td></tr>
+	<tr><td>firmDiamond Match    </td><td>  -6.5680</td><td>11.2736</td><td> -0.5826</td><td>0.5608</td></tr>
+	<tr><td>firmAmerican Steel   </td><td> -20.5782</td><td>11.2978</td><td> -1.8214</td><td>0.0700</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.9616</td><td>0.9591</td><td>50.2995</td><td>398.2336</td><td>0</td><td>13</td><td>-1167.426</td><td>2362.851</td><td>2410.362</td><td>523718.7</td><td>207</td><td>220</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>By checking the <code class="docutils literal notranslate"><span class="pre">adj.r.squared</span></code>, we see that <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> has a larger value (0.96) than <code class="docutils literal notranslate"><span class="pre">ordinary_model</span></code> (0.82) (i.e., the first fitted model without <code class="docutils literal notranslate"><span class="pre">firm</span></code> as a regressor). <strong>This indicates that a model with estimated intercepts by firm fits the data better than a model without taking <code class="docutils literal notranslate"><span class="pre">firm</span></code> into account (at least by looking at the metrics!).</strong></p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> is equivalent to just fitting the OLS model using <code class="docutils literal notranslate"><span class="pre">formula</span> <span class="pre">=</span> <span class="pre">investment</span> <span class="pre">~</span> <span class="pre">market_value</span> <span class="pre">+</span> <span class="pre">capital</span> <span class="pre">+</span> <span class="pre">firm</span></code>. However, in this <code class="docutils literal notranslate"><span class="pre">primary_OLS</span></code>, <code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Motors</span></code> estimated intercept would be called <code class="docutils literal notranslate"><span class="pre">(Intercept)</span></code> whereas the remaining ten firms will have their corresponding estimated intercepts as <code class="docutils literal notranslate"><span class="pre">(Intercept)</span> <span class="pre">+</span> <span class="pre">firmCompany</span></code> as in the <code class="docutils literal notranslate"><span class="pre">primary_OLS</span></code>. Moreover, the regression parameter estimates for <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> (along with their corresponding standard errors, test statistics, and <span class="math notranslate nohighlight">\(p\text{-values}\)</span>) stay the same.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Even though the intercept estimates by <code class="docutils literal notranslate"><span class="pre">firm</span></code> can be easily computed using column <code class="docutils literal notranslate"><span class="pre">estimate</span></code> from <code class="docutils literal notranslate"><span class="pre">primary_OLS</span></code>; standard errors, test statistics, and <span class="math notranslate nohighlight">\(p\text{-values}\)</span> will be different given the model parametrization in the regression equation.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">primary_OLS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">firm</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">primary_OLS</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 13 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)          </td><td> -70.2991</td><td>47.3754</td><td>-1.4839</td><td>0.1394</td></tr>
+	<tr><td>market_value         </td><td>   0.1101</td><td> 0.0113</td><td> 9.7461</td><td>0.0000</td></tr>
+	<tr><td>capital              </td><td>   0.3100</td><td> 0.0165</td><td>18.7439</td><td>0.0000</td></tr>
+	<tr><td>firmUS Steel         </td><td> 172.2038</td><td>29.7001</td><td> 5.7981</td><td>0.0000</td></tr>
+	<tr><td>firmGeneral Electric </td><td>-165.2703</td><td>30.2853</td><td>-5.4571</td><td>0.0000</td></tr>
+	<tr><td>firmChrysler         </td><td>  42.4900</td><td>41.8499</td><td> 1.0153</td><td>0.3112</td></tr>
+	<tr><td>firmAtlantic Refining</td><td> -44.3034</td><td>48.1222</td><td>-0.9206</td><td>0.3583</td></tr>
+	<tr><td>firmIBM              </td><td>  47.1389</td><td>44.6144</td><td> 1.0566</td><td>0.2919</td></tr>
+	<tr><td>firmUnion Oil        </td><td>   3.7548</td><td>48.1918</td><td> 0.0779</td><td>0.9380</td></tr>
+	<tr><td>firmWestinghouse     </td><td>  12.7526</td><td>41.9860</td><td> 0.3037</td><td>0.7616</td></tr>
+	<tr><td>firmGoodyear         </td><td> -16.9155</td><td>46.1794</td><td>-0.3663</td><td>0.7145</td></tr>
+	<tr><td>firmDiamond Match    </td><td>  63.7310</td><td>47.9689</td><td> 1.3286</td><td>0.1854</td></tr>
+	<tr><td>firmAmerican Steel   </td><td>  49.7209</td><td>48.2801</td><td> 1.0298</td><td>0.3043</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Going back to <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> and <code class="docutils literal notranslate"><span class="pre">ordinary_model</span></code>, we can test if there is a gain in considering a varying intercept versus fixed intercept. Hence, we will make a formal <span class="math notranslate nohighlight">\(F\)</span>-test to check whether the <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> fits the data better than the <code class="docutils literal notranslate"><span class="pre">ordinary_model</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">anova</span><span class="p">(</span><span class="n">ordinary_model</span><span class="p">,</span><span class="w"> </span><span class="n">model_varying_intercept</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A anova: 2 × 6</caption>
+<thead>
+	<tr><th></th><th scope=col>Res.Df</th><th scope=col>RSS</th><th scope=col>Df</th><th scope=col>Sum of Sq</th><th scope=col>F</th><th scope=col>Pr(&gt;F)</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>217</td><td>1768678.4</td><td>NA</td><td>     NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><th scope=row>2</th><td>207</td><td> 523718.7</td><td>10</td><td>1244960</td><td>49.21</td><td> 0</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>We obtain a <span class="math notranslate nohighlight">\(p\text{-value} &lt; .001\)</span>. Thus, with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>, we have evidence to conclude that <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> fits the data better than the <code class="docutils literal notranslate"><span class="pre">ordinary_model</span></code>.</p>
+<p>However, this costs us one extra degree of freedom per <code class="docutils literal notranslate"><span class="pre">firm</span></code> <strong>except for the baseline</strong>. Therefore, we lose another 10 <strong>degrees of freedom</strong> (column <code class="docutils literal notranslate"><span class="pre">DF</span></code> in the <code class="docutils literal notranslate"><span class="pre">anova()</span></code> output).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In this case, losing 10 degrees of freedom is not a big deal with 220 data points. Nonetheless, in other cases, when data is scarce, this could be an issue regarding inferential inquiries since we need them to perform the corresponding hypothesis testing.</p>
+</div>
+<div class="exercise admonition" id="lecture4-q3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 14 </span></p>
+<section id="exercise-content">
+<p>What is the <strong>sample’s regression equation</strong> for <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code>?</p>
+<p><strong>A.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \beta_{0} + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad \quad \text{for} \; i = 1, \ldots, 20 \; \; \text{and} \; \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+<p><strong>B.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i} &amp;= \beta_{0} + \beta_1 \texttt{marketValue}_{i} + \beta_2\texttt{capital}_{i} + \varepsilon_{i} \\
+&amp; \qquad \qquad \quad \text{for} \; i = 1, \ldots, 220.
+\end{align*}\end{split}\]</div>
+<p><strong>C.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \beta_{0,j} + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad \quad \text{for} \; i = 1, \ldots, 20 \; \; \text{and} \; \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+</section>
+</div>
+</section>
+<section id="ols-regression-for-each-firm">
+<h4>1.3.4. OLS Regression for Each Firm<a class="headerlink" href="#ols-regression-for-each-firm" title="Permalink to this heading">#</a></h4>
+<p>We can make the model more complex <strong>with two interactions</strong> (<code class="docutils literal notranslate"><span class="pre">market_value</span> <span class="pre">*</span> <span class="pre">firm</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span> <span class="pre">*</span> <span class="pre">firm</span></code>). <strong>This will estimate a linear regression by <code class="docutils literal notranslate"><span class="pre">firm</span></code> with its own slopes.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">model_by_firm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">firm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">firm</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">model_by_firm</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">model_by_firm</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 33 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)                       </td><td>-149.78</td><td> 48.07</td><td>-3.12</td><td>0.00</td></tr>
+	<tr><td>market_value                      </td><td>   0.12</td><td>  0.01</td><td>10.17</td><td>0.00</td></tr>
+	<tr><td>firmUS Steel                      </td><td> 100.58</td><td> 80.04</td><td> 1.26</td><td>0.21</td></tr>
+	<tr><td>firmGeneral Electric              </td><td> 139.83</td><td> 67.16</td><td> 2.08</td><td>0.04</td></tr>
+	<tr><td>firmChrysler                      </td><td> 143.59</td><td> 64.09</td><td> 2.24</td><td>0.03</td></tr>
+	<tr><td>firmAtlantic Refining             </td><td> 172.49</td><td> 57.52</td><td> 3.00</td><td>0.00</td></tr>
+	<tr><td>firmIBM                           </td><td> 141.10</td><td> 53.48</td><td> 2.64</td><td>0.01</td></tr>
+	<tr><td>firmUnion Oil                     </td><td> 145.28</td><td> 69.34</td><td> 2.10</td><td>0.04</td></tr>
+	<tr><td>firmWestinghouse                  </td><td> 149.27</td><td> 58.14</td><td> 2.57</td><td>0.01</td></tr>
+	<tr><td>firmGoodyear                      </td><td> 142.06</td><td> 64.41</td><td> 2.21</td><td>0.03</td></tr>
+	<tr><td>firmDiamond Match                 </td><td> 149.94</td><td> 92.75</td><td> 1.62</td><td>0.11</td></tr>
+	<tr><td>firmAmerican Steel                </td><td> 147.14</td><td>102.37</td><td> 1.44</td><td>0.15</td></tr>
+	<tr><td>capital                           </td><td>   0.37</td><td>  0.02</td><td>22.06</td><td>0.00</td></tr>
+	<tr><td>market_value:firmUS Steel         </td><td>   0.06</td><td>  0.03</td><td> 1.63</td><td>0.11</td></tr>
+	<tr><td>market_value:firmGeneral Electric </td><td>  -0.09</td><td>  0.03</td><td>-3.56</td><td>0.00</td></tr>
+	<tr><td>market_value:firmChrysler         </td><td>  -0.04</td><td>  0.06</td><td>-0.65</td><td>0.52</td></tr>
+	<tr><td>market_value:firmAtlantic Refining</td><td>   0.04</td><td>  0.26</td><td> 0.16</td><td>0.87</td></tr>
+	<tr><td>market_value:firmIBM              </td><td>   0.01</td><td>  0.16</td><td> 0.08</td><td>0.94</td></tr>
+	<tr><td>market_value:firmUnion Oil        </td><td>  -0.03</td><td>  0.29</td><td>-0.11</td><td>0.91</td></tr>
+	<tr><td>market_value:firmWestinghouse     </td><td>  -0.07</td><td>  0.07</td><td>-1.02</td><td>0.31</td></tr>
+	<tr><td>market_value:firmGoodyear         </td><td>  -0.04</td><td>  0.16</td><td>-0.28</td><td>0.78</td></tr>
+	<tr><td>market_value:firmDiamond Match    </td><td>  -0.11</td><td>  1.04</td><td>-0.11</td><td>0.91</td></tr>
+	<tr><td>market_value:firmAmerican Steel   </td><td>  -0.05</td><td>  0.55</td><td>-0.10</td><td>0.92</td></tr>
+	<tr><td>firmUS Steel:capital              </td><td>   0.02</td><td>  0.06</td><td> 0.29</td><td>0.78</td></tr>
+	<tr><td>firmGeneral Electric:capital      </td><td>  -0.22</td><td>  0.04</td><td>-5.24</td><td>0.00</td></tr>
+	<tr><td>firmChrysler:capital              </td><td>  -0.06</td><td>  0.09</td><td>-0.61</td><td>0.55</td></tr>
+	<tr><td>firmAtlantic Refining:capital     </td><td>  -0.37</td><td>  0.10</td><td>-3.60</td><td>0.00</td></tr>
+	<tr><td>firmIBM:capital                   </td><td>  -0.29</td><td>  0.52</td><td>-0.55</td><td>0.58</td></tr>
+	<tr><td>firmUnion Oil:capital             </td><td>  -0.25</td><td>  0.08</td><td>-3.20</td><td>0.00</td></tr>
+	<tr><td>firmWestinghouse:capital          </td><td>  -0.28</td><td>  0.23</td><td>-1.22</td><td>0.23</td></tr>
+	<tr><td>firmGoodyear:capital              </td><td>  -0.29</td><td>  0.13</td><td>-2.24</td><td>0.03</td></tr>
+	<tr><td>firmDiamond Match:capital         </td><td>   0.07</td><td>  3.06</td><td> 0.02</td><td>0.98</td></tr>
+	<tr><td>firmAmerican Steel:capital        </td><td>  -0.29</td><td>  1.10</td><td>-0.26</td><td>0.79</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.97</td><td>0.96</td><td>41.68</td><td>168.84</td><td>0</td><td>32</td><td>-1114.91</td><td>2297.81</td><td>2413.2</td><td>324895.6</td><td>187</td><td>220</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>In this case, we are fitting eleven linear regressions, each with 20 points.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>We have plenty of data points in this case for all the degrees of freedom required to estimate each parameter. Nonetheless, this might not be the case with other datasets.</p>
+</div>
+<div class="exercise admonition" id="lecture4-q4">
+
+<p class="admonition-title"><span class="caption-number">Exercise 15 </span></p>
+<section id="exercise-content">
+<p>What is the sample’s regression equation for <code class="docutils literal notranslate"><span class="pre">model_by_firm</span></code>?</p>
+<p><strong>A.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \beta_{0,j} + \beta_{1,j} \texttt{marketValue}_{i,j} + \beta_{2,j} \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad \quad \text{for} \; i = 1, \ldots, 20 \; \; \text{and} \; \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+<p><strong>B.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{j} &amp;= \beta_{0} + \beta_1 \texttt{marketValue}_{j} + \beta_2\texttt{capital}_{j} + \varepsilon_{j} \\
+&amp; \qquad \qquad \quad \text{for} \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+<p><strong>C.</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \beta_{0,i} + \beta_{1,i} \texttt{marketValue}_{i,j} + \beta_{2,i} \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad \quad \text{for} \; i = 1, \ldots, 20 \; \; \text{and} \; \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+</section>
+</div>
+<p>We went as far as fitting a <strong>separate linear regression for each <code class="docutils literal notranslate"><span class="pre">firm</span></code></strong>.</p>
+<p><strong>How to interpret the coefficients in this model?</strong></p>
+<blockquote>
+<div><p>Each regression coefficient is associated with a <code class="docutils literal notranslate"><span class="pre">firm</span></code>. For example, <span class="math notranslate nohighlight">\(\texttt{firmUS Steel:capital} = 0.02\)</span> means that the variable <code class="docutils literal notranslate"><span class="pre">capital</span></code> has a slope of <span class="math notranslate nohighlight">\(0.02 + 0.37 = 0.39\)</span> for <code class="docutils literal notranslate"><span class="pre">US</span> <span class="pre">Steel</span></code>. We can double-check this by estimating an individual linear regression for <code class="docutils literal notranslate"><span class="pre">US</span> <span class="pre">Steel</span></code>:</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="nf">lm</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">firm</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;US Steel&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 3 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept) </td><td>-49.20</td><td>148.08</td><td>-0.33</td><td>0.74</td></tr>
+	<tr><td>market_value</td><td>  0.17</td><td>  0.07</td><td> 2.36</td><td>0.03</td></tr>
+	<tr><td>capital     </td><td>  0.39</td><td>  0.14</td><td> 2.74</td><td>0.01</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="exercise admonition" id="lecture4-q5">
+
+<p class="admonition-title"><span class="caption-number">Exercise 16 </span></p>
+<section id="exercise-content">
+<p>Now, after all these OLS modelling approaches, are we in line with the main modelling objective with all these linear regression models?</p>
+</section>
+</div>
+<figure class="align-default" id="panda-2">
+<a class="reference internal image-reference" href="../_images/panda.png"><img alt="../_images/panda.png" src="../_images/panda.png" style="height: 350px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">The Questioning Panda, again!</span><a class="headerlink" href="#panda-2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+<section id="linear-mixed-effects-model">
+<h2>2. Linear Mixed-Effects Model<a class="headerlink" href="#linear-mixed-effects-model" title="Permalink to this heading">#</a></h2>
+<p>The fact that we have <strong>a sample of 11 companies</strong> and our inquiry aims to make inference on the <strong>population</strong> of American companies, along with the correlated data structure in this <strong>panel</strong>, paves the way to linear Mixed-Effects modelling.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In linear Mixed-Effects modelling, the <span class="math notranslate nohighlight">\(n\)</span> rows in our training set will not be independent anymore. Let us view it this way: possibly, your data subsets of elements share a <strong>correlation structure</strong> (e.g., observations over time on a given response and regressors for a specific subject in a panel). <strong>This is the fundamental idea in Mixed-Effects regression.</strong></p>
+</div>
+<p>Let us take a step back and think about a population of companies. For instance, all American companies. Grunfeld did not collect data on all the American companies but sampled 11 companies from this population. The author was interested in assessing whether <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> were related to <code class="docutils literal notranslate"><span class="pre">investment</span></code> and by how much.</p>
+<p>Let us assume that the <span class="math notranslate nohighlight">\(j\)</span>th sampled <code class="docutils literal notranslate"><span class="pre">firm</span></code> has its own intercept <span class="math notranslate nohighlight">\(b_{0,j}\)</span> and the <strong>overall fixed intercept</strong> is <span class="math notranslate nohighlight">\(\beta_0\)</span> <strong>for all American companies</strong>. Therefore, for the <span class="math notranslate nohighlight">\(j\)</span>th firm, we define the following <strong>mixed</strong> intercept:</p>
+<div class="math notranslate nohighlight">
+\[
+\beta_{0,j} = \beta_0 + b_{0,j}.
+\]</div>
+<p>The intercept <span class="math notranslate nohighlight">\(b_{0,j}\)</span> is specifically for the <span class="math notranslate nohighlight">\(j\)</span>th <code class="docutils literal notranslate"><span class="pre">firm</span></code> that was sampled. It will change due to chance since it is linked to the <span class="math notranslate nohighlight">\(j\)</span>th sampled <code class="docutils literal notranslate"><span class="pre">firm</span></code> which would make it a <strong>random effect</strong>. This is the deviation of the <span class="math notranslate nohighlight">\(j\)</span>th <code class="docutils literal notranslate"><span class="pre">firm</span></code> from the overall fixed intercept <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
+<p>The <strong>regression paradigm</strong> of estimating a fixed unknown intercept <span class="math notranslate nohighlight">\(\beta_0\)</span> will change now. Moreover, the intercept <span class="math notranslate nohighlight">\(\beta_{0,j}\)</span> is what we call a <strong>mixed effect</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \overbrace{\beta_{0,j}}^{\text{Mixed Effect}} + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp;=  (\beta_0 + b_{0,j}) + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\ &amp; \qquad \qquad \qquad \; \; \; \; \text{for} \; i = 1, \ldots, n_j \; \; \text{and} \; \; j = 1, \ldots, 11.
+\end{align*}\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(n_j\)</span> is making the model even more flexible by allowing different numbers of observations <span class="math notranslate nohighlight">\(n_j\)</span> in each <span class="math notranslate nohighlight">\(j\)</span>th firm.</p>
+<p>Now,</p>
+<div class="math notranslate nohighlight">
+\[b_{0,j}\sim \mathcal{N}(0, \sigma_0^2)\]</div>
+<p>is called a <strong>random effect</strong> and we assume it is independent of the error component</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon_{i,j}\sim \mathcal{N}(0, \sigma^2).\]</div>
+<p>The observations for the same <code class="docutils literal notranslate"><span class="pre">firm</span></code> (group) share the same random effect <strong>making a correlation structure</strong>.</p>
+<p>The variance of the <span class="math notranslate nohighlight">\(i\)</span>th response for the <span class="math notranslate nohighlight">\(j\)</span>th <code class="docutils literal notranslate"><span class="pre">firm</span></code> will be</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}(\texttt{investment}_{i,j}) = \text{Var}(b_{0,j}) + \text{Var}(\varepsilon_{i,j}) = \sigma_0^2 + \sigma^2.
+\]</div>
+<p>For the <span class="math notranslate nohighlight">\(k\)</span>th and <span class="math notranslate nohighlight">\(l\)</span>th responses, within the <span class="math notranslate nohighlight">\(j\)</span>th firm, the correlation is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Corr}(\texttt{investment}_{k,j}, \texttt{investment}_{l,j}) = \frac{\sigma^2_0}{\sigma_0^2 + \sigma^2}.
+\]</div>
+<p>We could even go further and model random slopes, along with the existing fixed ones, as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j}
+&amp;= \overbrace{\beta_{0,j}}^{\text{Mixed Effect}} + \overbrace{\beta_{1,j}}^{\text{Mixed Effect}} \times \texttt{marketValue}_{i,j} + \overbrace{\beta_{2,j}}^{\text{Mixed Effect}} \times \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp;=  (\beta_0 + b_{0,j}) + (\beta_1 + b_{1,j}) \times \texttt{marketValue}_{i,j} + (\beta_2 + b_{2,j}) \times \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad  \qquad \qquad \qquad \qquad \text{for} \; i = 1, \ldots, n_j \; \; \text{and} \; \; j = 1, \ldots, 11;
+\end{align*}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\((b_{0,j}, b_{1,j}, b_{2,j})^{T} \sim \mathcal{N}_3(\mathbf{0}, \mathbf{D})\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{0} = (0, 0, 0)^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> is a generic covariance matrix.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note that the above random effects <span class="math notranslate nohighlight">\(b_{0,j}\)</span>, <span class="math notranslate nohighlight">\(b_{1,j}\)</span>, and <span class="math notranslate nohighlight">\(b_{2,j}\)</span> have a Multivariate Gaussian distribution of <span class="math notranslate nohighlight">\(d = 3\)</span>. You can review further details about this distribution in the <a class="reference external" href="https://pages.github.ubc.ca/MDS-2023-24/DSCI_551_stat-prob-dsci_students/notes/07_lecture-continuous-multivariate.html#multivariate-gaussian-or-normal-family"><strong>DSCI 551</strong></a> notes.</p>
+</div>
+<section id="what-is-this-generic-covariance-matrix-mathbf-d">
+<h3>2.1. What is this Generic Covariance Matrix <span class="math notranslate nohighlight">\(\mathbf{D}\)</span>?<a class="headerlink" href="#what-is-this-generic-covariance-matrix-mathbf-d" title="Permalink to this heading">#</a></h3>
+<p>This is a <strong>standard form</strong> in linear Mixed-Effects modelling. Hence, this matrix becomes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+\mathbf{D} =
+\begin{bmatrix}
+\sigma_{0}^2 &amp; \rho_{01} \sigma_{0} \sigma_{1} &amp; \rho_{02} \sigma_{0} \sigma_{2}\\
+\rho_{01} \sigma_{0} \sigma_{1} &amp; \sigma_{1}^2 &amp; \rho_{12} \sigma_{1} \sigma_{2}\\
+\rho_{02} \sigma_{0} \sigma_{2} &amp; \rho_{12} \sigma_{1} \sigma_{2} &amp; \sigma_{2}^2
+\end{bmatrix} = \begin{bmatrix}
+\sigma_{0}^2 &amp; \sigma_{0, 1} &amp; \sigma_{0, 2} \\
+\sigma_{0, 1} &amp; \sigma_{1}^2 &amp; \sigma_{1,2}\\
+\sigma_{0, 2} &amp; \sigma_{1, 2}  &amp; \sigma_{2}^2
+\end{bmatrix},
+\end{equation*}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_{0}^2\)</span>, <span class="math notranslate nohighlight">\(\sigma_{1}^2\)</span>, and <span class="math notranslate nohighlight">\(\sigma_{2}^2\)</span> are the variances of <span class="math notranslate nohighlight">\(b_{0,j}\)</span>, <span class="math notranslate nohighlight">\(b_{1,j}\)</span>, and <span class="math notranslate nohighlight">\(b_{2,j}\)</span> respectively.</p>
+<p>Moreover <span class="math notranslate nohighlight">\(\rho_{uv} \in [0,1]\)</span> is the correlation between the <span class="math notranslate nohighlight">\(u\)</span>th and the <span class="math notranslate nohighlight">\(v\)</span>th random effects. We can reexpress the covariances as <span class="math notranslate nohighlight">\(\sigma_{u, v}\)</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho_{uv}\)</span> indicates a Pearson’s correlation, which you can also review <a class="reference external" href="https://pages.github.ubc.ca/MDS-2023-24/DSCI_551_stat-prob-dsci_students/notes/appendix-prob-cheatsheet.html#pearson-s-correlation"><strong>here</strong></a>.</p></li>
+<li><p>While the <strong>random effects are assumed to follow a joint Normal distribution</strong>, this is different from the <strong>sampling distribution</strong> of the estimates of the fixed effects.</p></li>
+<li><p>The joint Normal distribution explains the variability of <strong>random</strong> regression intercepts and coefficients. The spread does not change when we collect more data.</p></li>
+<li><p>The sampling distribution explains the uncertainty in the <strong>fixed</strong> regression estimates and <strong>gets narrower</strong> as we collect more data.</p></li>
+</ul>
+</div>
+</section>
+<section id="model-fitting-inference-and-coefficient-interpretation">
+<h3>2.2. Model Fitting, Inference, and Coefficient Interpretation<a class="headerlink" href="#model-fitting-inference-and-coefficient-interpretation" title="Permalink to this heading">#</a></h3>
+<p>Let us estimate the regression model with a mixed intercept only (<code class="docutils literal notranslate"><span class="pre">mixed_intercept_model</span></code>) via the function <code class="docutils literal notranslate"><span class="pre">lmer()</span></code> from package <code class="docutils literal notranslate"><span class="pre">lme4</span></code>. <strong>Note that <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">|</span> <span class="pre">firm)</span></code> allows the model to have a random intercept by <code class="docutils literal notranslate"><span class="pre">firm</span></code>.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">mixed_intercept_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lmer</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="n">capital</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">firm</span><span class="p">),</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span>
+<span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML [&#39;lmerModLmerTest&#39;]
+Formula: investment ~ market_value + capital + (1 | firm)
+   Data: Grunfeld
+REML criterion at convergence: 2394.616
+Random effects:
+ Groups   Name        Std.Dev.
+ firm     (Intercept) 82.10   
+ Residual             50.27   
+Number of obs: 220, groups:  firm, 11
+Fixed Effects:
+ (Intercept)  market_value       capital  
+    -54.0318        0.1094        0.3082  
+fit warnings:
+Some predictor variables are on very different scales: consider rescaling
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall the regression equation for <code class="docutils literal notranslate"><span class="pre">mixed_intercept_model</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j} &amp;= \overbrace{\beta_{0,j}}^{\text{Mixed Effect}} + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp;=  (\beta_0 + b_{0,j}) + \beta_1 \texttt{marketValue}_{i,j} + \beta_2\texttt{capital}_{i,j} + \varepsilon_{i,j} \\ &amp; \qquad \qquad \qquad \; \; \; \; \text{for} \; i = 1, \ldots, n_j \; \; \text{and} \; \; j = 1, \ldots, 11;
+\end{align*}\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[b_{0,j}\sim \mathcal{N}(0, \sigma_0^2)\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon_{i,j}\sim \mathcal{N}(0, \sigma^2).\]</div>
+<p>The section <code class="docutils literal notranslate"><span class="pre">Random</span> <span class="pre">effects</span></code> will show the estimated standard deviations <span class="math notranslate nohighlight">\(\hat{\sigma}_0\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> as <code class="docutils literal notranslate"><span class="pre">82.10</span></code> and <code class="docutils literal notranslate"><span class="pre">50.27</span></code>, respectively. Estimated <code class="docutils literal notranslate"><span class="pre">Fixed</span> <span class="pre">effects</span></code> <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>, and <span class="math notranslate nohighlight">\(\hat{\beta}_2\)</span> are <code class="docutils literal notranslate"><span class="pre">-54.0318</span></code>, <code class="docutils literal notranslate"><span class="pre">0.1094</span></code>, and <code class="docutils literal notranslate"><span class="pre">0.3082</span></code> respectively.</p>
+<p>Now, let us estimate the Mixed-Effects regression model with mixed intercept and slopes (<code class="docutils literal notranslate"><span class="pre">full_mixed_model</span></code>). <strong>Note that <code class="docutils literal notranslate"><span class="pre">(market_value</span> <span class="pre">+</span> <span class="pre">capital</span> <span class="pre">|</span> <span class="pre">firm)</span></code> allows the model to have a random intercept and slopes by <code class="docutils literal notranslate"><span class="pre">firm</span></code>.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">full_mixed_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lmer</span><span class="p">(</span><span class="n">investment</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="n">capital</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">market_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">firm</span><span class="p">),</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Grunfeld</span>
+<span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML [&#39;lmerModLmerTest&#39;]
+Formula: investment ~ market_value + capital + (market_value + capital |  
+    firm)
+   Data: Grunfeld
+REML criterion at convergence: 2299.116
+Random effects:
+ Groups   Name         Std.Dev. Corr       
+ firm     (Intercept)  15.15612            
+          market_value  0.05235 -1.00      
+          capital       0.12291 -0.85  0.85
+ Residual              40.77647            
+Number of obs: 220, groups:  firm, 11
+Fixed Effects:
+ (Intercept)  market_value       capital  
+    -7.79756       0.06118       0.22694  
+fit warnings:
+Some predictor variables are on very different scales: consider rescaling
+optimizer (nloptwrap) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall the regression equation for <code class="docutils literal notranslate"><span class="pre">full_mixed_model</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\texttt{investment}_{i,j}
+&amp;= \overbrace{\beta_{0,j}}^{\text{Mixed Effect}} + \overbrace{\beta_{1,j}}^{\text{Mixed Effect}} \times \texttt{marketValue}_{i,j} + \overbrace{\beta_{2,j}}^{\text{Mixed Effect}} \times \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp;=  (\beta_0 + b_{0,j}) + (\beta_1 + b_{1,j}) \times \texttt{marketValue}_{i,j} + (\beta_2 + b_{2,j}) \times \texttt{capital}_{i,j} + \varepsilon_{i,j} \\
+&amp; \qquad \qquad  \qquad \qquad \qquad \qquad \text{for} \; i = 1, \ldots, n_j \; \; \text{and} \; \; j = 1, \ldots, 11;
+\end{align*}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\((b_{0,j}, b_{1,j}, b_{2,j})^{T} \sim \mathcal{N}_3(\mathbf{0}, \mathbf{D})\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{0} = (0, 0, 0)^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> is a generic covariance matrix.</p>
+<p>The section <code class="docutils literal notranslate"><span class="pre">Random</span> <span class="pre">effects</span></code> will show the estimated standard deviations <span class="math notranslate nohighlight">\(\hat{\sigma}_0\)</span>, <span class="math notranslate nohighlight">\(\hat{\sigma}_1\)</span>, <span class="math notranslate nohighlight">\(\hat{\sigma}_2\)</span>, and <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> as <code class="docutils literal notranslate"><span class="pre">15.15612</span></code>, <code class="docutils literal notranslate"><span class="pre">0.05235</span></code>, <code class="docutils literal notranslate"><span class="pre">0.12291</span></code>, and <code class="docutils literal notranslate"><span class="pre">40.77647</span></code> respectively. Estimated <code class="docutils literal notranslate"><span class="pre">Fixed</span> <span class="pre">effects</span></code> <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>, and <span class="math notranslate nohighlight">\(\hat{\beta}_2\)</span> are <code class="docutils literal notranslate"><span class="pre">-7.79756</span></code>, <code class="docutils literal notranslate"><span class="pre">0.06118</span></code>, and <code class="docutils literal notranslate"><span class="pre">0.22694</span></code> respectively.</p>
+<p>Let us proceed with inference using  <code class="docutils literal notranslate"><span class="pre">mixed_intercept_model</span></code>. We now assess whether the fixed effects are statistically associated with <code class="docutils literal notranslate"><span class="pre">investment</span></code> in each model via <code class="docutils literal notranslate"><span class="pre">summary()</span></code>. We will use the package <code class="docutils literal notranslate"><span class="pre">lmerTest</span></code> along with function <code class="docutils literal notranslate"><span class="pre">summary()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">lmerTest</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">mixed_intercept_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: investment ~ market_value + capital + (1 | firm)
+   Data: Grunfeld
+
+REML criterion at convergence: 2394.6
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.6018 -0.3138  0.0139  0.3148  5.0604 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ firm     (Intercept) 6741     82.10   
+ Residual             2528     50.27   
+Number of obs: 220, groups:  firm, 11
+
+Fixed effects:
+               Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)  -54.031821  26.623551  12.069048  -2.029   0.0651 .  
+market_value   0.109352   0.009987 129.346325  10.950   &lt;2e-16 ***
+capital        0.308200   0.016368 213.247094  18.830   &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) mrkt_v
+market_valu -0.312       
+capital     -0.021 -0.369
+fit warnings:
+Some predictor variables are on very different scales: consider rescaling
+</pre></div>
+</div>
+</div>
+</div>
+<p>We do the same with <code class="docutils literal notranslate"><span class="pre">full_mixed_model</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">full_mixed_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: investment ~ market_value + capital + (market_value + capital |  
+    firm)
+   Data: Grunfeld
+
+REML criterion at convergence: 2299.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.5030 -0.1660  0.0100  0.1819  4.1389 
+
+Random effects:
+ Groups   Name         Variance  Std.Dev. Corr       
+ firm     (Intercept)  2.297e+02 15.15612            
+          market_value 2.741e-03  0.05235 -1.00      
+          capital      1.511e-02  0.12291 -0.85  0.85
+ Residual              1.663e+03 40.77647            
+Number of obs: 220, groups:  firm, 11
+
+Fixed effects:
+             Estimate Std. Error       df t value Pr(&gt;|t|)    
+(Intercept)  -7.79756    7.79890  7.01489  -1.000 0.350626    
+market_value  0.06118    0.01927  7.74466   3.175 0.013660 *  
+capital       0.22694    0.04422  9.52493   5.132 0.000517 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) mrkt_v
+market_valu -0.691       
+capital     -0.547  0.564
+fit warnings:
+Some predictor variables are on very different scales: consider rescaling
+optimizer (nloptwrap) convergence code: 0 (OK)
+boundary (singular) fit: see help(&#39;isSingular&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> are significant with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span> in both models. <strong>Moreover, the regression coefficients’ interpretation for the fixed effects will be on the effect these regressors have on the population <code class="docutils literal notranslate"><span class="pre">investment</span></code> mean of the American companies.</strong></p>
+<p>We can obtain the estimated coefficients by <code class="docutils literal notranslate"><span class="pre">firm</span></code> along with the intercepts for both models via <code class="docutils literal notranslate"><span class="pre">coef()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">coef</span><span class="p">(</span><span class="n">mixed_intercept_model</span><span class="p">)</span><span class="o">$</span><span class="n">firm</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 11 × 3</caption>
+<thead>
+	<tr><th></th><th scope=col>(Intercept)</th><th scope=col>market_value</th><th scope=col>capital</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>General Motors</th><td> -65.526515</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>US Steel</th><td> 101.069974</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>General Electric</th><td>-230.027388</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Chrysler</th><td> -27.544640</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Atlantic Refining</th><td>-112.435102</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>IBM</th><td> -23.220327</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Union Oil</th><td> -65.632801</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Westinghouse</th><td> -56.815866</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Goodyear</th><td> -85.813152</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>Diamond Match</th><td>  -7.376705</td><td>0.109352</td><td>0.3081997</td></tr>
+	<tr><th scope=row>American Steel</th><td> -21.027505</td><td>0.109352</td><td>0.3081997</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Column <code class="docutils literal notranslate"><span class="pre">(Intercept)</span></code> is the sum <span class="math notranslate nohighlight">\(\hat{\beta}_0 + \hat{b}_{0,j}\)</span>. Note the estimated regression coefficients for <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> are the same since <code class="docutils literal notranslate"><span class="pre">mixed_intercept_model</span></code> only has <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span> as its general modelling setup.</p>
+<p>The coefficient summary changes in <code class="docutils literal notranslate"><span class="pre">full_mixed_model</span></code> given that we also include random effects for <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code>, as shown below. Columns <code class="docutils literal notranslate"><span class="pre">market_value</span></code> and <code class="docutils literal notranslate"><span class="pre">capital</span></code> are the sums <span class="math notranslate nohighlight">\(\hat{\beta}_1 + \hat{b}_{1,j}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta}_2 + \hat{b}_{2,j}\)</span>, respectively. Column <code class="docutils literal notranslate"><span class="pre">(Intercept)</span></code> is the sum <span class="math notranslate nohighlight">\(\hat{\beta}_0 + \hat{b}_{0,j}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">coef</span><span class="p">(</span><span class="n">full_mixed_model</span><span class="p">)</span><span class="o">$</span><span class="n">firm</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 11 × 3</caption>
+<thead>
+	<tr><th></th><th scope=col>(Intercept)</th><th scope=col>market_value</th><th scope=col>capital</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>General Motors</th><td>-15.9552583</td><td>0.08936163</td><td>0.3746270</td></tr>
+	<tr><th scope=row>US Steel</th><td>-37.3981285</td><td>0.16343240</td><td>0.4206200</td></tr>
+	<tr><th scope=row>General Electric</th><td>  3.7069150</td><td>0.02144198</td><td>0.1453769</td></tr>
+	<tr><th scope=row>Chrysler</th><td>-16.9962883</td><td>0.09295769</td><td>0.3041952</td></tr>
+	<tr><th scope=row>Atlantic Refining</th><td>  6.5953958</td><td>0.01146421</td><td>0.1027958</td></tr>
+	<tr><th scope=row>IBM</th><td>-14.2108882</td><td>0.08333600</td><td>0.2855949</td></tr>
+	<tr><th scope=row>Union Oil</th><td>  0.9675705</td><td>0.03090458</td><td>0.1371497</td></tr>
+	<tr><th scope=row>Westinghouse</th><td> -2.7054789</td><td>0.04359251</td><td>0.1826596</td></tr>
+	<tr><th scope=row>Goodyear</th><td>  3.9889246</td><td>0.02046783</td><td>0.1116272</td></tr>
+	<tr><th scope=row>Diamond Match</th><td> -3.5486176</td><td>0.04650499</td><td>0.1985645</td></tr>
+	<tr><th scope=row>American Steel</th><td>-10.2172843</td><td>0.06954077</td><td>0.2331584</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="exercise admonition" id="lecture4-q6">
+
+<p class="admonition-title"><span class="caption-number">Exercise 17 </span></p>
+<section id="exercise-content">
+<p>We can see that these estimated intercepts in <code class="docutils literal notranslate"><span class="pre">model_varying_intercept</span></code> and <code class="docutils literal notranslate"><span class="pre">mixed_intercept_model</span></code> are very similar. Therefore, what are the advantages of a Mixed-Effects model over a model with fixed-effects only?</p>
+</section>
+</div>
+</section>
+<section id="estimation">
+<h3>2.3. Estimation<a class="headerlink" href="#estimation" title="Permalink to this heading">#</a></h3>
+<p>The previous section skipped the estimation phase. However, we have to point out that <strong>maximum likelihood estimation (MLE)</strong> is <strong>still present</strong> in Mixed-Effects modelling. Nevertheless, MLE is performed in a different way. Recall that OLS only has a single variance component <span class="math notranslate nohighlight">\(\sigma^2\)</span>, but in Mixed-Effects modelling, we have the variance component from each random effect.</p>
+<p>Having said that, Mixed-Effects modelling performs what we call <strong>restricted MLE (R-MLE)</strong>. Overall, R-MLE starts out with obtaining the estimate <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> via OLS (and, therefore, the regression estimates <span class="math notranslate nohighlight">\(\hat{\beta}_0, \hat{\beta}_1, \dots, \hat{\beta}_k\)</span> in the presence of <span class="math notranslate nohighlight">\(k\)</span> regressors which are the fixed effects). Then, <strong>we follow a second MLE with the primary <span class="math notranslate nohighlight">\(n\)</span> residuals obtained from OLS</strong> in specific linear combinations. This will allow for estimating the remaining variance components of the random effects.</p>
+</section>
+<section id="prediction">
+<h3>2.4. Prediction<a class="headerlink" href="#prediction" title="Permalink to this heading">#</a></h3>
+<p>We can make two classes of predictions with Mixed-Effects models:</p>
+<ol class="arabic simple">
+<li><p><strong>To predict on an existing group</strong>, we find that group’s regression coefficients (and therefore model function) by summing the fixed effects and (if present) the random effects, then use that model function to make predictions.</p></li>
+<li><p><strong>To predict on a new group (using a mean prediction)</strong>, we use the fixed effects as the regression coefficients (because the random effects have mean zero) and use that model function to make predictions.</p></li>
+</ol>
+<p>For <strong>predictions on an existing group in our training set</strong> we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">full_mixed_model</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span>
+<span class="w">  </span><span class="n">firm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;General Motors&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">market_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span>
+<span class="p">)),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><strong>1:</strong> 537.4</div></div>
+</div>
+<p>If we wanted <strong>to predict the <code class="docutils literal notranslate"><span class="pre">investment</span></code> for <code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Motors</span></code></strong> with a <code class="docutils literal notranslate"><span class="pre">market_value</span></code> of USD <span class="math notranslate nohighlight">\(\$2,000\)</span> million and capital of USD <span class="math notranslate nohighlight">\(\$1,000\)</span> million, then our answer would be USD <span class="math notranslate nohighlight">\(\$537.4\)</span> million. This prediction uses <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_2\)</span>, <span class="math notranslate nohighlight">\(\hat{b}_{0, j}\)</span>, <span class="math notranslate nohighlight">\(\hat{b}_{1, j}\)</span>, and <span class="math notranslate nohighlight">\(\hat{b}_{2, j}\)</span>.</p>
+<p>Whereas that for <strong>predictions on American companies in general</strong>, we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">full_mixed_model</span><span class="p">,</span>
+<span class="w">  </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span>
+<span class="w">    </span><span class="n">firm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;New Company&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">market_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w"> </span><span class="n">capital</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span>
+<span class="w">  </span><span class="p">),</span>
+<span class="w">  </span><span class="n">allow.new.levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span>
+<span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><strong>1:</strong> 341.51</div></div>
+</div>
+<p>If we wanted <strong>to predict the MEAN <code class="docutils literal notranslate"><span class="pre">investment</span></code> for American companies</strong> with a <code class="docutils literal notranslate"><span class="pre">market_value</span></code> of USD <span class="math notranslate nohighlight">\(\$2,000\)</span> million and capital of USD <span class="math notranslate nohighlight">\(\$1,000\)</span> million, then our answer would be USD <span class="math notranslate nohighlight">\(\$341.51\)</span> million. This prediction only uses <span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span>, <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>, and <span class="math notranslate nohighlight">\(\hat{\beta}_2\)</span>.</p>
+</section>
+</section>
+<section id="wrapping-up-on-mixed-effects-modelling">
+<h2>3. Wrapping Up on Mixed-Effects Modelling<a class="headerlink" href="#wrapping-up-on-mixed-effects-modelling" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>In many different cases, when there is a correlation structure in our observations, OLS models are not suitable for our inferential or predictive inquiries.</p></li>
+<li><p>Therefore, linear Mixed-Effects models are suitable for correlated observations. Nonetheless, the model’s complexity will also be in function of our specific inquiries.</p></li>
+<li><p>We can even extend the Mixed-Effects approach to generalized linear models (GLMs)!</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lecture3_glm_ordinal_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lecture5_survival_analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 5 - Survival Analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-fixed-effects-model">1. Linear Fixed-Effects Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grunfeld-s-investment-dataset">1.1. Grunfeld’s Investment Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">1.2. Exploratory Data Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-modelling-framework">1.3. OLS Modelling Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-alternatives">1.3.1. Regression Alternatives</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-ignoring-firm">1.3.2. OLS Ignoring Firm</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression-with-varying-intercept">1.3.3. OLS Regression with Varying Intercept</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression-for-each-firm">1.3.4. OLS Regression for Each Firm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-mixed-effects-model">2. Linear Mixed-Effects Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-this-generic-covariance-matrix-mathbf-d">2.1. What is this Generic Covariance Matrix <span class="math notranslate nohighlight">\(\mathbf{D}\)</span>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fitting-inference-and-coefficient-interpretation">2.2. Model Fitting, Inference, and Coefficient Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">2.3. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">2.4. Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-mixed-effects-modelling">3. Wrapping Up on Mixed-Effects Modelling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+format: jb-book
+root: README
+parts:
+  - caption: Lectures
+    chapters:
+    - file: lecture-learning-objectives
+    - file: notes/lecture1-glm-link-functions-and-count-regression
+    - file: notes/lecture2_glm_model_selection_multinomial
+    - file: notes/lecture3_glm_ordinal_regression
+    - file: notes/lecture4_linear_mixed_effects_models
+    - file: notes/lecture5_survival_analysis
+    - file: notes/lecture6_local_regression
+    - file: notes/lecture7_quantile_regression
+    - file: notes/lecture8_missing_data
+  - caption: Appendices
+    chapters:
+    - file: notes/appendix-binary-log-regression
+    - file: notes/appendix-reg-cheatsheet
+    - file: notes/appendix-reg-mindmap
+    - file: notes/appendix-dist-cheatsheet
+    - file: notes/appendix-greek-alphabet
+  - caption: License and Code of Conduct
+    chapters:
+    - file: LICENSE
+    - file: CODE-OF-CONDUCT

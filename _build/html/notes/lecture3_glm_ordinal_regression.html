@@ -1,0 +1,1309 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression &#8212; DSCI 562 - Regression II</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notes/lecture3_glm_ordinal_regression';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 4 - Linear Mixed-Effects Models" href="lecture4_linear_mixed_effects_models.html" />
+    <link rel="prev" title="Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression" href="lecture2_glm_model_selection_multinomial.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Welcome to DSCI 562: Regression II
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lecture-learning-objectives.html">Lecture Learning Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture2_glm_model_selection_multinomial.html">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture4_linear_mixed_effects_models.html">Lecture 4 - Linear Mixed-Effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture5_survival_analysis.html">Lecture 5 - Survival Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture6_local_regression.html">Lecture 6 - Local Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture7_quantile_regression.html">Lecture 7 - Quantile Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture8_missing_data.html">Lecture 8 - Missing Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students/issues/new?title=Issue%20on%20page%20%2Fnotes/lecture3_glm_ordinal_regression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notes/lecture3_glm_ordinal_regression.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-need-for-an-ordinal-model">1. The Need for an Ordinal Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#college-juniors-dataset">2. College Juniors Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3. Exploratory Data Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-graphical-intuition-of-the-proportional-odds-assumption">A Graphical Intuition of the Proportional Odds Assumption</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">5. Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">6. Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-interpretation">7. Coefficient Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">8. Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">9. Model Selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-proportional-odds">10. Non-proportional Odds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-brant-wald-test">10.1. The Brant-Wald Test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-non-proportional-odds-model">10.2. A Non-proportional Odds Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-categorical-regression-models">11. Wrapping Up on Categorical Regression Models</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-3-generalized-linear-models-ordinal-logistic-regression">
+<h1>Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression<a class="headerlink" href="#lecture-3-generalized-linear-models-ordinal-logistic-regression" title="Permalink to this heading">#</a></h1>
+<section id="today-s-learning-goals">
+<h2>Today’s Learning Goals<a class="headerlink" href="#today-s-learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this lecture, you should be able to:</p>
+<ul class="simple">
+<li><p>Outline the modelling framework of the Ordinal Logistic regression.</p></li>
+<li><p>Explain the concept of proportional odds.</p></li>
+<li><p>Fit and interpret Ordinal Logistic regression.</p></li>
+<li><p>Use the Ordinal Logistic regression for prediction.</p></li>
+</ul>
+</section>
+<section id="loading-libraries">
+<h2>Loading Libraries<a class="headerlink" href="#loading-libraries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">)</span>
+<span class="nf">source</span><span class="p">(</span><span class="s">&quot;../scripts/support_functions.R&quot;</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">VGAM</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">cowplot</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">scales</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">foreign</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">brant</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-need-for-an-ordinal-model">
+<h2>1. The Need for an Ordinal Model<a class="headerlink" href="#the-need-for-an-ordinal-model" title="Permalink to this heading">#</a></h2>
+<p>We will continue with Regression Analysis on <strong>categorical responses</strong>. Recall that a <strong>discrete response</strong> is considered as categorical if it is of factor-type with more than two categories under the following subclassification:</p>
+<ul class="simple">
+<li><p><strong>Nominal.</strong> We have categories that do not follow any specific order—for example, the type of dwelling according to the Canadian census: <em>single-detached house</em>, <em>semi-detached house</em>, <em>row house</em>, <em>apartment</em>, and <em>mobile home</em>.</p></li>
+<li><p><strong>Ordinal.</strong> The categories, in this case, follow a specific order—for example, a Likert scale of survey items: <em>strongly disagree</em>, <em>disagree</em>, <em>neutral</em>, <em>agree</em>, and <em>strongly agree</em>.</p></li>
+</ul>
+<p>The previous Multinomial Logistic model, from <a class="reference internal" href="lecture2_glm_model_selection_multinomial.html"><span class="doc">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</span></a>, <strong>is unsuitable for ordinal responses</strong>. For example, suppose one does not consider the order in the response levels when necessary. In that case, <strong>we might risk losing valuable information when making inference or predictions</strong>. This valuable information is in the ordinal scale, which could be set up via cumulative probabilities (recall <strong>DSCI 551</strong> concepts).</p>
+<p>Therefore, the ideal approach is an alternative logistic regression that suits <strong>ordinal</strong> responses. Hence, the existence of the <strong>Ordinal Logistic regression model</strong>. Let us expand the regression mindmap as in <a class="reference internal" href="#reg-mindmap-4"><span class="std std-numref">Fig. 8</span></a> to include this new model. Note there is a key characteristic called <strong>proportional odds</strong> which is reflected on the <strong>data modelling framework</strong>.</p>
+<div class="full-width docutils">
+<figure class="align-default" id="reg-mindmap-4">
+<a class="reference internal image-reference" href="../_images/reg-mindmap-4.png"><img alt="../_images/reg-mindmap-4.png" src="../_images/reg-mindmap-4.png" style="height: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Expanded regression modelling mind map.</span><a class="headerlink" href="#reg-mindmap-4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="college-juniors-dataset">
+<h2>2. College Juniors Dataset<a class="headerlink" href="#college-juniors-dataset" title="Permalink to this heading">#</a></h2>
+<p>To illustrate the use of this generalized linear model (GLM), let us introduce an adequate dataset.</p>
+<div class="admonition-the-college-juniors-dataset admonition">
+<p class="admonition-title">The College Juniors Dataset</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">college_data</span></code> was obtained from the webpage of the <a class="reference external" href="https://stats.idre.ucla.edu/r/dae/ordinal-logistic-regression/">UCLA Statistical Consulting Group</a>.</p>
+<p>This dataset contains the results of a survey applied to <span class="math notranslate nohighlight">\(n = 400\)</span> college juniors regarding the factors that influence their decision to apply to graduate school.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">read_csv</span><span class="p">(</span><span class="s">&quot;../datasets/college_data.csv&quot;</span><span class="p">))</span>
+<span class="n">college_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A spec_tbl_df: 400 × 3</caption>
+<thead>
+	<tr><th scope=col>decision</th><th scope=col>parent_ed</th><th scope=col>GPA</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>very likely    </td><td>No </td><td>3.26</td></tr>
+	<tr><td>somewhat likely</td><td>Yes</td><td>3.21</td></tr>
+	<tr><td>unlikely       </td><td>Yes</td><td>3.94</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>somewhat likely</td><td>No</td><td>2.25</td></tr>
+	<tr><td>somewhat likely</td><td>No</td><td>3.26</td></tr>
+	<tr><td>very likely    </td><td>No</td><td>3.52</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>The dataset contains the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">decision</span></code>: how likely the student will apply to graduate school, <strong>a discrete and ordinal response with three increasing categories</strong> (<code class="docutils literal notranslate"><span class="pre">unlikely</span></code>, <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code>, and <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parent_ed</span></code>: whether at least one parent has a graduate degree, <strong>a discrete and binary explanatory variable</strong> (<code class="docutils literal notranslate"><span class="pre">Yes</span></code> and <code class="docutils literal notranslate"><span class="pre">No</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GPA</span></code>: the student’s current GPA, <strong>a continuous explanatory variable</strong>.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In this example, variable <code class="docutils literal notranslate"><span class="pre">decision</span></code> will be our response of interest. However, before proceeding with our regression analysis. Let us set it up as an <strong>ordered factor</strong> via function <code class="docutils literal notranslate"><span class="pre">as.ordered()</span></code>.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.ordered</span><span class="p">(</span><span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="p">)</span>
+<span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">fct_relevel</span><span class="p">(</span>
+<span class="w">  </span><span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="p">,</span>
+<span class="w">  </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;unlikely&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;somewhat likely&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;very likely&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nf">levels</span><span class="p">(</span><span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'unlikely'</li><li>'somewhat likely'</li><li>'very likely'</li></ol>
+</div></div>
+</div>
+<div class="admonition-main-statistical-inquiries admonition">
+<p class="admonition-title">Main Statistical Inquiries</p>
+<p>Let us suppose we want to assess the following:</p>
+<ul class="simple">
+<li><p>Is <code class="docutils literal notranslate"><span class="pre">decision</span></code> statistically related to <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> and <code class="docutils literal notranslate"><span class="pre">GPA</span></code>?</p></li>
+<li><p>How can we interpret these statistical relationships (<strong>if there are any!</strong>)?</p></li>
+</ul>
+</div>
+</section>
+<section id="exploratory-data-analysis">
+<h2>3. Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this heading">#</a></h2>
+<p>Let us plot the data first. Since <code class="docutils literal notranslate"><span class="pre">decision</span></code> is a <strong>discrete ordinal response</strong>, we have to be careful about the class of plots we are using regarding exploratory data analysis (EDA).</p>
+<p>To explore visually the relationship between <code class="docutils literal notranslate"><span class="pre">decision</span></code> and <code class="docutils literal notranslate"><span class="pre">GPA</span></code> , we will use the following side-by-side plots:</p>
+<ul class="simple">
+<li><p><strong>Boxplots.</strong></p></li>
+<li><p><strong>Violin plots.</strong></p></li>
+</ul>
+<p>The code below creates side-by-side boxplots and violin plots, where <code class="docutils literal notranslate"><span class="pre">GPA</span></code> is on the <span class="math notranslate nohighlight">\(y\)</span>-axis, and all categories of <code class="docutils literal notranslate"><span class="pre">decision</span></code> are on the <span class="math notranslate nohighlight">\(x\)</span>-axis. The side-by-side violin plots show the mean of <code class="docutils literal notranslate"><span class="pre">GPA</span></code> by <code class="docutils literal notranslate"><span class="pre">decision</span></code> category in red points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">decision</span><span class="p">,</span><span class="w"> </span><span class="n">GPA</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;GPA&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision to Apply to Graduate School&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Side-by-Side Boxplots&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
+
+<span class="n">college_data_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">decision</span><span class="p">,</span><span class="w"> </span><span class="n">GPA</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_violin</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;GPA&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision to Apply to Graduate School&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Side-by-Side Violin Plots&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">stat_summary</span><span class="p">(</span>
+<span class="w">    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;point&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, <strong>how can we visually explore the relationship between <code class="docutils literal notranslate"><span class="pre">decision</span></code> and <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code>?</strong></p>
+<p>In the case of two categorical explanatory variables, <strong>we can use stacked bar charts.</strong> Each bar will show the percentages (depicted on the <span class="math notranslate nohighlight">\(y\)</span>-axis) of college students falling on each ordered category of <code class="docutils literal notranslate"><span class="pre">decision</span></code> with the categories found in <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> on the <span class="math notranslate nohighlight">\(x\)</span>-axis. This class of bars will allow us to compare both levels of <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> in terms of the categories of <code class="docutils literal notranslate"><span class="pre">decision</span></code>.</p>
+<p>First of all, we need to do some data wrangling. The code below obtains the proportions for each level of <code class="docutils literal notranslate"><span class="pre">decision</span></code> conditioned on the categories of <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code>. If we add up all proportions corresponding to <code class="docutils literal notranslate"><span class="pre">No</span></code> or <code class="docutils literal notranslate"><span class="pre">Yes</span></code>, we will obtain 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_prop_summary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">xtabs</span><span class="p">(</span>
+<span class="w">  </span><span class="o">~</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">decision</span><span class="p">,</span>
+<span class="w">  </span><span class="n">college_data</span>
+<span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">rowSums</span><span class="p">(</span><span class="nf">xtabs</span><span class="p">(</span>
+<span class="w">  </span><span class="o">~</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">decision</span><span class="p">,</span>
+<span class="w">  </span><span class="n">college_data</span>
+<span class="p">)),</span><span class="w"> </span><span class="n">responseName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;prop&quot;</span><span class="p">)</span>
+
+<span class="n">college_data_prop_summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 6 × 3</caption>
+<thead>
+	<tr><th scope=col>parent_ed</th><th scope=col>decision</th><th scope=col>prop</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>No </td><td>unlikely       </td><td>0.59347181</td></tr>
+	<tr><td>Yes</td><td>unlikely       </td><td>0.31746032</td></tr>
+	<tr><td>No </td><td>somewhat likely</td><td>0.32640950</td></tr>
+	<tr><td>Yes</td><td>somewhat likely</td><td>0.47619048</td></tr>
+	<tr><td>No </td><td>very likely    </td><td>0.08011869</td></tr>
+	<tr><td>Yes</td><td>very likely    </td><td>0.20634921</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Then, we code the corresponding plot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_stacked_bars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">college_data_prop_summary</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parent_ed</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                                                                   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;identity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.7</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_text</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">prop</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%.0f&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="o">*</span><span class="m">100</span><span class="p">),</span><span class="s">&quot;%&quot;</span><span class="p">),</span><span class="s">&quot;&quot;</span><span class="p">)),</span>
+<span class="w">            </span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">position_stack</span><span class="p">(</span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;firebrick3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Percent&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Parent Education Status&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Stacked Bar Charts&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
+<span class="w">        </span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
+<span class="w">        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
+<span class="w">        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Blues&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+
+<span class="nf">plot_grid</span><span class="p">(</span><span class="n">college_data_side_boxplots</span><span class="p">,</span><span class="w"> </span><span class="n">college_data_side_violin</span><span class="p">,</span><span class="w"> </span><span class="n">college_data_stacked_bars</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1ce34eab8b461c6b86b76d6e2d30a9234dba85f3adab1737bad01eda74297e99.png" src="../_images/1ce34eab8b461c6b86b76d6e2d30a9234dba85f3adab1737bad01eda74297e99.png" />
+</div>
+</div>
+<div class="exercise admonition" id="lecture3-q1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 9 </span></p>
+<section id="exercise-content">
+<p>What can we see <strong>descriptively</strong> from the above plots?</p>
+</section>
+</div>
+</section>
+<section id="data-modelling-framework">
+<h2>4. Data Modelling Framework<a class="headerlink" href="#data-modelling-framework" title="Permalink to this heading">#</a></h2>
+<p>Let us suppose that a given <strong>discrete ordinal response</strong> <span class="math notranslate nohighlight">\(Y_i\)</span> (for <span class="math notranslate nohighlight">\(i = 1, \dots, n\)</span>) has categories <span class="math notranslate nohighlight">\(1, 2, \dots, m\)</span> in a training set of size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Categories <span class="math notranslate nohighlight">\(1, 2, \dots, m\)</span> <strong>implicate an ordinal scale here</strong>, i.e., <span class="math notranslate nohighlight">\(1 &lt; 2 &lt; \dots &lt; m\)</span>.</p>
+<p>Also, note there is more than one class of Ordinal Logistic regression. We will review the <strong>proportional odds</strong> model (a <strong>cumulative logit model</strong>).</p>
+</div>
+<p>We set up the Ordinal Logistical regression model for this specific dataset with <span class="math notranslate nohighlight">\(m = 3\)</span>. For the <span class="math notranslate nohighlight">\(i\)</span>th observation with the continuous <span class="math notranslate nohighlight">\(X_{i, \texttt{GPA}}\)</span> and the dummy variable</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X_{i, \texttt{parent_ed}} =
+\begin{cases}
+1 \; \; \; \; \mbox{at least one parent has a graduate degree},\\
+0 \; \; \; \; 	\mbox{neither of the parents has a graduate degree;}
+\end{cases}
+\end{split}\]</div>
+<p>the model will indicate how each one of the regressors affects the <strong>cumulative logarithm of the odds</strong> in <code class="docutils literal notranslate"><span class="pre">decision</span></code> for the following <span class="math notranslate nohighlight">\(2\)</span> situations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\text{Level } \texttt{somewhat likely}  \text{ or any lesser degree versus level } \texttt{very likely} \\
+\text{Level } \texttt{unlikely} \text{ versus level } \texttt{somewhat likely} \text{ or any higher degree}
+\end{gather*}\end{split}\]</div>
+<p>Then, we have the following system of <span class="math notranslate nohighlight">\(2\)</span> equations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\eta_i^{(\texttt{somewhat likely})} &amp;= \log\left[\frac{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}}, X_{i, \texttt{parent_ed}})}\right] \\ &amp;= \beta_0^{(\texttt{somewhat likely})} - \beta_1 X_{i, \texttt{GPA}} - \beta_2 X_{i, \texttt{parent_ed}}
+\end{align*}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\eta_i^{(\texttt{unlikely})} &amp;= \log\left[\frac{P(Y_i = \texttt{unlikely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \geq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}\right] \\ &amp;= \beta_0^{(\texttt{unlikely})} - \beta_1 X_{i, \texttt{GPA}} - \beta_2 X_{i, \texttt{parent_ed}}.
+\end{align*}\end{split}\]</div>
+<p>The system has <span class="math notranslate nohighlight">\(2\)</span> intercepts but <strong>only <span class="math notranslate nohighlight">\(2\)</span> regression coefficients</strong>. Check the signs of the <strong>common</strong> <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>, which are minuses. This is a fundamental parameterization of the <strong>proportional odds</strong> model.</p>
+<p>To make coefficient intepretation easier, we could re-expresss the equations of <span class="math notranslate nohighlight">\(\eta_i^{(\texttt{somewhat likely})}\)</span>  and <span class="math notranslate nohighlight">\(\eta_i^{(\texttt{unlikely})}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+\frac{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})} = \exp\big(-\beta_0^{(\texttt{somewhat likely})}\big) \exp\big(\beta_1 X_{i, \texttt{GPA}}\big) \exp\big(\beta_2 X_{i, \texttt{parent_ed}}\big)
+\end{equation*}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+\frac{P(Y_i \geq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i = \texttt{unlikely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})} = \exp\big(-\beta_0^{(\texttt{unlikely})}\big) \exp\big(\beta_1 X_{i, \texttt{GPA}}\big) \exp\big(\beta_2 X_{i, \texttt{parent_ed}}\big).
+\end{equation*}\]</div>
+<p>Both regression coefficients (<span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>) have a multiplicative effect on the odds on the left-hand side. Moreover, <strong>given the proportional odds assumptions</strong>, the regressor effects are the same for both cumulative odds.</p>
+<p><strong>What is the math for the general case with <span class="math notranslate nohighlight">\(m\)</span> response categories and <span class="math notranslate nohighlight">\(k\)</span> regressors?</strong></p>
+<p>Before going into the model’s mathematical notation, we have to point out that Ordinal Logistic regression will indicate how each one of the <span class="math notranslate nohighlight">\(k\)</span> regressors <span class="math notranslate nohighlight">\(X_{i,1}, \dots, X_{i,k}\)</span> affects the <strong>cumulative logarithm of the odds</strong> in the ordinal response  for the following <span class="math notranslate nohighlight">\(m - 1\)</span> situations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\text{Level } m - 1 \text{ or any lesser degree versus level } m\\
+\text{Level } m - 2 \text{ or any lesser degree versus level } m - 1 \text{ or any higher degree}\\
+\vdots \\
+\text{Level } 2 \text{ or any lesser degree versus level } 3 \text{ or any higher degree}\\
+\text{Level } 1 \text{ versus level } 2 \text{ or any higher degree}\\
+\end{gather*}\end{split}\]</div>
+<p>These <span class="math notranslate nohighlight">\(m - 1\)</span> situations are translated into cumulative probabilities using the logarithms of the odds on the left-hand side (<span class="math notranslate nohighlight">\(m - 1\)</span> link functions) subject to the linear combination of the <span class="math notranslate nohighlight">\(k\)</span> regressors <span class="math notranslate nohighlight">\(X_{i,j}\)</span> (for <span class="math notranslate nohighlight">\(j = 1, \dots, k\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\eta_i^{(m - 1)} = \log\left[\frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(m - 1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\eta_i^{(m - 2)} = \log\left[\frac{P(Y_i \leq m - 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i &gt; m - 2 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(m - 2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\vdots \\
+\eta_i^{(2)} = \log\left[\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i &gt; 2 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\eta_i^{(1)} = \log\left[\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i &gt; 1 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}.
+\end{gather*}\end{split}\]</div>
+<p>Note that the system above has <span class="math notranslate nohighlight">\(m - 1\)</span> intercepts but <strong>only <span class="math notranslate nohighlight">\(k\)</span> regression coefficients</strong>. In general, the previous <span class="math notranslate nohighlight">\(m - 1\)</span> equations can be generalized for levels <span class="math notranslate nohighlight">\(j = m - 1, \dots, 1\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\eta_i^{(j)} = \log\left[\frac{P(Y_i \leq j \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i &gt; j \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\; \; \; \; \; \; \; \; \Rightarrow \; P(Y_i \leq j \mid X_{i,1}, \ldots, X_{i,k}) = \frac{\exp\left(\beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}\right)}{1 + \exp\left(\beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}\right)}.
+\end{gather*}\end{split}\]</div>
+<p>The probability that <span class="math notranslate nohighlight">\(Y_i\)</span> will fall in the category <span class="math notranslate nohighlight">\(j\)</span> can be computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+p_{i,j} = P(Y_i = j \mid X_{i,1}, \ldots, X_{i,k}) = P(Y_i \leq j \mid X_{i,1}, \ldots, X_{i,k}) - P(Y_i \leq j - 1 \mid X_{i,1}, \ldots, X_{i,k}),
+\]</div>
+<p>which leads to</p>
+<div class="math notranslate nohighlight">
+\[
+P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = p_{i,m},
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j = 1}^m p_{i,j} = p_{i,1} + p_{i,2} + \dots + p_{i,m} = 1.
+\]</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>You will prove why we have <strong>proportional odds</strong> in this model in the challenging <strong>Exercise 4</strong> of <code class="docutils literal notranslate"><span class="pre">lab2</span></code>.</p>
+</div>
+<p>Let us check the next in-class question via <a class="reference external" href="https://student.iclicker.com/"><strong>iClicker</strong></a>.</p>
+<div class="exercise admonition" id="lecture3-q2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 10 </span></p>
+<section id="exercise-content">
+<p>Suppose we have a case with an ordered response of five levels and four continuous regressors; how many link functions, intercepts, and coefficients will our Ordinal Logistic regression model have under a proportional odds assumption?</p>
+<p><strong>A.</strong> Four link functions, four intercepts, and sixteen regression coefficients.</p>
+<p><strong>B.</strong> Five link functions, five intercepts, and five regression coefficients.</p>
+<p><strong>C.</strong> Five link functions, five intercepts, and twenty regression coefficients.</p>
+<p><strong>D.</strong> Four link functions, four intercepts, and four regression coefficients.</p>
+</section>
+</div>
+<section id="a-graphical-intuition-of-the-proportional-odds-assumption">
+<h3>A Graphical Intuition of the Proportional Odds Assumption<a class="headerlink" href="#a-graphical-intuition-of-the-proportional-odds-assumption" title="Permalink to this heading">#</a></h3>
+<p>The challenging <strong>Exercise</strong> 4 in <code class="docutils literal notranslate"><span class="pre">lab2</span></code> is about showing mathematically what the proportional odds assumption stands for in the Ordinal Logistic regression model with <span class="math notranslate nohighlight">\(k\)</span> regressors and a training set size of <span class="math notranslate nohighlight">\(n\)</span>, using a response of <span class="math notranslate nohighlight">\(m\)</span> levels in general. That said, let us show the graphical intuition with an example of an ordinal response of <span class="math notranslate nohighlight">\(5\)</span> levels and a single continuous regressor <span class="math notranslate nohighlight">\(X_{i , 1}\)</span> (<strong>which is unbounded!</strong>).</p>
+<p>The system of cumulative logit equations is the following:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\eta_i^{(4)} = \log\left[\frac{P(Y_i \leq 4 \mid X_{i,1})}{P(Y_i = 5 \mid X_{i,1})}\right] = \beta_0^{(4)} - \beta_1 X_{i, 1} \\
+\eta_i^{(3)} = \log\left[\frac{P(Y_i \leq 3 \mid X_{i,1})}{P(Y_i &gt; 3 \mid X_{i,1})}\right] = \beta_0^{(3)} - \beta_1 X_{i, 1} \\
+\eta_i^{(2)} = \log\left[\frac{P(Y_i \leq 2 \mid X_{i,1})}{P(Y_i &gt; 2 \mid X_{i,1})}\right] = \beta_0^{(2)} - \beta_1 X_{i, 1} \\
+\eta_i^{(1)} = \log\left[\frac{P(Y_i = 1 \mid X_{i,1})}{P(Y_i &gt; 1 \mid X_{i,1})}\right] = \beta_0^{(1)} - \beta_1 X_{i, 1}.
+\end{gather*}\end{split}\]</div>
+<p>This above system could be mathematically expressed as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+P(Y_i \leq 4 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(4)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(4)} - \beta_1 X_{i, 1}\right)} \\
+P(Y_i \leq 3 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(3)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(3)} - \beta_1 X_{i, 1}\right)} \\
+P(Y_i \leq 2 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(2)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(2)} - \beta_1 X_{i, 1}\right)} \\
+P(Y_i \leq 1 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1}\right)}. \\
+\end{gather*}\end{split}\]</div>
+<p>Note we have four intercepts <span class="math notranslate nohighlight">\((\beta_0^{(1)}, \beta_0^{(2)}, \beta_0^{(3)}, \beta_0^{(4)})\)</span>  and a single coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>. Moreover, assume we estimate these five parameters to be the following:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\hat{\beta}_0^{(1)} = 4\\
+\hat{\beta}_0^{(2)} = 5.5 \\ 
+\hat{\beta}_0^{(3)} = 6.3 \\ 
+\hat{\beta}_0^{(4)} = 10 \\
+\hat{\beta}_1 = 12.
+\end{gather*}\end{split}\]</div>
+<p>Let us check our estimated sigmoid functions! As we can see in <a class="reference internal" href="#sigmoid-functions"><span class="std std-numref">Fig. 9</span></a>, the proportional odds assumption also implicates proportional sigmoid functions.</p>
+<div class="full-width docutils">
+<figure class="align-default" id="sigmoid-functions">
+<a class="reference internal image-reference" href="../_images/sigmoid-functions.png"><img alt="../_images/sigmoid-functions.png" src="../_images/sigmoid-functions.png" style="height: 550px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Sigmoid functions under a proportional odds assumption (Copyright <a class="reference external" href="https://www.geogebra.org/"><strong>GeoGebra®</strong></a>, 2024).</span><a class="headerlink" href="#sigmoid-functions" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="estimation">
+<h2>5. Estimation<a class="headerlink" href="#estimation" title="Permalink to this heading">#</a></h2>
+<p><strong>All parameters</strong> in the Ordinal Logistic regression model are also unknown. Therefore, model estimates are obtained through <strong>maximum likelihood</strong>, where we also assume a <strong>Multinomial joint probability mass function</strong> of the <span class="math notranslate nohighlight">\(n\)</span> responses <span class="math notranslate nohighlight">\(Y_i\)</span>.</p>
+<p>To fit the model with the package <code class="docutils literal notranslate"><span class="pre">MASS</span></code>, we use the function <code class="docutils literal notranslate"><span class="pre">polr()</span></code>, which obtains the corresponding estimates. The argument <code class="docutils literal notranslate"><span class="pre">Hess</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> is required to compute the <a class="reference external" href="https://mathworld.wolfram.com/Hessian.html">Hessian matrix</a> of the <strong>log-likelihood function</strong>, which is used to obtain the standard errors of the estimates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ordinal_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">polr</span><span class="p">(</span><span class="n">decision</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">GPA</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">college_data</span><span class="p">,</span><span class="w"> </span><span class="n">Hess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Maximum likelihood estimation in this regression model is quite complex compared to the challenging <strong>Exercise 5</strong> in <code class="docutils literal notranslate"><span class="pre">lab1</span></code> for Binary Logistic regression. Thus, <strong>the proof will be out of the scope of this course.</strong></p>
+</div>
+</section>
+<section id="inference">
+<h2>6. Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
+<p><strong>We can determine whether a regressor is statistically associated with the logarithm of the cumulative odds</strong> through hypothesis testing for the parameters <span class="math notranslate nohighlight">\(\beta_j\)</span>. We also use the <strong>Wald statistic</strong> <span class="math notranslate nohighlight">\(z_j:\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+z_j = \frac{\hat{\beta}_j}{\mbox{se}(\hat{\beta}_j)}
+\]</div>
+<p>to test the hypotheses</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+H_0: \beta_j = 0\\
+H_a: \beta_j \neq 0.
+\end{gather*}\end{split}\]</div>
+<p>The <strong>null hypothesis</strong> <span class="math notranslate nohighlight">\(H_0\)</span> indicates that the <span class="math notranslate nohighlight">\(j\)</span>th regressor associated to <span class="math notranslate nohighlight">\(\beta_j\)</span> does not affect the response variable in the model, and the <strong>alternative hypothesis</strong> <span class="math notranslate nohighlight">\(H_a\)</span> otherwise. Moreover, provided the sample size <span class="math notranslate nohighlight">\(n\)</span> is large enough, <span class="math notranslate nohighlight">\(z_j\)</span> has an <strong>approximately Standard Normal distribution</strong> under <span class="math notranslate nohighlight">\(H_0\)</span>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">R</span></code> provides the corresponding <strong><span class="math notranslate nohighlight">\(p\)</span>-values</strong> for each <span class="math notranslate nohighlight">\(\beta_j\)</span>. The smaller the <span class="math notranslate nohighlight">\(p\)</span>-value, the stronger the evidence against the null hypothesis <span class="math notranslate nohighlight">\(H_0\)</span>. As in the previous regression models, we would set a predetermined significance level <span class="math notranslate nohighlight">\(\alpha\)</span> (usually taken to be 0.05) to infer if the <span class="math notranslate nohighlight">\(p\)</span>-value is small enough. If the <span class="math notranslate nohighlight">\(p\)</span>-value is smaller than the predetermined level <span class="math notranslate nohighlight">\(\alpha\)</span>, then you could claim that there is evidence to reject the null hypothesis. Hence, <span class="math notranslate nohighlight">\(p\)</span>-values that are small enough indicate that the data provides evidence in favour of <strong>association</strong> (<strong>or causation in the case of an experimental study!</strong>) between the response variable and the <span class="math notranslate nohighlight">\(j\)</span>th regressor.</p>
+<p>Furthermore, given a specified level of confidence where <span class="math notranslate nohighlight">\(\alpha\)</span> is the significance level, we can construct approximate <span class="math notranslate nohighlight">\((1 - \alpha) \times 100\%\)</span> <strong>confidence intervals</strong> for the corresponding true value of <span class="math notranslate nohighlight">\(\beta_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\beta}_j \pm z_{\alpha/2}\mbox{se}(\hat{\beta}_j),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_{\alpha/2}\)</span> is the upper <span class="math notranslate nohighlight">\(\alpha/2\)</span> quantile of the <strong>Standard Normal distribution</strong>.</p>
+<p>Function <code class="docutils literal notranslate"><span class="pre">polr()</span></code> does not provide <span class="math notranslate nohighlight">\(p\)</span>-values, but we can compute them as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">summary_ordinal_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cbind</span><span class="p">(</span><span class="nf">tidy</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">),</span>
+<span class="w">  </span><span class="n">p.value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">pnorm</span><span class="p">(</span><span class="nf">abs</span><span class="p">(</span><span class="nf">tidy</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">)</span><span class="o">$</span><span class="n">statistic</span><span class="p">),</span>
+<span class="w">    </span><span class="n">lower.tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">2</span>
+<span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="n">summary_ordinal_model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 4 × 6</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>coef.type</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>parent_edYes               </td><td>1.05</td><td>0.27</td><td>3.94</td><td>coefficient</td><td>0.00</td></tr>
+	<tr><td>GPA                        </td><td>0.60</td><td>0.25</td><td>2.38</td><td>coefficient</td><td>0.02</td></tr>
+	<tr><td>unlikely|somewhat likely   </td><td>2.18</td><td>0.77</td><td>2.84</td><td>scale      </td><td>0.00</td></tr>
+	<tr><td>somewhat likely|very likely</td><td>4.27</td><td>0.79</td><td>5.39</td><td>scale      </td><td>0.00</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Terms <code class="docutils literal notranslate"><span class="pre">unlikely|somewhat</span> <span class="pre">likely</span></code> and <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely|very</span> <span class="pre">likely</span></code> refer to the estimated intercepts <span class="math notranslate nohighlight">\(\hat{\beta}_0^{(\texttt{unlikely})}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta}_0^{(\texttt{somewhat likely})}\)</span>, respectively (<strong>note the hat notation</strong>).</p>
+<p>Finally, we see that those coefficients associated with <code class="docutils literal notranslate"><span class="pre">GPA</span></code> and <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> are statistically significant with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>.</p>
+<p>Function <code class="docutils literal notranslate"><span class="pre">confint()</span></code> can provide the 95% confidence intervals for the estimates contained in <code class="docutils literal notranslate"><span class="pre">tidy()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">confint</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Waiting for profiling to be done...
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 2 × 2 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>2.5 %</th><th scope=col>97.5 %</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>parent_edYes</th><td>0.53</td><td>1.57</td></tr>
+	<tr><th scope=row>GPA</th><td>0.11</td><td>1.11</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="coefficient-interpretation">
+<h2>7. Coefficient Interpretation<a class="headerlink" href="#coefficient-interpretation" title="Permalink to this heading">#</a></h2>
+<p>The interpretation of the Ordinal Logistic regression coefficients will change since we are modelling cumulative probabilities. Let us interpret the association of <code class="docutils literal notranslate"><span class="pre">decision</span></code> with <code class="docutils literal notranslate"><span class="pre">GPA</span></code> and <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tibble</span><span class="p">(</span><span class="n">summary_ordinal_model</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">exp.estimate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">exp</span><span class="p">(</span><span class="n">summary_ordinal_model</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">]),</span><span class="w"> </span><span class="m">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 2 × 3</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>exp.estimate</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>parent_edYes</td><td>1.05</td><td>2.86</td></tr>
+	<tr><td>GPA         </td><td>0.60</td><td>1.82</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>By using the column <code class="docutils literal notranslate"><span class="pre">exp.estimate</span></code>, <strong>along with the model equations on the original scale of the cumulative odds</strong>, we interpret the two regression coefficients above <strong>by each odds</strong> as follows:</p>
+<p>For the odds</p>
+<div class="math notranslate nohighlight">
+\[\frac{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})} = \exp\big(-\beta_0^{(\texttt{somewhat likely})}\big) \exp\big(\beta_1 X_{i, \texttt{GPA}}\big) \exp\big(\beta_2 X_{i, \texttt{parent_ed}}\big).\]</div>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span>: “for each one-unit increase in the <code class="docutils literal notranslate"><span class="pre">GPA</span></code>, the odds that the student is <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>  versus <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> to apply to graduate school increase by <span class="math notranslate nohighlight">\(\exp \left( \hat{\beta}_1 \right) = 1.82\)</span> times (while holding <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> constant).”</p></li>
+</ul>
+</div></blockquote>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_2\)</span>: “for those respondents whose parents attended to graduate school, the odds that the student is <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> versus <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> to apply to graduate school increase by <span class="math notranslate nohighlight">\(\exp \left( \hat{\beta}_2 \right) = 2.86\)</span> times (when compared to those respondents whose parents did not attend to graduate school and holding <code class="docutils literal notranslate"><span class="pre">GPA</span></code> constant).”</p></li>
+</ul>
+</div></blockquote>
+<p>For the odds</p>
+<div class="math notranslate nohighlight">
+\[\frac{P(Y_i \geq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i = \texttt{unlikely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})} = \exp\big(-\beta_0^{(\texttt{unlikely})}\big) \exp\big(\beta_1 X_{i, \texttt{GPA}}\big) \exp\big(\beta_2 X_{i, \texttt{parent_ed}}\big).\]</div>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span>: “for each one-unit increase in the <code class="docutils literal notranslate"><span class="pre">GPA</span></code>, the odds that the student is <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> versus <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> to apply to graduate school increase by <span class="math notranslate nohighlight">\(\exp \left( \hat{\beta}_1 \right) = 1.82\)</span> times (while holding <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> constant).”</p></li>
+</ul>
+</div></blockquote>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_2\)</span>: “for those respondents whose parents attended to graduate school, the odds that the student is <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>  or <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> versus <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> to apply to graduate school increase by <span class="math notranslate nohighlight">\(\exp \left( \hat{\beta}_2 \right) = 2.86\)</span> times (when compared to those respondents whose parents did not attend to graduate school and holding <code class="docutils literal notranslate"><span class="pre">GPA</span></code> constant).”</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="predictions">
+<h2>8. Predictions<a class="headerlink" href="#predictions" title="Permalink to this heading">#</a></h2>
+<p><strong>Aside from our main statistical inquiries</strong>, using the function <code class="docutils literal notranslate"><span class="pre">predict()</span></code> with the object <code class="docutils literal notranslate"><span class="pre">ordinal_model</span></code>, we can obtain the estimated probabilities to apply to graduate school (associated to <code class="docutils literal notranslate"><span class="pre">unlikely</span></code>, <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code>, and <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>) for a student with a <code class="docutils literal notranslate"><span class="pre">GPA</span></code> of 3.5 whose parents attended to graduate school.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">GPA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;probs&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.dl-inline {width: auto; margin:0; padding: 0}
+.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
+.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
+.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
+</style><dl class=dl-inline><dt>unlikely</dt><dd>0.27</dd><dt>somewhat likely</dt><dd>0.48</dd><dt>very likely</dt><dd>0.25</dd></dl>
+</div></div>
+</div>
+<p>We can see that it is <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> to apply to graduate school with a probability of 0.48. <strong>Thus, we could classify the student in this ordinal category.</strong></p>
+<p>Unfortunately, <code class="docutils literal notranslate"><span class="pre">predict()</span></code> with <code class="docutils literal notranslate"><span class="pre">polr()</span></code> does not provide a quick way to compute this model’s corresponding predicted cumulative odds for a new observation. Nonetheless, we could use function <code class="docutils literal notranslate"><span class="pre">vglm()</span></code>(from package <code class="docutils literal notranslate"><span class="pre">VGAM</span></code>) again while keeping in mind that <strong>this function labels the response categories as numbers</strong>. Let us check this for <code class="docutils literal notranslate"><span class="pre">decision</span></code> with <code class="docutils literal notranslate"><span class="pre">levels()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">levels</span><span class="p">(</span><span class="n">college_data</span><span class="o">$</span><span class="n">decision</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'unlikely'</li><li>'somewhat likely'</li><li>'very likely'</li></ol>
+</div></div>
+</div>
+<p>Hence, <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> is <code class="docutils literal notranslate"><span class="pre">2</span></code>, and <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> is <code class="docutils literal notranslate"><span class="pre">3</span></code>. Now, let us use <code class="docutils literal notranslate"><span class="pre">vglm()</span></code> with <code class="docutils literal notranslate"><span class="pre">propodds</span></code> to fit the same model (named <code class="docutils literal notranslate"><span class="pre">ordinal_model_vglm</span></code>) as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ordinal_model_vglm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vglm</span><span class="p">(</span><span class="n">decision</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">GPA</span><span class="p">,</span><span class="w"> </span><span class="n">propodds</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">college_data</span><span class="p">)</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">ordinal_model_vglm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
+vglm(formula = decision ~ parent_ed + GPA, family = propodds, 
+    data = college_data)
+
+Coefficients: 
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept):1  -2.1763     0.7726  -2.817  0.00485 ** 
+(Intercept):2  -4.2716     0.7976  -5.356 8.52e-08 ***
+parent_edYes    1.0457     0.2682   3.899 9.67e-05 ***
+GPA             0.6043     0.2561   2.360  0.01829 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Names of linear predictors: logitlink(P[Y&gt;=2]), logitlink(P[Y&gt;=3])
+
+Residual deviance: 717.0638 on 796 degrees of freedom
+
+Log-likelihood: -358.5319 on 796 degrees of freedom
+
+Number of Fisher scoring iterations: 4 
+
+No Hauck-Donner effect found in any of the estimates
+
+
+Exponentiated coefficients:
+parent_edYes          GPA 
+    2.845388     1.829895 
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will double-check whether <code class="docutils literal notranslate"><span class="pre">ordinal_model_vglm</span></code> provides the same classification probabilities via <code class="docutils literal notranslate"><span class="pre">predict()</span></code>. Note that the function parameterization changes to <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;response&quot;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">ordinal_model_vglm</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">GPA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;response&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 1 × 3 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>unlikely</th><th scope=col>somewhat likely</th><th scope=col>very likely</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>0.27</td><td>0.48</td><td>0.25</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Yes, we get identical results using <code class="docutils literal notranslate"><span class="pre">vglm()</span></code>. Now, let us use <code class="docutils literal notranslate"><span class="pre">predict()</span></code> with <code class="docutils literal notranslate"><span class="pre">ordinal_model_vglm</span></code> to obtain the predicted cumulative odds for a student with a <code class="docutils literal notranslate"><span class="pre">GPA</span></code> of 3.5 whose parents attended to graduate school (via argument <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;link&quot;</span></code> in <code class="docutils literal notranslate"><span class="pre">predict()</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">ordinal_model_vglm</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">GPA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;link&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 1 × 2 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>logitlink(P[Y&gt;=2])</th><th scope=col>logitlink(P[Y&gt;=3])</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>0.98</td><td>-1.11</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Then, let us take these predictions to the odds’ original scale via <code class="docutils literal notranslate"><span class="pre">exp()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">exp</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">ordinal_model_vglm</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">GPA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">parent_ed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;link&quot;</span><span class="p">)),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 1 × 2 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>logitlink(P[Y&gt;=2])</th><th scope=col>logitlink(P[Y&gt;=3])</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>2.68</td><td>0.33</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Again, we see the numeric labels (a drawback of using <code class="docutils literal notranslate"><span class="pre">vglm()</span></code>). We interpret these predictions as follows:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}\)</span>, i.e., <code class="docutils literal notranslate"><span class="pre">P[Y&gt;=3]</span></code> (label <code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>): “<strong>a student, with a <code class="docutils literal notranslate"><span class="pre">GPA</span></code> of 3.5 whose parents attended to graduate school, is 3.03 (<span class="math notranslate nohighlight">\(1 / 0.33\)</span>) times <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> versus <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school</strong>.” This prediction goes in line with the predicted probabilities above, given that <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> has a probability of 0.48 and <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> a probability of 0.27.</p></li>
+</ul>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{P(Y_i \geq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i = \texttt{unlikely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}\)</span>, i.e., <code class="docutils literal notranslate"><span class="pre">P[Y&gt;=2]</span></code> (label <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"> <span class="pre">somewhat</span> <span class="pre">likely</span></code>): “<strong>a student, with a <code class="docutils literal notranslate"><span class="pre">GPA</span></code> of 3.5 whose parents attended to graduate school, is 2.68 times <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> versus <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> to apply to graduate school</strong>.” This prediction goes in line with the predicted probabilities above, given that <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> has a probability of 0.48 and <code class="docutils literal notranslate"> <span class="pre">very</span> <span class="pre">likely</span></code> a probability of 0.25.</p></li>
+</ul>
+</section>
+<section id="model-selection">
+<h2>9. Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this heading">#</a></h2>
+<p><strong>To perform model selection</strong>, we can use the same techniques from the Binary Logistic regression model (check <a class="reference internal" href="appendix-binary-log-regression.html#bin-log-model-selection"><span class="std std-ref">8. Model Selection</span></a>). That said, some <code class="docutils literal notranslate"><span class="pre">R</span></code> coding functions might not be entirely available for the <code class="docutils literal notranslate"><span class="pre">polr()</span></code> models. Still, these statistical techniques and metrics can be manually coded.</p>
+</section>
+<section id="non-proportional-odds">
+<h2>10. Non-proportional Odds<a class="headerlink" href="#non-proportional-odds" title="Permalink to this heading">#</a></h2>
+<p>Now, we might wonder</p>
+<blockquote>
+<div><p><em>What happens if we do not fulfil the proportional odds assumption in our Ordinal Logistic regression model?</em></p>
+</div></blockquote>
+<section id="the-brant-wald-test">
+<h3>10.1. The Brant-Wald Test<a class="headerlink" href="#the-brant-wald-test" title="Permalink to this heading">#</a></h3>
+<p>It is essential to remember that the Ordinal Logistic model under the proportional odds assumption is <strong>the first step</strong> when performing Regression Analysis on an ordinal response.</p>
+<p>Once this model has been fitted, <strong>it is possible to assess whether it fulfils this strong assumption statistically</strong>.</p>
+<p>We can do it via the Brant-Wald test:</p>
+<ul class="simple">
+<li><p>This tool performs statistically assesses whether our model globally fulfils this assumption. It has the following hypotheses:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+H_0: \text{Our Ordinal Logistic regression model globally fulfils the proportional odds assumption.} \\
+H_a: \text{Otherwise}.
+\end{gather*}\end{split}\]</div>
+<ul class="simple">
+<li><p>Moreover, it also performs further hypothesis testing on each regressor. With <span class="math notranslate nohighlight">\(k\)</span> regressors for <span class="math notranslate nohighlight">\(j = 1, \dots, k\)</span>; we have the following hypotheses:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+H_0: \text{The } j \text{th regressor in our Ordinal Logistic regression model fulfils the proportional odds assumption.} \\
+H_a: \text{Otherwise}.
+\end{gather*}\end{split}\]</div>
+<p>Function <code class="docutils literal notranslate"><span class="pre">brant()</span></code> from package <code class="docutils literal notranslate"><span class="pre">brant</span></code> implements this tool, which can be used in our <code class="docutils literal notranslate"><span class="pre">polr()</span></code> object <code class="docutils literal notranslate"><span class="pre">ordinal_model</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">brant</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-------------------------------------------- 
+Test for	X2	df	probability 
+-------------------------------------------- 
+Omnibus		0.73	2	0.69
+parent_edYes	0.09	1	0.76
+GPA		0.7	1	0.4
+-------------------------------------------- 
+
+H0: Parallel Regression Assumption holds
+</pre></div>
+</div>
+</div>
+</div>
+<p>The row <code class="docutils literal notranslate"><span class="pre">Omnibus</span></code> represents the global model, while the other two rows correspond to our two regressors: <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> and <code class="docutils literal notranslate"><span class="pre">GPA</span></code>. Note that with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>, we are completely fulfilling the proportional odds assumption (the column <code class="docutils literal notranslate"><span class="pre">probability</span></code> delivers the corresponding <span class="math notranslate nohighlight">\(p\)</span>-values).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The Brant Wald test essentially compares this basic Ordinal Logistic regression model of <span class="math notranslate nohighlight">\(k-1\)</span> cumulative logit functions versus a combination of k − 1 correlated binary logistic regressions.</p>
+</div>
+</section>
+<section id="a-non-proportional-odds-model">
+<h3>10.2. A Non-proportional Odds Model<a class="headerlink" href="#a-non-proportional-odds-model" title="Permalink to this heading">#</a></h3>
+<p>Suppose that our example case <strong>does not fulfil</strong> the proportional odds assumption according to the Brant Wald test. It is possible to have a model under a <strong>non-proportional odds assumption</strong> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\eta_i^{(\texttt{somewhat likely})} &amp;= \log\left[\frac{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}}, X_{i, \texttt{parent_ed}})}\right] \\ &amp;= \beta_0^{(\texttt{somewhat likely})} - \beta_1^{(\texttt{somewhat likely})} X_{i, \texttt{GPA}} - \beta_2^{(\texttt{somewhat likely})} X_{i, \texttt{parent_ed}}
+\end{align*}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\eta_i^{(\texttt{unlikely})} &amp;= \log\left[\frac{P(Y_i = \texttt{unlikely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \geq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}\right] \\ &amp;= \beta_0^{(\texttt{unlikely})} - \beta_1^{(\texttt{unlikely})} X_{i, \texttt{GPA}} - \beta_2^{(\texttt{unlikely})} X_{i, \texttt{parent_ed}}.
+\end{align*}\end{split}\]</div>
+<p>This is called a <strong>Generalized Ordinal Logistic regression model</strong>. This class of models can be fit via <a class="reference external" href="https://search.r-project.org/CRAN/refmans/VGAM/html/cumulative.html"><strong>the function <code class="docutils literal notranslate"><span class="pre">cumulative()</span></code></strong></a> from package <code class="docutils literal notranslate"><span class="pre">VGAM</span></code>. Note that estimation, inference, coefficient interpretation, and predictions are conducted in a similar way <strong>compared to the proportional odds model</strong>.</p>
+<div class="exercise admonition" id="lecture3-q3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 11 </span></p>
+<section id="exercise-content">
+<p>Why would we have to be cautious when fitting a non-proportional odds model in the context of a response with a considerable number of ordinal levels and regressors?</p>
+</section>
+</div>
+</section>
+</section>
+<section id="wrapping-up-on-categorical-regression-models">
+<h2>11. Wrapping Up on Categorical Regression Models<a class="headerlink" href="#wrapping-up-on-categorical-regression-models" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Multinomial and Ordinal Logistic regression models address cases where our response is discrete and categorical. These models are another class GLMs with their corresponding link functions.</p></li>
+<li><p>Multinomial Logistic regression approaches nominal responses. It heavily relies on a baseline response level and the odds’ natural logarithm.</p></li>
+<li><p>Ordinal Logistic regression approaches ordinal responses. It relies on cumulative odds on an ordinal scale.</p></li>
+<li><p>We have to be careful with coefficient interpretations in these models, especially with the cumulative odds. This will imply an effective communication of these estimated models for inferential matters.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lecture2_glm_model_selection_multinomial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lecture4_linear_mixed_effects_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 4 - Linear Mixed-Effects Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-need-for-an-ordinal-model">1. The Need for an Ordinal Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#college-juniors-dataset">2. College Juniors Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3. Exploratory Data Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-graphical-intuition-of-the-proportional-odds-assumption">A Graphical Intuition of the Proportional Odds Assumption</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">5. Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">6. Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-interpretation">7. Coefficient Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">8. Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">9. Model Selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-proportional-odds">10. Non-proportional Odds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-brant-wald-test">10.1. The Brant-Wald Test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-non-proportional-odds-model">10.2. A Non-proportional Odds Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-categorical-regression-models">11. Wrapping Up on Categorical Regression Models</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

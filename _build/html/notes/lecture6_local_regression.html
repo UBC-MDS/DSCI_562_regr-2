@@ -1,0 +1,1155 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 6 - Local Regression &#8212; DSCI 562 - Regression II</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notes/lecture6_local_regression';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 7 - Quantile Regression" href="lecture7_quantile_regression.html" />
+    <link rel="prev" title="Lecture 5 - Survival Analysis" href="lecture5_survival_analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Welcome to DSCI 562: Regression II
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lecture-learning-objectives.html">Lecture Learning Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture2_glm_model_selection_multinomial.html">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture3_glm_ordinal_regression.html">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture4_linear_mixed_effects_models.html">Lecture 4 - Linear Mixed-Effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture5_survival_analysis.html">Lecture 5 - Survival Analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lecture 6 - Local Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture7_quantile_regression.html">Lecture 7 - Quantile Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture8_missing_data.html">Lecture 8 - Missing Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students/issues/new?title=Issue%20on%20page%20%2Fnotes/lecture6_local_regression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notes/lecture6_local_regression.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 6 - Local Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-local-regression">1. Piecewise Local Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-constant-regression">1.1. Piecewise Constant Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-continuous-piecewise-linear-regression">1.2. Non-Continuous Piecewise Linear Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-piecewise-linear-regression">1.3. Continuous Piecewise Linear Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nn-regression">2. <span class="math notranslate nohighlight">\(k\)</span>-NN Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#locally-weighted-scatterplot-smoother-lowess-regression">3. Locally Weighted Scatterplot Smoother (LOWESS) Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">4. Wrapping Up</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-6-local-regression">
+<h1>Lecture 6 - Local Regression<a class="headerlink" href="#lecture-6-local-regression" title="Permalink to this heading">#</a></h1>
+<section id="today-s-learning-goals">
+<h2>Today’s Learning Goals<a class="headerlink" href="#today-s-learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this lecture, you should be able to:</p>
+<ul class="simple">
+<li><p>Define the concept of local regression.</p></li>
+<li><p>Model and perform piecewise constant, linear, and continuous linear local regressions.</p></li>
+<li><p>Extend the concept of <span class="math notranslate nohighlight">\(k\)</span>-NN classification to a regression framework.</p></li>
+<li><p>Define and apply locally weighted scatterplot smoother regression.</p></li>
+</ul>
+</section>
+<section id="loading-libraries">
+<h2>Loading Libraries<a class="headerlink" href="#loading-libraries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="nf">source</span><span class="p">(</span><span class="s">&quot;../scripts/support_functions.R&quot;</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">modelr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">caret</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">gridExtra</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is time to put aside regression techniques on the global conditioned mean and check local alternatives suitable for predictions.</p>
+<div class="full-width docutils">
+<figure class="align-default" id="reg-mindmap-6">
+<a class="reference internal image-reference" href="../_images/reg-mindmap-6.png"><img alt="../_images/reg-mindmap-6.png" src="../_images/reg-mindmap-6.png" style="height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Expanded regression modelling mind map (click on the image to zoom in).</span><a class="headerlink" href="#reg-mindmap-6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="piecewise-local-regression">
+<h2>1. Piecewise Local Regression<a class="headerlink" href="#piecewise-local-regression" title="Permalink to this heading">#</a></h2>
+<p>Retaking our initial motivation in this course, the classical linear regression model (Ordinary Least-squares, OLS) is focused on the conditional mean on the regressors:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}(Y_i \mid X_{i,j} = x_{i,j}) = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_k x_{i,k} \; \; \; \; \text{since} \; \; \; \; \mathbb{E}(\varepsilon_i) = 0.
+\]</div>
+<p>We already stated that a model of this class, i.e. parametric, favours interpretability when we aim to make inference on the response and regressors.</p>
+<p>Nonetheless, suppose our goal is an <strong>accurate prediction</strong> in many complex frameworks (e.g., non-linear). In that case, the global linearity in models such as the OLS case is not that flexible.</p>
+<p>Therefore, we can use <strong>local regression techniques</strong>.</p>
+<section id="piecewise-constant-regression">
+<h3>1.1. Piecewise Constant Regression<a class="headerlink" href="#piecewise-constant-regression" title="Permalink to this heading">#</a></h3>
+<p>This regression technique is based on fitting different <strong>local OLS regressions</strong>. The <strong>step function</strong> is the key concept here.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The idea behind the <strong>step function</strong> is to break the range of the regressor into intervals. In each interval, we adjust a constant. We obtain the average response in that interval.</p>
+</div>
+<p>Let us take the 2-<span class="math notranslate nohighlight">\(d\)</span> framework. For the <span class="math notranslate nohighlight">\(i\)</span>th observation in the sample, suppose we have a respose <span class="math notranslate nohighlight">\(Y_i\)</span> subject to a regressor <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
+<p>Instead of making a <strong>global parametric assumption</strong>, we break the range of the regressor into <span class="math notranslate nohighlight">\(q\)</span> <strong>knots</strong> <span class="math notranslate nohighlight">\(c_1, c_2, \dots, c_q\)</span>. Hence, the regressor will be sectioned in bins changing from continuous to categorical. The step functions are merely <strong>dummy variables</strong>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+C_0(X_i) = I(X_i &lt; c_1) =
+\begin{cases}
+1 \; \; \; \; \mbox{if $X_i &lt; c_1$},\\
+0 \; \; \; \; 	\mbox{otherwise.}
+\end{cases}
+\end{equation*}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+C_1(X_i) = I(c_1 \leq X_i &lt; c_2) =
+\begin{cases}
+1 \; \; \; \; \mbox{if $c_1 \leq X_i &lt; c_2$},\\
+0 \; \; \; \; 	\mbox{otherwise.}
+\end{cases}
+\end{equation*}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\vdots\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+C_{q - 1}(X_i) = I(c_{q-1} \leq X_i &lt; c_q) =
+\begin{cases}
+1 \; \; \; \; \mbox{if $c_{q-1} \leq X_i &lt; c_q$},\\
+0 \; \; \; \; 	\mbox{otherwise.}
+\end{cases}
+\end{equation*}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+C_q(X_i) = I(c_q \leq X_i) =
+\begin{cases}
+1 \; \; \; \; \mbox{if $c_q \leq X_i$},\\
+0 \; \; \; \; 	\mbox{otherwise.}
+\end{cases}
+\end{equation*}\end{split}\]</div>
+<p>Then, we run an OLS model based on these previous step functions and not the continuous <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
+<p>The regression model becomes</p>
+<div class="math notranslate nohighlight">
+\[
+Y_i = \beta_0 + \beta_1 C_1(X_i) + \beta_2 C_2(X_i) + \dots + \beta_{q-1} C_{q-1}(X_i) + \beta_q C_q(X_i) + \varepsilon_i.
+\]</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The step function <span class="math notranslate nohighlight">\(C_0(X_i)\)</span> does not appear in the model given that <span class="math notranslate nohighlight">\(\beta_0\)</span> can be interpreted as the response’s mean when <span class="math notranslate nohighlight">\(X_i &lt; c_1\)</span> (i.e., the rest of the <span class="math notranslate nohighlight">\(q\)</span> step functions are equal to zero).</p>
+</div>
+<p><strong>Cow Milk Dataset</strong></p>
+<p>We will use the dataset provided by <a class="reference external" href="https://ecommons.cornell.edu/bitstream/handle/1813/31620/BU-1049-MA.pdf;jsessionid=1E54532D482EC351824111A78C797021?sequence=1">Henderson and McCulloch (1990)</a>. The <strong>whole dataset</strong> contains the average daily milk <code class="docutils literal notranslate"><span class="pre">fat</span></code> yields from a cow in kg/day, from <code class="docutils literal notranslate"><span class="pre">week</span></code> 1 to 35.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">fat_content</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">read_csv</span><span class="p">(</span><span class="s">&quot;../datasets/milk_fat.csv&quot;</span><span class="p">))</span>
+<span class="nf">str</span><span class="p">(</span><span class="n">fat_content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>spc_tbl_ [35 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ week: num [1:35] 1 2 3 4 5 6 7 8 9 10 ...
+ $ fat : num [1:35] 0.31 0.39 0.5 0.58 0.59 0.64 0.68 0.66 0.67 0.7 ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   week = <span class=" -Color -Color-Green">col_double()</span>,
+  ..   fat = <span class=" -Color -Color-Green">col_double()</span>
+  .. )
+ - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+
+<span class="n">plot_cow</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">fat</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Week&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Average Fat Yield (kg/day)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Average Daily Fat Yield&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">))</span><span class="w">        </span>
+<span class="n">plot_cow</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b011ae505679543a02e88d43a56b47230e1b4ceadf8cad7a50bd86da9df9dd97.png" src="../_images/b011ae505679543a02e88d43a56b47230e1b4ceadf8cad7a50bd86da9df9dd97.png" />
+</div>
+</div>
+<p>Let us fit a piecewise constant regression with <span class="math notranslate nohighlight">\(q = 4\)</span> knots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the number of step functions (q + 1)</span>
+<span class="n">breaks_q</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">5</span>
+
+<span class="c1"># Create the steps for week.</span>
+<span class="n">fat_content</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">fat_content</span><span class="o">$</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">breaks_q</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span>
+<span class="c1"># Checking levels in steps</span>
+<span class="nf">levels</span><span class="p">(</span><span class="n">fat_content</span><span class="o">$</span><span class="n">steps</span><span class="p">)</span>
+
+<span class="c1"># Showing the new column steps.</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">fat_content</span><span class="p">)</span>
+<span class="nf">tail</span><span class="p">(</span><span class="n">fat_content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'[0.966,7.8)'</li><li>'[7.8,14.6)'</li><li>'[14.6,21.4)'</li><li>'[21.4,28.2)'</li><li>'[28.2,35)'</li></ol>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 6 × 3</caption>
+<thead>
+	<tr><th scope=col>week</th><th scope=col>fat</th><th scope=col>steps</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1</td><td>0.31</td><td>[0.966,7.8)</td></tr>
+	<tr><td>2</td><td>0.39</td><td>[0.966,7.8)</td></tr>
+	<tr><td>3</td><td>0.50</td><td>[0.966,7.8)</td></tr>
+	<tr><td>4</td><td>0.58</td><td>[0.966,7.8)</td></tr>
+	<tr><td>5</td><td>0.59</td><td>[0.966,7.8)</td></tr>
+	<tr><td>6</td><td>0.64</td><td>[0.966,7.8)</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 6 × 3</caption>
+<thead>
+	<tr><th scope=col>week</th><th scope=col>fat</th><th scope=col>steps</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>30</td><td>0.18</td><td>[28.2,35)</td></tr>
+	<tr><td>31</td><td>0.11</td><td>[28.2,35)</td></tr>
+	<tr><td>32</td><td>0.07</td><td>[28.2,35)</td></tr>
+	<tr><td>33</td><td>0.06</td><td>[28.2,35)</td></tr>
+	<tr><td>34</td><td>0.01</td><td>[28.2,35)</td></tr>
+	<tr><td>35</td><td>0.01</td><td>[28.2,35)</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>We can now fit the <code class="docutils literal notranslate"><span class="pre">model_steps</span></code> with <code class="docutils literal notranslate"><span class="pre">formula</span> <span class="pre">=</span> <span class="pre">fat</span> <span class="pre">~</span> <span class="pre">steps</span></code> via <code class="docutils literal notranslate"><span class="pre">lm()</span></code>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">estimate</span></code> is the difference between each category with respect to the baseline <code class="docutils literal notranslate"><span class="pre">[0.966,7.8)</span></code>.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">model_steps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">fat</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">steps</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fat_content</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">model_steps</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">model_steps</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 5 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)     </td><td> 0.527</td><td>0.031</td><td> 16.897</td><td>0.000</td></tr>
+	<tr><td>steps[7.8,14.6) </td><td> 0.147</td><td>0.044</td><td>  3.335</td><td>0.002</td></tr>
+	<tr><td>steps[14.6,21.4)</td><td>-0.104</td><td>0.044</td><td> -2.364</td><td>0.025</td></tr>
+	<tr><td>steps[21.4,28.2)</td><td>-0.243</td><td>0.044</td><td> -5.504</td><td>0.000</td></tr>
+	<tr><td>steps[28.2,35)  </td><td>-0.443</td><td>0.044</td><td>-10.037</td><td>0.000</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.875</td><td>0.859</td><td>0.083</td><td>52.648</td><td>0</td><td>4</td><td>40.34</td><td>-68.68</td><td>-59.348</td><td>0.204</td><td>30</td><td>35</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the grid for predictions.</span>
+<span class="n">grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq_range</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">breaks_q</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">model_steps</span><span class="p">)</span>
+
+<span class="c1"># Creating labels and plotting values for the knots.</span>
+<span class="n">labs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">levels</span><span class="p">(</span><span class="n">fat_content</span><span class="o">$</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">steps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span>
+<span class="w">  </span><span class="n">lower</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="nf">sub</span><span class="p">(</span><span class="s">&quot;\\[(.+),.*&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\\1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">labs</span><span class="p">)),</span>
+<span class="w">  </span><span class="n">upper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="nf">sub</span><span class="p">(</span><span class="s">&quot;[^,]*,([^]]*)\\)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\\1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">labs</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="c1"># Plotting.</span>
+<span class="n">plot_cow</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="o">$</span><span class="n">lower</span><span class="p">[</span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5d12189bd1e7740db44c46bf6330c16d0b4708d0fedbca68a6bbeab8264ef208.png" src="../_images/5d12189bd1e7740db44c46bf6330c16d0b4708d0fedbca68a6bbeab8264ef208.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1000 × 3</caption>
+<thead>
+	<tr><th scope=col>week</th><th scope=col>steps</th><th scope=col>pred</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1.000000</td><td>[0.966,7.8)</td><td>0.5271429</td></tr>
+	<tr><td>1.034034</td><td>[0.966,7.8)</td><td>0.5271429</td></tr>
+	<tr><td>1.068068</td><td>[0.966,7.8)</td><td>0.5271429</td></tr>
+	<tr><td>1.102102</td><td>[0.966,7.8)</td><td>0.5271429</td></tr>
+	<tr><td>1.136136</td><td>[0.966,7.8)</td><td>0.5271429</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>34.86386</td><td>[28.2,35)</td><td>0.08428571</td></tr>
+	<tr><td>34.89790</td><td>[28.2,35)</td><td>0.08428571</td></tr>
+	<tr><td>34.93193</td><td>[28.2,35)</td><td>0.08428571</td></tr>
+	<tr><td>34.96597</td><td>[28.2,35)</td><td>0.08428571</td></tr>
+	<tr><td>35.00000</td><td>[28.2,35)</td><td>0.08428571</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="exercise admonition" id="lecture6-q1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23 </span></p>
+<section id="exercise-content">
+<p>Discuss the importance of this class of a local regression strategy of having breakpoints by regressor when having prediction inquiries.</p>
+</section>
+</div>
+</section>
+<section id="non-continuous-piecewise-linear-regression">
+<h3>1.2. Non-Continuous Piecewise Linear Regression<a class="headerlink" href="#non-continuous-piecewise-linear-regression" title="Permalink to this heading">#</a></h3>
+<p>Note in the previous plot, though, that the functions should not be constant inside an interval. Instead, <strong>there is an approximately linear behaviour in each interval</strong>.</p>
+<p><strong>Can we capture that? Yes we can!</strong></p>
+<p>All we need to do, is to add <span class="math notranslate nohighlight">\(\color{green}{\text{interaction terms}}\)</span> between the step functions <span class="math notranslate nohighlight">\(C_j(X_i)\)</span>, for <span class="math notranslate nohighlight">\(j = 1, \dots, q\)</span>, with <span class="math notranslate nohighlight">\(X_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+Y_i = \beta_0 + \color{red}{\beta_1 C_1(X_i) + \dots + \beta_q C_q(X_i)} + \beta_{q + 1} X_i + \color{green}{\beta_{q + 2} X_i C_1(X_i) + \dots + \beta_{2q + 1} X_i C_q(X_i)} + \varepsilon_i.
+\end{equation*}\]</div>
+<p>Let us see what happens in this model:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(X_i &lt; c_1\)</span>, then our model is: <span class="math notranslate nohighlight">\(Y_i = \beta_0 + \beta_{q + 1}X_i\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(c_1 \leq X_i &lt; c_2\)</span>, then our model is: <span class="math notranslate nohighlight">\(Y_i = \beta_0 + \color{red}{\beta_1} + (\beta_{q + 1} + \color{green}{\beta_{q + 2}}) X_i\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(c_2 \leq X_i &lt; c_3\)</span>, then our model is: <span class="math notranslate nohighlight">\(Y_i = \beta_0 + \color{red}{\beta_2} + (\beta_{q + 1} + \color{green}{\beta_{q + 3}}) X_i\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\vdots\]</div>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(c_{q-1} \leq X_i &lt; c_q\)</span>, then our model is: <span class="math notranslate nohighlight">\(Y_i = \beta_0 + \color{red}{\beta_{q -1}} + (\beta_{q + 1} + \color{green}{\beta_{2q}}) X_i\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(c_q \leq X_i\)</span>, then our model is: <span class="math notranslate nohighlight">\(Y_i = \beta_0 + \color{red}{\beta_q} + (\beta_{q + 1} + \color{green}{\beta_{2q + 1}}) X_i\)</span></p></li>
+</ul>
+<p>So, for each interval, we have an <span class="math notranslate nohighlight">\(\color{red}{\text{additional intercept}}\)</span> and an <span class="math notranslate nohighlight">\(\color{green}{\text{additional slope}}\)</span>.</p>
+<p>Now, we will check if the model fitting looks better in <code class="docutils literal notranslate"><span class="pre">fat_content</span></code>. Note that the right hand side in the <code class="docutils literal notranslate"><span class="pre">formula</span></code>, within <code class="docutils literal notranslate"><span class="pre">lm()</span></code>, is merely a model with interaction <code class="docutils literal notranslate"><span class="pre">week</span> <span class="pre">*</span> <span class="pre">steps</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need to add the interaction between steps and week.</span>
+<span class="n">model_piecewise_linear</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">fat</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">week</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">steps</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fat_content</span><span class="p">)</span>
+
+<span class="c1">## Let us create our grid for predictions,</span>
+<span class="n">grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq_range</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">breaks_q</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">model_piecewise_linear</span><span class="p">)</span>
+
+<span class="c1">## Plotting</span>
+<span class="n">plot_cow</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="o">$</span><span class="n">lower</span><span class="p">[</span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f9ab1118f0c3348231d16d6c78bfbf58010dd844f2df3ddfc74951501480a554.png" src="../_images/f9ab1118f0c3348231d16d6c78bfbf58010dd844f2df3ddfc74951501480a554.png" />
+</div>
+</div>
+<p>Let us check the model’s summary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">model_piecewise_linear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">model_piecewise_linear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 10 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)          </td><td> 0.284</td><td>0.031</td><td>  9.261</td><td>0.000</td></tr>
+	<tr><td>week                 </td><td> 0.061</td><td>0.007</td><td>  8.846</td><td>0.000</td></tr>
+	<tr><td>steps[7.8,14.6)      </td><td> 0.437</td><td>0.083</td><td>  5.289</td><td>0.000</td></tr>
+	<tr><td>steps[14.6,21.4)     </td><td> 0.833</td><td>0.128</td><td>  6.505</td><td>0.000</td></tr>
+	<tr><td>steps[21.4,28.2)     </td><td> 0.241</td><td>0.175</td><td>  1.379</td><td>0.180</td></tr>
+	<tr><td>steps[28.2,35)       </td><td> 0.726</td><td>0.222</td><td>  3.266</td><td>0.003</td></tr>
+	<tr><td>week:steps[7.8,14.6) </td><td>-0.065</td><td>0.010</td><td> -6.696</td><td>0.000</td></tr>
+	<tr><td>week:steps[14.6,21.4)</td><td>-0.099</td><td>0.010</td><td>-10.228</td><td>0.000</td></tr>
+	<tr><td>week:steps[21.4,28.2)</td><td>-0.070</td><td>0.010</td><td> -7.248</td><td>0.000</td></tr>
+	<tr><td>week:steps[28.2,35)  </td><td>-0.090</td><td>0.010</td><td> -9.235</td><td>0.000</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.98</td><td>0.973</td><td>0.036</td><td>135.294</td><td>0</td><td>9</td><td>72.264</td><td>-122.528</td><td>-105.419</td><td>0.033</td><td>25</td><td>35</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>However, the local regression lines are disconnected. <strong>Can we fix that?</strong></p>
+</section>
+<section id="continuous-piecewise-linear-regression">
+<h3>1.3. Continuous Piecewise Linear Regression<a class="headerlink" href="#continuous-piecewise-linear-regression" title="Permalink to this heading">#</a></h3>
+<p>We can impose <strong>restrictions</strong> to make sure that the lines are connected to each other. Therefore, we need to introduce the concept of the hinge function.</p>
+<p>For the <span class="math notranslate nohighlight">\(i\)</span>th observation, this model can be defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[Y_i = \beta_0 + \beta_1 X_i +\beta_2 (X_i - c_1)_{+} + \dots + \beta_{q+1} (X_i - c_q)_{+} + \varepsilon_i,\]</div>
+<p>where the hinge function for the knot <span class="math notranslate nohighlight">\(c_j\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+(X_i - c_j)_{+} =
+\begin{cases}
+0 \; \; \; \; \mbox{if $X_i &lt; c_j$},\\
+X_i - c_j \; \; \; \;   \mbox{if $X_i \geq c_j$}.
+\end{cases}
+\end{split}\]</div>
+<p>We do not need to fit separate OLS linear regressions but one. In the <code class="docutils literal notranslate"><span class="pre">lm()</span></code> function, within <code class="docutils literal notranslate"><span class="pre">formula</span></code> on the right-hand side along with the standalone regressor <code class="docutils literal notranslate"><span class="pre">X</span></code>, we have to add up the following term <code class="docutils literal notranslate"><span class="pre">I((X</span> <span class="pre">-</span> <span class="pre">c_j)*(X</span> <span class="pre">&gt;=</span> <span class="pre">c_j))</span></code> <strong>by knot <code class="docutils literal notranslate"><span class="pre">c_j</span></code></strong>.</p>
+<p>We need to obtain the corresponding knots in <code class="docutils literal notranslate"><span class="pre">fat_content</span></code> (<span class="math notranslate nohighlight">\(q = 4\)</span>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">levels</span><span class="p">(</span><span class="n">fat_content</span><span class="o">$</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">knots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">7.8</span><span class="p">,</span><span class="w"> </span><span class="m">14.6</span><span class="p">,</span><span class="w"> </span><span class="m">21.4</span><span class="p">,</span><span class="w"> </span><span class="m">28.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'[0.966,7.8)'</li><li>'[7.8,14.6)'</li><li>'[14.6,21.4)'</li><li>'[21.4,28.2)'</li><li>'[28.2,35)'</li></ol>
+</div></div>
+</div>
+<p>Now, let us fit this model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">model_piecewise_cont_linear</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">fat</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">week</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">I</span><span class="p">((</span><span class="n">week</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">1</span><span class="p">]))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">I</span><span class="p">((</span><span class="n">week</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">2</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">2</span><span class="p">]))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">I</span><span class="p">((</span><span class="n">week</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">3</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span><span class="o">+</span>
+<span class="w">  </span><span class="nf">I</span><span class="p">((</span><span class="n">week</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">4</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">knots</span><span class="p">[</span><span class="m">4</span><span class="p">])),</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fat_content</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we will check if the model fitting looks better in <code class="docutils literal notranslate"><span class="pre">fat_content</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us create our grid for predictions,</span>
+<span class="n">grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq_range</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">breaks_q</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">model_piecewise_cont_linear</span><span class="p">)</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plot_cow</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">steps</span><span class="o">$</span><span class="n">lower</span><span class="p">[</span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8528c942dcfa33b8db160ec8257a385f28b7d2bc3a5c747759b0be5dba8427e1.png" src="../_images/8528c942dcfa33b8db160ec8257a385f28b7d2bc3a5c747759b0be5dba8427e1.png" />
+</div>
+</div>
+<p>Let us check the model’s summary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">model_piecewise_cont_linear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<span class="nf">glance</span><span class="p">(</span><span class="n">model_piecewise_cont_linear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 6 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)                              </td><td> 0.299</td><td>0.032</td><td> 9.453</td><td>0.000</td></tr>
+	<tr><td>week                                     </td><td> 0.056</td><td>0.006</td><td> 9.604</td><td>0.000</td></tr>
+	<tr><td>I((week - knots[1]) * (week &gt;= knots[1]))</td><td>-0.076</td><td>0.010</td><td>-7.854</td><td>0.000</td></tr>
+	<tr><td>I((week - knots[2]) * (week &gt;= knots[2]))</td><td>-0.022</td><td>0.009</td><td>-2.414</td><td>0.022</td></tr>
+	<tr><td>I((week - knots[3]) * (week &gt;= knots[3]))</td><td> 0.034</td><td>0.009</td><td> 3.700</td><td>0.001</td></tr>
+	<tr><td>I((week - knots[4]) * (week &gt;= knots[4]))</td><td>-0.028</td><td>0.010</td><td>-2.924</td><td>0.007</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 12</caption>
+<thead>
+	<tr><th scope=col>r.squared</th><th scope=col>adj.r.squared</th><th scope=col>sigma</th><th scope=col>statistic</th><th scope=col>p.value</th><th scope=col>df</th><th scope=col>logLik</th><th scope=col>AIC</th><th scope=col>BIC</th><th scope=col>deviance</th><th scope=col>df.residual</th><th scope=col>nobs</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.969</td><td>0.963</td><td>0.042</td><td>180.119</td><td>0</td><td>5</td><td>64.587</td><td>-115.175</td><td>-104.287</td><td>0.051</td><td>29</td><td>35</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="k-nn-regression">
+<h2>2. <span class="math notranslate nohighlight">\(k\)</span>-NN Regression<a class="headerlink" href="#k-nn-regression" title="Permalink to this heading">#</a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>I have been using the letter <span class="math notranslate nohighlight">\(k\)</span> to denote the number of regressors in any general regression model. Nevertheless, this letter is reserved for groups of <span class="math notranslate nohighlight">\(k\)</span> observations in this framework. Therefore, I will switch to the letter <span class="math notranslate nohighlight">\(p\)</span> to denote the number of regressors in this framework.</p>
+</div>
+<p>The idea behind <span class="math notranslate nohighlight">\(k\)</span>-NN regression is finding the <span class="math notranslate nohighlight">\(k\)</span> observations <strong>in our training dataset of size <span class="math notranslate nohighlight">\(n\)</span> (with <span class="math notranslate nohighlight">\(p\)</span> features <span class="math notranslate nohighlight">\(x_j\)</span> per observation)</strong> closest to the new point we want to predict.</p>
+<p>Next, we calculate the average <span class="math notranslate nohighlight">\(\bar{y}^{(k)}\)</span> of the responses of those <span class="math notranslate nohighlight">\(k\)</span> observations. That is our new prediction.</p>
+<p>How do we obtain those <span class="math notranslate nohighlight">\(k\)</span> observations? <strong>Based on the values of the respective <span class="math notranslate nohighlight">\(p\)</span> features</strong>, we determine which <span class="math notranslate nohighlight">\(k\)</span> observations (out from the <span class="math notranslate nohighlight">\(n\)</span> in the training set) have the smallest distance metric (e.g., Euclidean distance <span class="math notranslate nohighlight">\(D^{(\text{Training, New})}\)</span>) to the <strong>features of the new point</strong>.</p>
+<div class="math notranslate nohighlight">
+\[
+D^{(\text{Training, New})} = \sqrt{\sum_{j = 1}^p \Big( x_j^{\text{(Training)}} - x_j^{\text{(New)}} \Big)^2}
+\]</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>We would compute <span class="math notranslate nohighlight">\(n\)</span> distances <span class="math notranslate nohighlight">\(D^{(\text{Training, New})}\)</span> using the same “New” observation. Then, there will be <span class="math notranslate nohighlight">\(k\)</span> “Training” observations to be chosen out of these <span class="math notranslate nohighlight">\(n\)</span> distances (where <span class="math notranslate nohighlight">\(n\)</span> represents the total number of training data points).</p>
+</div>
+<p>Things to keep in mind:</p>
+<ol class="arabic simple">
+<li><p>If <span class="math notranslate nohighlight">\(k = 1\)</span>, there will be <strong>no training error</strong>. Nevertheless, <strong>we might (and probably will) overfit badly</strong>.</p></li>
+<li><p>As we increase <span class="math notranslate nohighlight">\(k\)</span>, more <strong>“smooth”</strong> the regression will be. At some point, <strong>we will start underfitting</strong>.</p></li>
+</ol>
+<div class="exercise admonition" id="lecture6-q2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 24 </span></p>
+<section id="exercise-content">
+<p>What are the consequences of overfitting a training set in further test sets?</p>
+<p><strong>A.</strong> There are no consequences at all; predictions will be highly accurate in any further test set.</p>
+<p><strong>B.</strong> The trained model will be so oversimplified that we will have a high bias in further test set predictions.</p>
+<p><strong>C.</strong> The trained model will be so overfitted that it will also explain random noise in training data. Therefore, we cannot generalize this model in further test set predictions.</p>
+</section>
+</div>
+<p>Now let us run <span class="math notranslate nohighlight">\(k\)</span>-NN algorithm on the <code class="docutils literal notranslate"><span class="pre">fat_content</span></code> dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">)</span>
+
+<span class="n">k</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="c1"># Use odd numbers here so there is no missmatch on how the ties are handled.</span>
+
+<span class="c1">## Running k-NN regression</span>
+<span class="n">my_knn</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">knnreg</span><span class="p">(</span><span class="n">fat</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fat_content</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
+<span class="n">grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">week</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">my_knn</span><span class="p">)</span>
+
+<span class="c1">## Generating the plots.</span>
+<span class="n">p</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">()</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">p</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">knn_plot</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">grid.arrange</span><span class="p">(</span><span class="n">grobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7117476632121eb413e175a73568b77e3b90feed2d0b0ee44079db9030ae5248.png" src="../_images/7117476632121eb413e175a73568b77e3b90feed2d0b0ee44079db9030ae5248.png" />
+</div>
+</div>
+</section>
+<section id="locally-weighted-scatterplot-smoother-lowess-regression">
+<h2>3. Locally Weighted Scatterplot Smoother (LOWESS) Regression<a class="headerlink" href="#locally-weighted-scatterplot-smoother-lowess-regression" title="Permalink to this heading">#</a></h2>
+<p>Suppose we want to predict the response <span class="math notranslate nohighlight">\(y\)</span> for a given <span class="math notranslate nohighlight">\(x\)</span>. For example, we want to predict the fat content of cow milk in <code class="docutils literal notranslate"><span class="pre">week</span></code> 10. The idea of LOWESS is:</p>
+<ol class="arabic simple">
+<li><p>Find the closest points to <code class="docutils literal notranslate"><span class="pre">week</span></code> 10 (how many points is a parameter that we define).</p></li>
+<li><p>From the selected points, we assign weights based on these distances. The closest the point is, the more weight it will receive (weights are determined as in weighted least-squares by default in <code class="docutils literal notranslate"><span class="pre">loess()</span></code>).</p></li>
+<li><p>Next, for the <span class="math notranslate nohighlight">\(i\)</span>th point in the <code class="docutils literal notranslate"><span class="pre">span</span></code>, using weighted least-squares for a <strong>second <code class="docutils literal notranslate"><span class="pre">degree</span></code> polynomial</strong> for instance, we minimize the sum of squared errors considering the weight <span class="math notranslate nohighlight">\(w_i\)</span> as follows:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\sum_i w_i \left(y_i - \beta_0-\beta_1 x_i-\beta_2 x_i^2\right)^2
+\]</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Roughly speaking, weighted least-squares allow us to assume a different variance <span class="math notranslate nohighlight">\(\sigma_{x_i}^2\)</span> for the <span class="math notranslate nohighlight">\(i\)</span>th observation (i.e., it can be shown mathematically that <span class="math notranslate nohighlight">\(w_i = 1 / \sigma_{x_i}^2\)</span>). This model will enable us to deal with heteroscedasticity.</p>
+</div>
+<p>Now, there are a couple of things to consider in <code class="docutils literal notranslate"><span class="pre">loess()</span></code>:</p>
+<ul class="simple">
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">span</span></code> (between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code>) defines the “size” of your neighbourhood. To be more exact, it specifies the proportion of points considered as neighbours of <span class="math notranslate nohighlight">\(x\)</span>. <strong>The higher the proportion, the smoother the fitted surface will be.</strong></p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">degree</span></code>, specifies if you are fitting a constant (<code class="docutils literal notranslate"><span class="pre">degree</span></code>= 0), a linear model (<code class="docutils literal notranslate"><span class="pre">degree</span></code> = 1), or a quadratic model (<code class="docutils literal notranslate"><span class="pre">degree</span></code> = 2). By quadratic, we mean <span class="math notranslate nohighlight">\(\beta_0+\beta_1 x_i+\beta_2 x_i^2\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">()</span>
+<span class="n">i</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">degree</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">for </span><span class="p">(</span><span class="n">span</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">0.25</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="n">model_loess</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">loess</span><span class="p">(</span><span class="n">fat</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">span</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">span</span><span class="p">,</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">degree</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fat_content</span><span class="p">))</span>
+
+<span class="w">    </span><span class="c1"># We create our grid for predictions.</span>
+<span class="w">    </span><span class="n">grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fat_content</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">      </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">week</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq_range</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">      </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">model_loess</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1"># Plotting.</span>
+<span class="w">    </span><span class="n">p</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">plot_cow</span><span class="w"> </span><span class="o">+</span>
+<span class="w">      </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">      </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">),</span>
+<span class="w">        </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">)</span>
+<span class="w">      </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">      </span><span class="nf">ggtitle</span><span class="p">(</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;degree = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">degree</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;  span = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">span</span><span class="p">))</span>
+
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nf">grid.arrange</span><span class="p">(</span><span class="n">grobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e79196ca6c8ed5abe66f0d2cdd825bea28c5a2ba6671c6dd5073b70a76b3d8c1.png" src="../_images/e79196ca6c8ed5abe66f0d2cdd825bea28c5a2ba6671c6dd5073b70a76b3d8c1.png" />
+</div>
+</div>
+</section>
+<section id="wrapping-up">
+<h2>4. Wrapping Up<a class="headerlink" href="#wrapping-up" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Local regression is a great tool for addressing predictive inquiries.</p></li>
+<li><p>Nonetheless, we will lose our inferential interpretability.</p></li>
+<li><p>The key concept in local regression techniques is “how local we want our model to be.”</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lecture5_survival_analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 5 - Survival Analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lecture7_quantile_regression.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 7 - Quantile Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-local-regression">1. Piecewise Local Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#piecewise-constant-regression">1.1. Piecewise Constant Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-continuous-piecewise-linear-regression">1.2. Non-Continuous Piecewise Linear Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-piecewise-linear-regression">1.3. Continuous Piecewise Linear Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nn-regression">2. <span class="math notranslate nohighlight">\(k\)</span>-NN Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#locally-weighted-scatterplot-smoother-lowess-regression">3. Locally Weighted Scatterplot Smoother (LOWESS) Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">4. Wrapping Up</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

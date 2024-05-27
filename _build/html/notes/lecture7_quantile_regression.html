@@ -1,0 +1,2021 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 7 - Quantile Regression &#8212; DSCI 562 - Regression II</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notes/lecture7_quantile_regression';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 8 - Missing Data" href="lecture8_missing_data.html" />
+    <link rel="prev" title="Lecture 6 - Local Regression" href="lecture6_local_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Welcome to DSCI 562: Regression II
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lecture-learning-objectives.html">Lecture Learning Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture2_glm_model_selection_multinomial.html">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture3_glm_ordinal_regression.html">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture4_linear_mixed_effects_models.html">Lecture 4 - Linear Mixed-Effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture5_survival_analysis.html">Lecture 5 - Survival Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture6_local_regression.html">Lecture 6 - Local Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lecture 7 - Quantile Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture8_missing_data.html">Lecture 8 - Missing Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students/issues/new?title=Issue%20on%20page%20%2Fnotes/lecture7_quantile_regression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notes/lecture7_quantile_regression.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 7 - Quantile Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries-and-scripts">Loading Libraries and Scripts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-quantiles">1. The Quantiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-us-recall-what-a-quantile-is">1.1. Let us recall what a quantile is</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-for-quantile-regression">1.2. Motivation for Quantile Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-quantile-regression">2. Applications of Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-teams-dataset">2.1. The Teams Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">2.2. Exploratory Data Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-quantile-regression">3. Parametric Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-modelling-framework">3.1. General Modelling Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">3.2. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">3.3. Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-intepretation">3.4. Coefficient Intepretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">3.5. Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-quantile-regression">4. Non-Parametric Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.1. General Modelling Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.2. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">4.3. Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-5-quantile-regression-and-discrete-data">(Optional) 5. Quantile Regression and Discrete Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-crabs-dataset">5.1. The Crabs Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-model-estimation">5.2. Initial Model Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-estimation-via-dither">5.3. Model Estimation via <code class="docutils literal notranslate"><span class="pre">dither()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">6. Wrapping Up</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-7-quantile-regression">
+<h1>Lecture 7 - Quantile Regression<a class="headerlink" href="#lecture-7-quantile-regression" title="Permalink to this heading">#</a></h1>
+<section id="today-s-learning-goals">
+<h2>Today’s Learning Goals<a class="headerlink" href="#today-s-learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this lecture, you should be able to:</p>
+<ul class="simple">
+<li><p>Review what a quantile is.</p></li>
+<li><p>Compare the error functions of Ordinary Least-Squares (OLS) regression versus Quantile regression.</p></li>
+<li><p>Recognize the impacts of parametric and distributional assumptions in Quantile regression.</p></li>
+<li><p>Perform non-parametric Quantile regression.</p></li>
+<li><p>Perform parametric Quantile regression.</p></li>
+</ul>
+</section>
+<section id="loading-libraries-and-scripts">
+<h2>Loading Libraries and Scripts<a class="headerlink" href="#loading-libraries-and-scripts" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">)</span>
+<span class="nf">source</span><span class="p">(</span><span class="s">&quot;../scripts/support_functions.R&quot;</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">quantreg</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">Lahman</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">modelr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">glmbb</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">cowplot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will close our regression mindmap this block with an approach on <strong>conditioned quantiles</strong>: Quantile regression. Note we will check two approaches: parametric (for inference and prediction) and non-parametric (for prediction).</p>
+<div class="full-width docutils">
+<figure class="align-default" id="reg-mindmap-7">
+<a class="reference internal image-reference" href="../_images/reg-mindmap-7.png"><img alt="../_images/reg-mindmap-7.png" src="../_images/reg-mindmap-7.png" style="height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Expanded regression modelling mind map (click on the image to zoom in).</span><a class="headerlink" href="#reg-mindmap-7" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-quantiles">
+<h2>1. The Quantiles<a class="headerlink" href="#the-quantiles" title="Permalink to this heading">#</a></h2>
+<p>Let us set up an initial example to recap <strong>what a quantile is</strong>. Suppose we measure the height of <span class="math notranslate nohighlight">\(n = 1000\)</span> randomly sampled UBC students. Here is the sample average in centimetres:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">123</span><span class="p">)</span>
+<span class="n">sample_heights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">draw_sample</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
+<span class="n">sample_mean</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="n">sample_mean</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">175.11</div></div>
+</div>
+<div class="exercise admonition" id="lecture7-q1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 25 </span></p>
+<section id="exercise-content">
+<p><strong>By only using that single sample average</strong>, try to answer the following:</p>
+<ul class="simple">
+<li><p>How much do you know about the distribution of these <code class="docutils literal notranslate"><span class="pre">heights</span></code>?</p></li>
+<li><p>Is it a <strong>symmetric distribution</strong>?</p></li>
+<li><p>Is it a <strong>heavy-tailed-distribution</strong>?</p></li>
+<li><p>What is the <strong>variance</strong> of this distribution?</p></li>
+</ul>
+</section>
+</div>
+<p>This is the reason why a boxplot is more meaningful than just jittered points.</p>
+<p>Hence, let us get more information from the sample via <code class="docutils literal notranslate"><span class="pre">summary()</span></code> and <code class="docutils literal notranslate"><span class="pre">var()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">)</span>
+<span class="nf">paste</span><span class="p">(</span><span class="s">&quot;variance: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">var</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">),</span><span class="m">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  155.3   170.6   175.1   175.1   179.7   197.7 
+</pre></div>
+</div>
+<div class="output text_html"><span style=white-space:pre-wrap>'variance:  48.19'</span></div></div>
+</div>
+<div class="exercise admonition" id="lecture7-q2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 26 </span></p>
+<section id="exercise-content">
+<p>What about now? Do we have a better idea about the distribution?</p>
+<p><strong>A.</strong> Yes, having different quantiles gives us a better idea about the distribution of heights.</p>
+<p><strong>B.</strong> Not, at all!</p>
+</section>
+</div>
+<p>We can also make a quick histogram (with the sample mean as a vertical red line) or boxplot to confirm our previous statements.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+
+<span class="n">sample_heights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">)</span>
+
+<span class="n">hist_heights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_heights</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_histogram</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkblue&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lightblue&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Count&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Histogram of Heights (n = 1000)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_mean</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span>
+
+<span class="n">boxplot_heights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">sample_heights</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_heights</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkblue&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lightblue&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.ticks.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">()</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Height (cm)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Boxplot of Heights (n = 1000)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">plot_grid</span><span class="p">(</span><span class="n">hist_heights</span><span class="p">,</span><span class="w"> </span><span class="n">boxplot_heights</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e33c75b752d7d987456ee932db88393e9eadfa75d37459ed7abcab5c1bbc1b1d.png" src="../_images/e33c75b752d7d987456ee932db88393e9eadfa75d37459ed7abcab5c1bbc1b1d.png" />
+</div>
+</div>
+<section id="let-us-recall-what-a-quantile-is">
+<h3>1.1. Let us recall what a quantile is<a class="headerlink" href="#let-us-recall-what-a-quantile-is" title="Permalink to this heading">#</a></h3>
+<p>Suppose we have a random variable <span class="math notranslate nohighlight">\(X\sim F_X(\cdot)\)</span>, i.e., <span class="math notranslate nohighlight">\(X\)</span> has a cumulative distribution function (CDF) <span class="math notranslate nohighlight">\(F_X(\cdot)\)</span>. Then, the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile (<span class="math notranslate nohighlight">\(0\leq \tau \leq 1\)</span>), is given by <span class="math notranslate nohighlight">\(Q(\tau)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[F_X[Q(\tau)]= P[X\leq Q(\tau)] = \tau.\]</div>
+<p>In plain words, the quantile <span class="math notranslate nohighlight">\(Q(\tau)\)</span> is that observed value of <span class="math notranslate nohighlight">\(X\)</span> for which <strong><span class="math notranslate nohighlight">\(\tau \times 100\%\)</span> of the population’s data is below</strong> (or <strong>the area under the curve on the left-hand side of a given <span class="math notranslate nohighlight">\(x\)</span></strong>, if we check the horizontal axis on the probability density function).</p>
+<p>As an example, we can check the case of the 0.75-quantile in the <strong>Standard Normal distribution</strong> using its probability density function (PDF).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/f18c9b7c5ca7b199210c6871c03ed002acb647d44d7449365ab30121d062574b.png" src="../_images/f18c9b7c5ca7b199210c6871c03ed002acb647d44d7449365ab30121d062574b.png" />
+</div>
+</div>
+<p>Moreover, we can also show it using the CDF where the cumulative probabilities are on the <span class="math notranslate nohighlight">\(y\)</span>-axis.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/63066bf4bca472d0191b637a31f0f641f598d3087d24fdcc6e77a1d6bca0bcae.png" src="../_images/63066bf4bca472d0191b637a31f0f641f598d3087d24fdcc6e77a1d6bca0bcae.png" />
+</div>
+</div>
+</section>
+<section id="motivation-for-quantile-regression">
+<h3>1.2. Motivation for Quantile Regression<a class="headerlink" href="#motivation-for-quantile-regression" title="Permalink to this heading">#</a></h3>
+<p>In the OLS regression model, we were focused on the conditional mean on the regressors:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}(Y_i \mid X_{i,j} = x_{i,j}) = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_k x_{i,k} \; \; \; \; \text{since} \; \; \; \; \mathbb{E}(\varepsilon_i) = 0.
+\]</div>
+<p>Moreover, we already discussed that (from the statistical point of view) regression models follow a stochastic relation.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/cc3cc2ed5ccf873c8a2d0905d51bba1a8b17201d534360fdee96fbc7a3c9d2a6.png" src="../_images/cc3cc2ed5ccf873c8a2d0905d51bba1a8b17201d534360fdee96fbc7a3c9d2a6.png" />
+</div>
+</div>
+<p>Nonetheless, <strong>is it possible to go beyond the conditioned mean?</strong></p>
+<p>Given the stochastic nature of the relation between the response and explanatory variables, we have <strong>a whole conditional distribution</strong> of the response <span class="math notranslate nohighlight">\(Y_i\)</span>, given the <span class="math notranslate nohighlight">\(k\)</span> explanatory variables <span class="math notranslate nohighlight">\(X_{i,j}\)</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This whole conditional distribution <strong>allows us to regress our response with more than just the mean, such as the median or any other quantiles!</strong></p>
+<p>The below plot shows the stochastic nature of the conditional distribution for the <span class="math notranslate nohighlight">\(0.95\)</span>-quantile.</p>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/ba0b6cd3766abdf4f5ad620231f1696c6fbc1753af0af54d6cb1e79f50a06042.png" src="../_images/ba0b6cd3766abdf4f5ad620231f1696c6fbc1753af0af54d6cb1e79f50a06042.png" />
+</div>
+</div>
+<p>Having said all this, let us pave to this new regression framework called <strong>Quantile regression</strong>.</p>
+</section>
+</section>
+<section id="applications-of-quantile-regression">
+<h2>2. Applications of Quantile Regression<a class="headerlink" href="#applications-of-quantile-regression" title="Permalink to this heading">#</a></h2>
+<p>In many practical cases, we have <strong>inferential questions</strong> that are related to quantiles and not the mean.</p>
+<p>We might want to see if, at different levels, the response is affected differently by the explanatory variables:</p>
+<blockquote>
+<div><p><em>How do driver’s years of experience affect buses’ travel time when considering the 25% fastest travels, 50% fastest travels, and 90% fastest travels?</em></p>
+<p><em>How does the alcohol price affect the weekly consumption of light drinkers, moderate drinkers, and heavy drinkers at given cut-off values of alcohol consumption?</em></p>
+</div></blockquote>
+<p>Furthermore, we might also be interested in a <strong>probabilistic prediction</strong>:</p>
+<blockquote>
+<div><p><em>During December in Vancouver, with a 95% chance, what is the maximum snowfall threshold?</em></p>
+</div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This prediction <strong>will not</strong> be a confidence interval since we are talking about probabilities (i.e., chances). Therefore, we can use “probability” instead of “confidence.” Moreover, we would obtain <strong>prediction bands</strong> (to be explained later on in this lecture).</p>
+</div>
+<p>Note we can translate these inquiries with <span class="math notranslate nohighlight">\(\tau\)</span>-quantiles (<span class="math notranslate nohighlight">\(\tau \in [0, 1]\)</span>) along with the regressor <span class="math notranslate nohighlight">\(X\)</span> and response <span class="math notranslate nohighlight">\(Y\)</span>:</p>
+<blockquote>
+<div><p><em>How do <strong>driver’s years of experience</strong> (<span class="math notranslate nohighlight">\(X\)</span>) affect buses’ <strong>travel time</strong> (Y) when considering the 25% fastest travels (<span class="math notranslate nohighlight">\(\tau = 0.25\)</span>), 50% fastest travels (<span class="math notranslate nohighlight">\(\tau = 0.5\)</span>), and 90% fastest travels (<span class="math notranslate nohighlight">\(\tau = 0.9\)</span>)?</em></p>
+</div></blockquote>
+<blockquote>
+<div><p><em>How does the <strong>alcohol price</strong> (<span class="math notranslate nohighlight">\(X\)</span>) affect the <strong>weekly consumption</strong> (<span class="math notranslate nohighlight">\(Y\)</span>) of light drinkers (<span class="math notranslate nohighlight">\(\tau = 0.25\)</span>), moderate drinkers (<span class="math notranslate nohighlight">\(\tau = 0.5\)</span>), and heavy drinkers (<span class="math notranslate nohighlight">\(\tau = 0.9\)</span>) in given cut-off values in weekly alcohol consumption?</em></p>
+</div></blockquote>
+<blockquote>
+<div><p><em>During <strong>December</strong> (<span class="math notranslate nohighlight">\(X\)</span>) in Vancouver, with a 95% (<span class="math notranslate nohighlight">\(\tau = 0.95\)</span>) chance, what is the <strong>maximum snowfall</strong> (<span class="math notranslate nohighlight">\(Y\)</span>) threshold?</em></p>
+</div></blockquote>
+<section id="the-teams-dataset">
+<h3>2.1. The Teams Dataset<a class="headerlink" href="#the-teams-dataset" title="Permalink to this heading">#</a></h3>
+<p>For today’s lecture, we will use the <code class="docutils literal notranslate"><span class="pre">Teams</span></code> dataset from the <code class="docutils literal notranslate"><span class="pre">Lahman</span></code> package. It has <span class="math notranslate nohighlight">\(n = 3015\)</span> observations of 48 variables related to yearly statistics and standings for teams (<strong>one row per team</strong>) from different American baseball leagues.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We can find the dataset’s website<a class="reference external" href="http://seanlahman.com/">here</a>:</p>
+<blockquote>
+<div><p>The updated version of the database contains complete batting and pitching statistics from 1871 to 2022, plus fielding statistics, standings, team stats, managerial records, post-season data, and more.</p>
+</div></blockquote>
+</div>
+<p>We will use the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">runs</span></code>: Runs scored, a <strong>count</strong>-type variable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hits</span></code>: Hits by batters, a <strong>count</strong>-type variable.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">teams</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Teams</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">H</span><span class="p">)</span>
+<span class="n">teams</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 3015 × 2</caption>
+<thead>
+	<tr><th scope=col>runs</th><th scope=col>hits</th></tr>
+	<tr><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>401</td><td>426</td></tr>
+	<tr><td>302</td><td>323</td></tr>
+	<tr><td>249</td><td>328</td></tr>
+	<tr><td>⋮</td><td>⋮</td></tr>
+	<tr><td>707</td><td>1308</td></tr>
+	<tr><td>775</td><td>1464</td></tr>
+	<tr><td>603</td><td>1351</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="admonition-main-statistical-inquiries admonition">
+<p class="admonition-title">Main statistical inquiries</p>
+<p>Let us suppose you are an American baseball enthusiast. You are interested in determining the following using this recorded data:</p>
+<ol class="arabic simple">
+<li><p>Previous research has shown you that a large number of runs is associated with a large number of hits. Having said that, <strong>for those teams at the upper 75% threshold in runs</strong>, is this association significant? If so, by how much?</p></li>
+<li><p><strong>For any given team that scores 1000 hits in a future tournament</strong>, how many runs can this team score with a 50% chance (centred around this future tournament’s median runs)?</p></li>
+</ol>
+</div>
+</section>
+<section id="exploratory-data-analysis">
+<h3>2.2. Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this heading">#</a></h3>
+<p>Let us create a scatterplot of <code class="docutils literal notranslate"><span class="pre">hits</span></code> (our regressor) versus <code class="docutils literal notranslate"><span class="pre">runs</span></code> (our response), <strong>even though these variables are not continuous</strong>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The upcoming Quantile regression approaches are meant for continuous responses <strong>in their most basic modelling frameworks</strong>. Nevertheless, by looking at the below scatterplot, <code class="docutils literal notranslate"><span class="pre">runs</span></code> behaviour resembles a continuous variable given its clear scatteredness. This class of behaviour is case specific, and some other datasets whose response is a count would need an extra adjustment if it is much less scattered (an <strong>optional material</strong> in these notes).</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">teams_scatterplot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">runs</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Hits (Counts)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Runs (Counts)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Scatterplot of Hits versus Runs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">teams_scatterplot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9ac9f4fbab58ac3607f32f209e4e5463abf3c0db33ba420cfe1e8cf1776f0c8d.png" src="../_images/9ac9f4fbab58ac3607f32f209e4e5463abf3c0db33ba420cfe1e8cf1776f0c8d.png" />
+</div>
+</div>
+<p>This plot shows a clear positive relationship between <code class="docutils literal notranslate"><span class="pre">hits</span></code> and <code class="docutils literal notranslate"><span class="pre">runs</span></code>. Nevertheless, we need to go further and fit our corresponding model to address our inquiries.</p>
+</section>
+</section>
+<section id="parametric-quantile-regression">
+<h2>3. Parametric Quantile Regression<a class="headerlink" href="#parametric-quantile-regression" title="Permalink to this heading">#</a></h2>
+<p>We can address inquiries (1) and (2) via parametric Quantile regression. But before digging into this model, it is necessary to recall some fundamentals from OLS.</p>
+<p>In OLS, we use a linear combination on the right-hand sice to explain the conditional mean</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}(Y_i \mid X_{i,j} = x_{i,j}) = \beta_0 + \beta_1 x_{i,1} + \ldots + \beta_k x_{i,k};
+\]</div>
+<p>and then find <span class="math notranslate nohighlight">\(\hat{\beta}_0, \hat{\beta}_1, \dots, \hat{\beta}_k\)</span> that <strong>minimize the squared error (loss function) in our training set of size <span class="math notranslate nohighlight">\(n\)</span></strong></p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i = 1}^n (y_i - \beta_0 - \beta_1 x_{i,1} - \ldots - \beta_k x_{i,k})^2.
+\]</div>
+<section id="general-modelling-framework">
+<h3>3.1. General Modelling Framework<a class="headerlink" href="#general-modelling-framework" title="Permalink to this heading">#</a></h3>
+<p>On the other hand, <strong>parametric Quantile regression</strong> will condition the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile (<span class="math notranslate nohighlight">\(\tau \in [0, 1]\)</span>) to <span class="math notranslate nohighlight">\(k\)</span> regressors in a linear combination with an intercept <span class="math notranslate nohighlight">\(\beta_0(\tau)\)</span> and <span class="math notranslate nohighlight">\(k\)</span> regression coefficients:</p>
+<div class="math notranslate nohighlight" id="equation-conditioned-quantile">
+<span class="eqno">(20)<a class="headerlink" href="#equation-conditioned-quantile" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Q_i( \tau \mid X_{i,j} = x_{i,j}) = \beta_0(\tau) + \beta_1(\tau) x_{i,1} + \ldots + \beta_k(\tau) x_{i,k};
+\end{equation}\]</div>
+<p>and then find <span class="math notranslate nohighlight">\(\hat{\beta}_0(\tau), \hat{\beta}_1(\tau), \dots, \hat{\beta}_k(\tau)\)</span> that <strong>minimize the following error function (loss function)</strong></p>
+<div class="math notranslate nohighlight" id="equation-fidelity-function">
+<span class="eqno">(21)<a class="headerlink" href="#equation-fidelity-function" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\sum_{i} e_i[\tau - I(e_i &lt; 0)] = \sum_{i: e_i \geq 0} \tau|e_i|+\sum_{i: e_i &lt; 0}(1-\tau)|e_i|
+\end{equation}\]</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Unlike OLS, where there is a single model fitting, <strong>any Quantile regression approach</strong> (either parametric or non-parametric) would require fitting <strong>as many models as quantiles we are interested in</strong>! (check the variable nature of <span class="math notranslate nohighlight">\(\tau\)</span> on the left-hand side of the equation).</p>
+<p><span class="math notranslate nohighlight">\(\beta_j(\tau)\)</span> means that the regression term depends on the quantile <span class="math notranslate nohighlight">\(\tau\)</span>, which is the desired quantile. In other words, for each quantile, we (might) have a different regression function on the right-hand side of our modelling equation.</p>
+</div>
+<p>In the previous loss function <a class="reference internal" href="#equation-fidelity-function">(21)</a>, we have the indicator variable</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation*}
+I(e_i &lt; 0) =
+\begin{cases}
+1 \; \; \; \; \mbox{if $e_i$ &lt; 0},\\
+0 \; \; \; \; 	\mbox{otherwise;}
+\end{cases}
+\end{equation*}\end{split}\]</div>
+<p>where the residual is</p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \overbrace{\big[\hat{\beta_0}(\tau) + \hat{\beta_1}(\tau) x_{i,1} + \ldots + \hat{\beta_k}(\tau) x_{i,k}\big]}^{\hat{y}_i}\]</div>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i\]</div>
+<p>This error function is called <strong>fidelity</strong>.</p>
+<p>To understand how the fidelity function works, using the <code class="docutils literal notranslate"><span class="pre">teams</span></code> dataset, let us plot the three estimated parametric Quantile regression lines for quantiles <span class="math notranslate nohighlight">\(\tau = 0.25, 0.5, 0.75\)</span> (<strong>how to plot these lines along with obtaining their <code class="docutils literal notranslate"><span class="pre">R</span></code> model objects will be discussed later on in this lecture</strong>). Our response <span class="math notranslate nohighlight">\(Y\)</span> is <code class="docutils literal notranslate"><span class="pre">runs</span></code>, whereas our regressor <span class="math notranslate nohighlight">\(X\)</span> is <code class="docutils literal notranslate"><span class="pre">hits</span></code>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">runs</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_quantile</span><span class="p">(</span>
+<span class="w">    </span><span class="n">quantiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.75</span><span class="p">),</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="nf">after_stat</span><span class="p">(</span><span class="n">quantile</span><span class="p">))),</span>
+<span class="w">    </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Hits (X)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Runs (Y)&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Parametric Quantile Regression Lines of Hits versus Runs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/9ac159f6a07269e311b137d914581c933bd327cefb8057dc4a44a5bcacd6d4a0.png" src="../_images/9ac159f6a07269e311b137d914581c933bd327cefb8057dc4a44a5bcacd6d4a0.png" />
+</div>
+</div>
+<p>The above plot shows that the <span class="math notranslate nohighlight">\(0.75\)</span>-Quantile regression has the largest estimate for the intercept, followed by the <span class="math notranslate nohighlight">\(0.5\)</span>-Quantile regression. Finally, <span class="math notranslate nohighlight">\(0.25\)</span>-Quantile regression shows the smallest estimate.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>A fundamental characteristic of a <span class="math notranslate nohighlight">\(\tau\)</span>-Quantile regression (<strong>either parametric or non-parametric</strong>) is that we will practically have the <span class="math notranslate nohighlight">\(\tau \times 100\%\)</span> of our observed responses below our estimated regression line via <span class="math notranslate nohighlight">\(\hat{\beta}_0(\tau), \hat{\beta}_1(\tau), \dots, \hat{\beta}_k(\tau)\)</span>.</p>
+</div>
+<p>Once we have seen this pattern on the estimated regression lines for quantiles <span class="math notranslate nohighlight">\(\tau = 0.25, 0.5, 0.75\)</span>, let us check how the fidelity function <a class="reference internal" href="#equation-fidelity-function">(21)</a> behaves so we can understand it more.</p>
+<p><strong>In general for <span class="math notranslate nohighlight">\(k\)</span> regressors, assume we have the same set of regressor values <span class="math notranslate nohighlight">\(x_{i,1}, \dots, x_{k,1}\)</span> in the panels below (<span class="math notranslate nohighlight">\(\tau = 0.25, 0.5, 0.75\)</span>). Moreover, we will have the corresponding set of estimates <span class="math notranslate nohighlight">\(\hat{\beta}_0(\tau), \hat{\beta}_1(\tau), \dots, \hat{\beta}_k(\tau)\)</span> by quantile <span class="math notranslate nohighlight">\(\tau = 0.25, 0.5, 0.75\)</span>.</strong></p>
+<p>Having said all this, note we have the values of the corresponding fidelity function <a class="reference internal" href="#equation-fidelity-function">(21)</a> on the <span class="math notranslate nohighlight">\(y\)</span>-axis, whereas we have the corresponding values for the residual</p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \overbrace{\big[\hat{\beta_0}(\tau) + \hat{\beta_1}(\tau) x_{i,1} + \ldots + \hat{\beta_k}(\tau) x_{i,k}\big]}^{\hat{y}_i}\]</div>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i\]</div>
+<p>on the <span class="math notranslate nohighlight">\(x\)</span>-axis.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">error_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span>
+<span class="w">  </span><span class="n">residual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">),</span>
+<span class="w">  </span><span class="s">&quot;0.25&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">0.25</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">residual</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">residual</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;0.5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">0.5</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">residual</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">residual</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;0.75&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">0.75</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">residual</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">residual</span>
+<span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">gather</span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error_function</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.25&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.75&quot;</span><span class="p">)</span>
+
+<span class="n">error_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">facet_grid</span><span class="p">(</span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vars</span><span class="p">(</span><span class="n">tau</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span><span class="w"> </span><span class="n">error_function</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="nf">bquote</span><span class="p">(</span><span class="s">&quot;Error Weights for Different Values of&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&quot;(row of panels)&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">),</span><span class="w"> </span>
+<span class="w">    </span><span class="n">strip.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">),</span><span class="w"> </span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Residual&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Fidelity Function (i.e., loss function)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/9b0d2c0ed4f890789be85123fe16305512825fdc8a286ef32c2ff55b6a760111.png" src="../_images/9b0d2c0ed4f890789be85123fe16305512825fdc8a286ef32c2ff55b6a760111.png" />
+</div>
+</div>
+<p>We will go panel by panel from left to right:</p>
+<p><span class="math notranslate nohighlight">\(\tau = 0.25\)</span></p>
+<p>Recall the <strong>residual</strong> is</p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \overbrace{\big[\hat{\beta_0}(\tau) + \hat{\beta_1}(\tau) x_{i,1} + \ldots + \hat{\beta_k}(\tau) x_{i,k}\big]}^{\hat{y}_i}.\]</div>
+<p>Note that for low values of <span class="math notranslate nohighlight">\(\tau\)</span>, <strong>we consider overpredicting</strong></p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i &lt; 0\]</div>
+<p><strong>WORSE than underpredicting</strong></p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i &gt; 0.\]</div>
+<p>Note how steeper is the penalty (on the <span class="math notranslate nohighlight">\(y\)</span>-axis) when we overpredict (the negative part on the <span class="math notranslate nohighlight">\(x\)</span>-axis). So, we prefer to err on the side of underpredicting (the positive part on the <span class="math notranslate nohighlight">\(x\)</span>-axis).</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Since we prefer to err on the side of underpredicting in this scenario, to decrease the error function value even more we need to provide <strong>smaller</strong> estimated values for <span class="math notranslate nohighlight">\(\hat{\beta_0}(\tau), \hat{\beta_1}(\tau), \dots, \hat{\beta_k}(\tau)\)</span>. In a 2-<span class="math notranslate nohighlight">\(d\)</span> scenario (<span class="math notranslate nohighlight">\(Y\)</span> versus a single <span class="math notranslate nohighlight">\(X\)</span> with <span class="math notranslate nohighlight">\(\hat{\beta_0}(\tau)\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}(\tau)\)</span> as regression parameters), this will <strong>pull down</strong> the estimated regression line in a plot.</p>
+</div>
+<p><span class="math notranslate nohighlight">\(\tau = 0.5\)</span></p>
+<p>For <span class="math notranslate nohighlight">\(\tau = 0.5\)</span>, we care equally about underpredict and overpredict. This corresponds to the median value.</p>
+<p><span class="math notranslate nohighlight">\(\tau = 0.75\)</span></p>
+<p>Recall the <strong>residual</strong> is</p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \overbrace{\big[\hat{\beta_0}(\tau) + \hat{\beta_1}(\tau) x_{i,1} + \ldots + \hat{\beta_k}(\tau) x_{i,k}\big]}^{\hat{y}_i}\]</div>
+<p>For high values of <span class="math notranslate nohighlight">\(\tau\)</span>, it is the opposite. <strong>We consider underpredicting</strong></p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i &gt; 0\]</div>
+<p><strong>WORSE than overpredicting</strong></p>
+<div class="math notranslate nohighlight">
+\[e_i = y_i - \hat{y}_i &lt; 0.\]</div>
+<p>Note how steeper is the penalty (on the <span class="math notranslate nohighlight">\(y\)</span>-axis) when we underpredict (the positive part on the <span class="math notranslate nohighlight">\(x\)</span>-axis). So, we prefer to err on the side of overpredicting (the negative part on the <span class="math notranslate nohighlight">\(x\)</span>-axis).</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Since we prefer to err on the side of overpredicting in this scenario, to decrease the error function on the <span class="math notranslate nohighlight">\(y\)</span>-axis even more we need to provide <strong>larger</strong> estimated values for <span class="math notranslate nohighlight">\(\hat{\beta_0}(\tau), \hat{\beta_1}(\tau), \dots, \hat{\beta_k}(\tau)\)</span>. In a 2-<span class="math notranslate nohighlight">\(d\)</span> scenario (<span class="math notranslate nohighlight">\(Y\)</span> versus a single <span class="math notranslate nohighlight">\(X\)</span> with <span class="math notranslate nohighlight">\(\hat{\beta_0}(\tau)\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}(\tau)\)</span> as regression parameters), this will <strong>pull up</strong> the estimated regression line in a plot.</p>
+</div>
+</section>
+<section id="estimation">
+<h3>3.2. Estimation<a class="headerlink" href="#estimation" title="Permalink to this heading">#</a></h3>
+<p>If our <strong>linear systematic component</strong> has <span class="math notranslate nohighlight">\(k\)</span> regression parameters (<strong>intercept AND coefficients</strong>), then our <strong>estimated Quantile regression function</strong> will interpolate <span class="math notranslate nohighlight">\(k\)</span> points. For example, if we are fitting a line <span class="math notranslate nohighlight">\(Q_i( \tau | X = x_i) = \beta_0(\tau) + \beta_1(\tau) x_i\)</span>, we are estimating two parameters (<span class="math notranslate nohighlight">\(\hat{\beta}_0\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span>). So, our fitted line is a line that passes through two points.</p>
+<p><strong>As we already mentioned</strong>, when we use the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile with a training set size of <span class="math notranslate nohighlight">\(n\)</span>, approximately <span class="math notranslate nohighlight">\(n \times \tau\)</span> points will be under the curve and <span class="math notranslate nohighlight">\(n \times (1 - \tau)\)</span> will be above the curve. For instance, if we have <span class="math notranslate nohighlight">\(n = 100\)</span> points to fit the <span class="math notranslate nohighlight">\(0.7\)</span>-quantile, then:</p>
+<ul class="simple">
+<li><p>The number of points above the line will be approximately 30.</p></li>
+<li><p>The number of points below the line will be approximately 70.</p></li>
+</ul>
+<p>The “approximately” comes because we will have <span class="math notranslate nohighlight">\(p\)</span> points <strong>ON</strong> the estimated regression function.</p>
+<p>Let us consider the <code class="docutils literal notranslate"><span class="pre">teams</span></code> dataset again. In this example, we will estimate the quantiles of <code class="docutils literal notranslate"><span class="pre">runs</span></code> as a <strong>linear function</strong> of <code class="docutils literal notranslate"><span class="pre">hits</span></code>. Below, you can find the code to obtain these estimated <span class="math notranslate nohighlight">\(0.25\)</span>, <span class="math notranslate nohighlight">\(0.5\)</span>, and <span class="math notranslate nohighlight">\(0.75\)</span>-quantile regression lines (via <code class="docutils literal notranslate"><span class="pre">geom_quantile()</span></code>). <strong>This code shows the same plot we saw beforehand.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_quantile_regression_lines</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">runs</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_quantile</span><span class="p">(</span>
+<span class="w">    </span><span class="n">quantiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.75</span><span class="p">),</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="nf">after_stat</span><span class="p">(</span><span class="n">quantile</span><span class="p">))),</span>
+<span class="w">    </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Hits (X)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Runs (Y)&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Parametric Quantile Regression Lines of Hits versus Runs&quot;</span><span class="p">)</span>
+
+<span class="n">estimated_quantile_regression_lines</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9ac159f6a07269e311b137d914581c933bd327cefb8057dc4a44a5bcacd6d4a0.png" src="../_images/9ac159f6a07269e311b137d914581c933bd327cefb8057dc4a44a5bcacd6d4a0.png" />
+</div>
+</div>
+<p>Furthermore, from <code class="docutils literal notranslate"><span class="pre">quantreg</span></code> package, we will use the <code class="docutils literal notranslate"><span class="pre">rq()</span></code> function to fit the parametric Quantile regression at <span class="math notranslate nohighlight">\(\tau = 0.25, 0.5, 0.75\)</span>. It has a <code class="docutils literal notranslate"><span class="pre">formula</span></code> argument as the previous fitting functions along with <code class="docutils literal notranslate"><span class="pre">data</span></code>. This function also allows us to fit as many Quantile regressions as we want via <code class="docutils literal notranslate"><span class="pre">tau</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As in the case of OLS, modelling estimates are obtained via an optimization procedure which minimizes the fidelity function.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">fit_rq_teams</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rq</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">runs</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.75</span><span class="p">))</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.25
+
+Coefficients:
+            Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept) -62.88889  16.27505   -3.86413   0.00011
+hits          0.51462   0.01130   45.55183   0.00000
+
+Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.5
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 19.58352  9.23501    2.12057  0.03404
+hits         0.48646  0.00682   71.28212  0.00000
+
+Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.75
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 60.33913 12.27224    4.91672  0.00000
+hits         0.49565  0.00906   54.67984  0.00000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Even better, we can use <code class="docutils literal notranslate"><span class="pre">tidy()</span></code> but it will not provide the <span class="math notranslate nohighlight">\(p\)</span>-values to perform inference:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 6 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>conf.low</th><th scope=col>conf.high</th><th scope=col>tau</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)</td><td>-62.8888889</td><td>-152.5987100</td><td>-9.6212616</td><td>0.25</td></tr>
+	<tr><td>hits       </td><td>  0.5146199</td><td>   0.4789082</td><td> 0.6003041</td><td>0.25</td></tr>
+	<tr><td>(Intercept)</td><td> 19.5835214</td><td>   8.7200812</td><td>34.1868114</td><td>0.50</td></tr>
+	<tr><td>hits       </td><td>  0.4864560</td><td>   0.4756454</td><td> 0.4952886</td><td>0.50</td></tr>
+	<tr><td>(Intercept)</td><td> 60.3391304</td><td>  45.7748834</td><td>80.4567238</td><td>0.75</td></tr>
+	<tr><td>hits       </td><td>  0.4956522</td><td>   0.4814450</td><td> 0.5068990</td><td>0.75</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="inference">
+<h3>3.3. Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h3>
+<p>In terms of inference, we use the fitted model to identify the relationship between the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile in our response and regressors. We will need the <span class="math notranslate nohighlight">\(j\)</span>th estimated regression parameter <span class="math notranslate nohighlight">\(\hat{\beta}_j(\tau)\)</span> and its corresponding variability which is reflected in the <strong>standard error</strong> of the estimate, <span class="math notranslate nohighlight">\(\mbox{se}\left[\hat{\beta}_j (\tau) \right]\)</span>. To determine the statistical significance of <span class="math notranslate nohighlight">\(\hat{\beta}_j(\tau)\)</span>, we use the <strong>test statistic</strong></p>
+<div class="math notranslate nohighlight">
+\[t_j = \frac{\hat{\beta}_j(\tau)}{\mbox{se}\left[\hat{\beta}_j (\tau) \right]}\]</div>
+<p>to test the hypotheses</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+H_0: \hat{\beta}_j(\tau) = 0 \\
+H_a: \hat{\beta}_j(\tau) \neq 0.
+\end{gather*}\end{split}\]</div>
+<p>A statistic like <span class="math notranslate nohighlight">\(t_j\)</span> is referred to as a <span class="math notranslate nohighlight">\(t\)</span>-value. It has a <span class="math notranslate nohighlight">\(t\)</span>-distribution <strong>under the null hypothesis</strong> <span class="math notranslate nohighlight">\(H_0\)</span> with <span class="math notranslate nohighlight">\(n - k - 1\)</span> degrees of freedom.</p>
+<p>We can obtain the corresponding <span class="math notranslate nohighlight">\(p\)</span>-values for each <span class="math notranslate nohighlight">\(\beta_j(\tau)\)</span> associated to the <span class="math notranslate nohighlight">\(t\)</span>-values under the null hypothesis <span class="math notranslate nohighlight">\(H_0\)</span>. <strong>The smaller the <span class="math notranslate nohighlight">\(p\)</span>-value, the stronger the evidence against the null hypothesis <span class="math notranslate nohighlight">\(H_0\)</span> in our sample</strong>. Hence, small <span class="math notranslate nohighlight">\(p\)</span>-values (less than the significance level <span class="math notranslate nohighlight">\(\alpha\)</span>) indicate that the data provides evidence in favour of <strong>association</strong> (<strong>or causation in the case of an experimental study!</strong>) between the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile in our response and the <span class="math notranslate nohighlight">\(j\)</span>th regressor. Similarly, given a specified <span class="math notranslate nohighlight">\((1-\alpha) \times 100\%\)</span> level of confidence, we can construct <strong>confidence intervals</strong> for the corresponding true value of <span class="math notranslate nohighlight">\(\beta_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\beta}_j(\tau) \pm t_{\alpha/2, n - k - 1}{\mbox{se}\left[\hat{\beta}_j (\tau) \right]},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_{\alpha/2, n - k - 1}\)</span> is the upper <span class="math notranslate nohighlight">\(\alpha/2\)</span> quantile of the <span class="math notranslate nohighlight">\(t\)</span>-distribution with <span class="math notranslate nohighlight">\(n - k - 1\)</span> degrees of freedom.</p>
+<p>Let us recall our inquiry (1):</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Previous research has shown you that a large number of runs is associated with a large number of hits. Having said that, <strong>for those teams at the upper 75% threshold in runs</strong>, is this association significant? If so, by how much?</p></li>
+</ol>
+</div></blockquote>
+<p>This inferential question corresponds to the estimated <span class="math notranslate nohighlight">\(0.75\)</span>-Quantile regression:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">)[</span><span class="m">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1]]
+
+Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.75
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 60.33913 12.27224    4.91672  0.00000
+hits         0.49565  0.00906   54.67984  0.00000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our sample gives us evidence to reject <span class="math notranslate nohighlight">\(H_0\)</span> (<span class="math notranslate nohighlight">\(p\text{-value} &lt; .001\)</span>). So <code class="docutils literal notranslate"><span class="pre">hits</span></code> is statistically associated to the <span class="math notranslate nohighlight">\(0.75\)</span>-quantile of <code class="docutils literal notranslate"><span class="pre">runs</span></code>.</p>
+</section>
+<section id="coefficient-intepretation">
+<h3>3.4. Coefficient Intepretation<a class="headerlink" href="#coefficient-intepretation" title="Permalink to this heading">#</a></h3>
+<p>We can quantify the statistical association of <code class="docutils literal notranslate"><span class="pre">hits</span></code> and the <span class="math notranslate nohighlight">\(0.75\)</span>-quantile of <code class="docutils literal notranslate"><span class="pre">runs</span></code> via the corresponding <span class="math notranslate nohighlight">\(\hat{\beta}_1(0.75)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">tau</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0.75</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 2 × 5</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>conf.low</th><th scope=col>conf.high</th><th scope=col>tau</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)</td><td>60.34</td><td>45.77</td><td>80.46</td><td>0.75</td></tr>
+	<tr><td>hits       </td><td> 0.50</td><td> 0.48</td><td> 0.51</td><td>0.75</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>The interpretation is:</p>
+<blockquote>
+<div><p>For each one hit increase, the <span class="math notranslate nohighlight">\(0.75\)</span>-quantile of runs will increase by 0.5.</p>
+</div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In general, coefficient interpretation works as in OLS (for continuous and categorical regressors). Nevertheless, this interpretation will be targeted towards the <span class="math notranslate nohighlight">\(\tau\)</span>-quantile of the response.</p>
+</div>
+</section>
+<section id="predictions">
+<h3>3.5. Predictions<a class="headerlink" href="#predictions" title="Permalink to this heading">#</a></h3>
+<p>Now, let us check our inquiry (2):</p>
+<blockquote>
+<div><ol class="arabic simple" start="2">
+<li><p><strong>For any given team that scores 1000 hits in a future tournament</strong>, how many runs can this team score with a 50% chance (centred around this future tournament’s median runs)?</p></li>
+</ol>
+</div></blockquote>
+<p>We can obtain this prediction via our <span class="math notranslate nohighlight">\(0.25\)</span> and <span class="math notranslate nohighlight">\(0.75\)</span>-Quantile regressions with <code class="docutils literal notranslate"><span class="pre">predict()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)),</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 1 × 3 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>tau= 0.25</th><th scope=col>tau= 0.50</th><th scope=col>tau= 0.75</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>452</td><td>506</td><td>556</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Thus, our predictive inquiry can be answered as: <strong>“for any given team that scores 1000 hits in a future tournament, it is estimated to have a 50% (<span class="math notranslate nohighlight">\(0.75 - 0.25 \times 100\%\)</span>) chance to have between 452 and 556 runs.”</strong></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>This is a probabilistic prediction!</strong></p>
+</div>
+<p>Note we could also say that this team:</p>
+<ul class="simple">
+<li><p>has a 25% (<span class="math notranslate nohighlight">\(1 - 0.75 \times 100\%\)</span>) chance of achieving <strong>over</strong> 556 runs,</p></li>
+<li><p>has a 25% (<span class="math notranslate nohighlight">\(0.25 \times 100\%\)</span>) chance of getting <strong>less</strong> than 450 runs,</p></li>
+<li><p>and would typically get 506 runs (<strong>median</strong>).</p></li>
+</ul>
+<p>amongst other things.</p>
+</section>
+</section>
+<section id="non-parametric-quantile-regression">
+<h2>4. Non-Parametric Quantile Regression<a class="headerlink" href="#non-parametric-quantile-regression" title="Permalink to this heading">#</a></h2>
+<p>The predictive inquiry (2) can also be dealt with via non-parametric Quantile regression. This class of Quantile regression implicates <strong>no distributional assumptions and no model function specification</strong>. The core idea is to allow the model to capture the local behaviour of the data (i.e., <strong>capturing its local structure</strong>).</p>
+<section id="id1">
+<h3>4.1. General Modelling Framework<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Now, the struggle is choosing <strong>how local</strong> our model should be. In other words, what is the neighbourhood of a point <span class="math notranslate nohighlight">\(x\)</span>? A parameter will control this. We will call it <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, a <strong>penalization</strong> parameter:</p>
+<ul class="simple">
+<li><p>A <strong>small neighbourhood</strong> (i.e., a small <code class="docutils literal notranslate"><span class="pre">lambda</span></code>) will provide a better approximation, but with too much variability - the model will not be smooth.</p></li>
+<li><p>A <strong>too-large neighbourhood</strong> (i.e., a big <code class="docutils literal notranslate"><span class="pre">lambda</span></code>), we lose local information favouring smoothness, going towards a global model.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>4.2. Estimation<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">R</span></code>, non-parametric Quantile regression is performed using the function <code class="docutils literal notranslate"><span class="pre">rqss()</span></code> from library <code class="docutils literal notranslate"><span class="pre">quantreg</span></code>. It also works somewhat similarly to what we are used to with the <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and <code class="docutils literal notranslate"><span class="pre">glm()</span></code> functions.</p>
+<p>However, in <code class="docutils literal notranslate"><span class="pre">rqss()</span></code> each regressor must be introduced in the formula using the <code class="docutils literal notranslate"><span class="pre">qss()</span></code> function (as <strong>additive non-parametric terms</strong>). For example, <code class="docutils literal notranslate"><span class="pre">qss(x,</span> <span class="pre">lambda</span> <span class="pre">=</span> <span class="pre">3)</span></code>.</p>
+<p>The syntax would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rqss</span><span class="p">(</span><span class="n">y</span> <span class="o">~</span> <span class="n">qss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We use <code class="docutils literal notranslate"><span class="pre">rqss()</span></code> to run a non-parametric Quantile regression with <code class="docutils literal notranslate"><span class="pre">runs</span></code> as the response and <code class="docutils literal notranslate"><span class="pre">hits</span></code> as the regressor. We use a <code class="docutils literal notranslate"><span class="pre">tau</span> <span class="pre">=</span> <span class="pre">0.25</span></code> and <code class="docutils literal notranslate"><span class="pre">tau</span> <span class="pre">=</span> <span class="pre">0.75</span></code>. Note <code class="docutils literal notranslate"><span class="pre">rqss()</span></code> does not allow multiple values for <code class="docutils literal notranslate"><span class="pre">tau</span></code>. Therefore, we fit a model per <code class="docutils literal notranslate"><span class="pre">tau</span></code> value. Here, we try a <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">=</span> <span class="pre">100</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rqss_model_0.25_lambda_100</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rqss</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="nf">qss</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">),</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Formula:
+runs ~ qss(hits, lambda = 100)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   14.841      9.334    1.59    0.112
+
+Approximate significance of qss terms:
+     EDF Lambda Penalty F value Pr(&gt;F)    
+hits  17    100   3.162    3255 &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+  Quantile Fidelity at tau = 0.25  is      62180.5
+  Effective Degrees of Freedom = 21        Sample Size = 3015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rqss_model_0.75_lambda_100</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rqss</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="nf">qss</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">),</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Formula:
+runs ~ qss(hits, lambda = 100)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    12.93      10.63   1.217    0.224
+
+Approximate significance of qss terms:
+     EDF Lambda Penalty F value Pr(&gt;F)    
+hits  22    100   9.176   19099 &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+  Quantile Fidelity at tau = 0.75  is      75264.6
+  Effective Degrees of Freedom = 24        Sample Size = 3015
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we plot the two model functions on the data plot. This is basically our <strong>prediction band</strong> (which can also apply to our parametric models!).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">grid_teams_0.25_lambda_100</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_100</span><span class="p">)</span>
+
+<span class="n">grid_teams_0.75_lambda_100</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_100</span><span class="p">)</span>
+
+<span class="n">non_param_teams_scatterplot_lambda_100</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams_scatterplot</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0.75&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid_teams_0.75_lambda_100</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0.25&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid_teams_0.25_lambda_100</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;0.75&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.25&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="nf">bquote</span><span class="p">(</span><span class="s">&quot;Estimated Non-Parametric Quantile Regression Lines of Hits versus Runs with&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&quot;= 100&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">non_param_teams_scatterplot_lambda_100</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3b40129f6ea487a8c32e3703651842589f698b067f8758f43cd1d645fec8da09.png" src="../_images/3b40129f6ea487a8c32e3703651842589f698b067f8758f43cd1d645fec8da09.png" />
+</div>
+</div>
+<p><strong>What if we use <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">=</span> <span class="pre">15</span></code>?</strong> Our estimated functions <strong>will not be that smooth</strong> anymore, there will be more variability on the prediction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rqss_model_0.25_lambda_15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rqss</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="nf">qss</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Formula:
+runs ~ qss(hits, lambda = 15)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    17.45      13.90   1.256    0.209
+
+Approximate significance of qss terms:
+     EDF Lambda Penalty F value Pr(&gt;F)    
+hits  48     15    31.4    1121 &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+  Quantile Fidelity at tau = 0.25  is      61780.8
+  Effective Degrees of Freedom = 53        Sample Size = 3015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rqss_model_0.75_lambda_15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rqss</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="nf">qss</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Formula:
+runs ~ qss(hits, lambda = 15)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)     26.0       13.8   1.884   0.0597 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Approximate significance of qss terms:
+     EDF Lambda Penalty F value Pr(&gt;F)    
+hits  60     15    87.4    4732 &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+  Quantile Fidelity at tau = 0.75  is      74017.3
+  Effective Degrees of Freedom = 61        Sample Size = 3015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">grid_teams_0.25_lambda_15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_15</span><span class="p">)</span>
+
+<span class="n">grid_teams_0.75_lambda_15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">data_grid</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">add_predictions</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_15</span><span class="p">)</span>
+
+<span class="n">non_param_teams_scatterplot_lambda_15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">teams_scatterplot</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0.75&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid_teams_0.75_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0.25&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grid_teams_0.25_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;0.75&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.25&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="nf">bquote</span><span class="p">(</span><span class="s">&quot;Estimated Non-Parametric Quantile Regression Lines of Hits versus Runs with&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&quot;= 15&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">non_param_teams_scatterplot_lambda_15</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e122c75c1a6802f2c198c87ee3aa84e4b6b9de7a915f083e65830014583f1534.png" src="../_images/e122c75c1a6802f2c198c87ee3aa84e4b6b9de7a915f083e65830014583f1534.png" />
+</div>
+</div>
+<p>As a sanity check, let us calculate the <strong>proportion of points below</strong> these estimated regression functions with <span class="math notranslate nohighlight">\(\lambda = 15\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">pred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)[,</span><span class="w"> </span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">summarise</span><span class="p">(</span><span class="n">prop_below_curve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 1 × 1</caption>
+<thead>
+	<tr><th scope=col>prop_below_curve</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.2504146</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">teams</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">pred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">)[,</span><span class="w"> </span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">summarise</span><span class="p">(</span><span class="n">prop_below_curve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">runs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 1 × 1</caption>
+<thead>
+	<tr><th scope=col>prop_below_curve</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>0.7492537</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="prediction">
+<h3>4.3. Prediction<a class="headerlink" href="#prediction" title="Permalink to this heading">#</a></h3>
+<p>Suppose that we go ahead with the non-parametric models with <span class="math notranslate nohighlight">\(\lambda = 15\)</span>, then we obtain the corresponding <strong>probabilistic interval</strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">rqss_model_0.25_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)),</span><span class="w"> </span><span class="m">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">480</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">rqss_model_0.75_lambda_15</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">hits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)),</span><span class="w"> </span><span class="m">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">621</div></div>
+</div>
+<p>Thus, our predictive inquiry can be answered as:</p>
+<blockquote>
+<div><p>For any given team that scores 1000 hits in a future tournament, it is estimated to have a 50% (<span class="math notranslate nohighlight">\(0.75 - 0.25 \times 100\%\)</span>) chance to have between 480 and 621 runs.</p>
+</div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Having said all this regarding parametric and non-parametric Quantile regressions, you might wonder: <strong>when to use what?</strong></p>
+<p>In general, non-parametric Quantile regression might be adequate for predictive inquiries via non-linear training data. On the other hand, untangling an interpretable numeric association (or causation!) between our quantile response and some regressor would imply parametric Quantile regression.</p>
+</div>
+</section>
+</section>
+<section id="optional-5-quantile-regression-and-discrete-data">
+<h2>(Optional) 5. Quantile Regression and Discrete Data<a class="headerlink" href="#optional-5-quantile-regression-and-discrete-data" title="Permalink to this heading">#</a></h2>
+<p>We previously stated that to use Quantile regression with a count-type response, we would need to make extra adjustments if the response is <strong>much less scattered</strong>. Hence, let us introduce a dataset with this condition.</p>
+<section id="the-crabs-dataset">
+<h3>5.1. The Crabs Dataset<a class="headerlink" href="#the-crabs-dataset" title="Permalink to this heading">#</a></h3>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> (<a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x">Brockmann, 1996</a>) is a dataset detailing the <strong>counts of satellite male crabs</strong> residing around a female crab nest. The code below renames the original response’s name, <code class="docutils literal notranslate"><span class="pre">satell</span></code>, to <code class="docutils literal notranslate"><span class="pre">n_males</span></code>. We will work with the continuous carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> as a regressor.</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/crab.png"><img alt="../_images/crab.png" src="../_images/crab.png" style="height: 350px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Hello! I’m the crab, again!</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition-the-crabs-dataset admonition">
+<p class="admonition-title">The Crabs Dataset</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> contains 173 observations on horseshoe crabs (Limulus polyphemus). The response is the count of male crabs (<code class="docutils literal notranslate"><span class="pre">n_males</span></code>) around a female breeding nest. It is subject to four explanatory variables: <code class="docutils literal notranslate"><span class="pre">color</span></code> of the prosoma with four levels (nominal factor-type), the condition of the posterior <code class="docutils literal notranslate"><span class="pre">spine</span></code> with three levels (nominal factor-type), the continuous variables carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> (mm), and <code class="docutils literal notranslate"><span class="pre">weight</span></code> (g).</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">data</span><span class="p">(</span><span class="n">crabs</span><span class="p">)</span>
+<span class="n">crabs_raw</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crabs</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">rename</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">satell</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">n_males</span><span class="p">)</span>
+<span class="n">crabs_raw</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 173 × 2</caption>
+<thead>
+	<tr><th scope=col>width</th><th scope=col>n_males</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>28.3</td><td>8</td></tr>
+	<tr><td>22.5</td><td>0</td></tr>
+	<tr><td>26.0</td><td>9</td></tr>
+	<tr><td>⋮</td><td>⋮</td></tr>
+	<tr><td>28.0</td><td>0</td></tr>
+	<tr><td>27.0</td><td>0</td></tr>
+	<tr><td>24.5</td><td>0</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="initial-model-estimation">
+<h3>5.2. Initial Model Estimation<a class="headerlink" href="#initial-model-estimation" title="Permalink to this heading">#</a></h3>
+<p>Next, let us fit a sequence of quantiles <span class="math notranslate nohighlight">\(\tau\)</span> to the data, then add the fitted values to the dataset. This is what <code class="docutils literal notranslate"><span class="pre">geom_quantile()</span></code> does behind the scenes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copying the raw data.</span>
+<span class="n">crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crabs_raw</span>
+
+<span class="c1"># Specifying the desired quantiles.</span>
+<span class="n">tau</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span>
+
+<span class="c1"># Fitting the parametric model for the desired quantiles.</span>
+<span class="n">fit_rq_crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rq</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crabs</span><span class="p">,</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tau</span><span class="p">)</span>
+
+<span class="n">pred</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_rq_crabs</span><span class="o">$</span><span class="n">fitted.values</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">fit_rq_crabs</span><span class="o">$</span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># Creating a tibble with the fitted values for each quantile model.</span>
+<span class="n">pred</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit_rq_crabs</span><span class="o">$</span><span class="n">tau</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crabs</span><span class="o">$</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">gather</span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.double</span><span class="p">(</span><span class="n">tau</span><span class="p">))</span>
+
+<span class="c1"># Joining the pred tibble to the crabs tibble.</span>
+<span class="n">crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crabs_raw</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">left_join</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">relationship</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;many-to-many&quot;</span><span class="p">)</span>
+
+<span class="n">crabs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Joining with `by = join_by(width)`
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 2692 × 4</caption>
+<thead>
+	<tr><th scope=col>width</th><th scope=col>n_males</th><th scope=col>tau</th><th scope=col>pred</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>28.3</td><td>8</td><td>0.2</td><td>0</td></tr>
+	<tr><td>28.3</td><td>8</td><td>0.2</td><td>0</td></tr>
+	<tr><td>28.3</td><td>8</td><td>0.2</td><td>0</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>24.5</td><td>0</td><td>0.8</td><td>4.604651</td></tr>
+	<tr><td>24.5</td><td>0</td><td>0.8</td><td>4.604651</td></tr>
+	<tr><td>24.5</td><td>0</td><td>0.8</td><td>4.604651</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Now, let us check the <code class="docutils literal notranslate"><span class="pre">summary()</span></code> of <code class="docutils literal notranslate"><span class="pre">fit_rq_crabs</span></code>.</p>
+<p><strong>Note that the estimated <span class="math notranslate nohighlight">\(0.2\)</span>-Quantile regression is providing estimates at zero!</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_crabs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = n_males ~ width, tau = tau, data = crabs)
+
+tau: [1] 0.2
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept)  0.00000     -9.19111  0.00000
+width        0.00000      0.00000  0.35017
+
+Call: rq(formula = n_males ~ width, tau = tau, data = crabs)
+
+tau: [1] 0.4
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept) -11.00000    -15.15960  -9.14239
+width         0.47619      0.40141   0.64616
+
+Call: rq(formula = n_males ~ width, tau = tau, data = crabs)
+
+tau: [1] 0.6
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept) -11.76000    -18.48730  -6.69196
+width         0.56000      0.39454   0.84914
+
+Call: rq(formula = n_males ~ width, tau = tau, data = crabs)
+
+tau: [1] 0.8
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  -6.79070    -23.73913  -0.93342
+width         0.46512      0.25590   1.00503
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let us plot the data and our fitted models (<strong>one model for each quantile</strong>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">p_crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">crabs</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">n_males</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">tau</span><span class="p">)),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Carapace Width (mm)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Nearby Males&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Parametric Quantile Regression Lines of Carapace Width versus Number of Nearby Males&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">p_crabs</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a56a56b89ce544edc6e737a0719578106c91a4f32eb84aaa6386fcfb31a49c31.png" src="../_images/a56a56b89ce544edc6e737a0719578106c91a4f32eb84aaa6386fcfb31a49c31.png" />
+</div>
+</div>
+<p>There are <strong>two important things</strong> to observe here:</p>
+<ol class="arabic simple">
+<li><p>If we use lower quantiles, say less than 0.2, <strong>the quantile regression is fitting a horizontal line at zero</strong>.</p></li>
+<li><p>Observe the model fitted for <span class="math notranslate nohighlight">\(\tau = 0.4\)</span> and <span class="math notranslate nohighlight">\(\tau = 0.2\)</span>. For low values of the carapace width, they cross paths.</p></li>
+</ol>
+<p>Furthermore, note that around 36% in <code class="docutils literal notranslate"><span class="pre">crabs_raw</span></code> of the response <code class="docutils literal notranslate"><span class="pre">n_males</span></code> is 0. <strong>This is going to have an critical impact on the lower quantiles.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">crabs_raw</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="o">/</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">crabs_raw</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0.36</div></div>
+</div>
+<p>Let us estimate the <strong>standard error</strong> of our parameters for <span class="math notranslate nohighlight">\(\tau\in\{0.05, 0.1, 0.15, 0.2\}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="nf">rq</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crabs_raw</span><span class="p">,</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.15</span><span class="p">,</span><span class="w"> </span><span class="m">0.2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = n_males ~ width, tau = c(0.05, 0.1, 0.15, 0.2), 
+    data = crabs_raw)
+
+tau: [1] 0.05
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) 0            0        0       
+width       0            0        0       
+
+Call: rq(formula = n_males ~ width, tau = c(0.05, 0.1, 0.15, 0.2), 
+    data = crabs_raw)
+
+tau: [1] 0.1
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) 0            0        0       
+width       0            0        0       
+
+Call: rq(formula = n_males ~ width, tau = c(0.05, 0.1, 0.15, 0.2), 
+    data = crabs_raw)
+
+tau: [1] 0.15
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept)  0.00000     -7.92981  0.00000
+width        0.00000      0.00000  0.30989
+
+Call: rq(formula = n_males ~ width, tau = c(0.05, 0.1, 0.15, 0.2), 
+    data = crabs_raw)
+
+tau: [1] 0.2
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept)  0.00000     -9.19111  0.00000
+width        0.00000      0.00000  0.35017
+</pre></div>
+</div>
+</div>
+</div>
+<p>But we have standard errors equal to zero in our lower quantiles! <strong>This does not make any sense from the inferential point of view.</strong></p>
+<p>In turns out that Quantile regression relies on the <strong>asymptotical normality of the statistics</strong> and this is not achieved when we have a discrete <span class="math notranslate nohighlight">\(Y\)</span>, such as <code class="docutils literal notranslate"><span class="pre">n_males</span></code>. Therefore, in those cases, the inferential quantities are not reliable.</p>
+</section>
+<section id="model-estimation-via-dither">
+<h3>5.3. Model Estimation via <code class="docutils literal notranslate"><span class="pre">dither()</span></code><a class="headerlink" href="#model-estimation-via-dither" title="Permalink to this heading">#</a></h3>
+<p>For count data, you can use the <code class="docutils literal notranslate"><span class="pre">dither()</span></code> function from package <code class="docutils literal notranslate"><span class="pre">quantreg</span></code> package to introduce some <strong>random perturbation</strong> (i.e., inducing random noise). The argument <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;right&quot;</span></code> specifies we only want strictly positive perturbations (since we are dealing with counts).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">123</span><span class="p">)</span><span class="w"> </span><span class="c1"># To ensure reproducibility in our random perturbation.</span>
+<span class="n">tau</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="nf">c</span><span class="p">(</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.15</span><span class="p">,</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span>
+<span class="n">fit_rq_crabs_dither</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rq</span><span class="p">(</span><span class="nf">dither</span><span class="p">(</span><span class="n">n_males</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;right&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crabs_raw</span><span class="p">,</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tau</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_crabs_dither</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = dither(n_males, type = &quot;right&quot;, value = 1) ~ width, 
+    tau = tau, data = crabs_raw)
+
+tau: [1] 0.05
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) -2.86010     -7.28338 -1.18756
+width        0.12127      0.03290  0.28750
+
+Call: rq(formula = dither(n_males, type = &quot;right&quot;, value = 1) ~ width, 
+    tau = tau, data = crabs_raw)
+
+tau: [1] 0.1
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) -3.67607     -5.95325 -1.75594
+width        0.15884      0.08239  0.24640
+
+Call: rq(formula = dither(n_males, type = &quot;right&quot;, value = 1) ~ width, 
+    tau = tau, data = crabs_raw)
+
+tau: [1] 0.15
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) -4.14444     -8.15272 -1.99403
+width        0.17998      0.09449  0.33215
+
+Call: rq(formula = dither(n_males, type = &quot;right&quot;, value = 1) ~ width, 
+    tau = tau, data = crabs_raw)
+
+tau: [1] 0.2
+
+Coefficients:
+            coefficients lower bd upper bd
+(Intercept) -5.37683     -7.91183 -2.43798
+width        0.23287      0.12259  0.33294
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we plot our in-sample predictions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_rq_crabs_dither</span><span class="o">$</span><span class="n">fitted.values</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">fit_rq_crabs_dither</span><span class="o">$</span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># Creating a tibble with the fitted values for each quantile model.</span>
+<span class="n">pred</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit_rq_crabs_dither</span><span class="o">$</span><span class="n">tau</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crabs_raw</span><span class="o">$</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">gather</span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.double</span><span class="p">(</span><span class="n">tau</span><span class="p">))</span>
+
+<span class="c1"># Joining the pred tibble to the crab tibble.</span>
+<span class="n">crabs_dither</span><span class="w"> </span><span class="o">&lt;-</span>
+<span class="w">  </span><span class="n">crabs_raw</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">left_join</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">relationship</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;many-to-many&quot;</span><span class="p">)</span>
+
+<span class="n">p_crabs_dither</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">crabs_dither</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">n_males</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">tau</span><span class="p">)),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Carapace Width (mm)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number of Nearby Males&quot;</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Quantile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Parametric Quantile Regression Lines of Carapace Width versus Number of Nearby Males&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Joining with `by = join_by(width)`
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">p_crabs_dither</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/110501aeabe4c426f59bfa52e02e68b7d262eb196a1dfb50933a5bd2951a4681.png" src="../_images/110501aeabe4c426f59bfa52e02e68b7d262eb196a1dfb50933a5bd2951a4681.png" />
+</div>
+</div>
+<p>We now have distinct lines for the low quantiles.</p>
+<div class="admonition-why-was-not-this-a-big-problem-with-the-previous-baseball-related-dataset admonition">
+<p class="admonition-title">Why was not this a big problem with the previous baseball-related dataset?</p>
+<p>Because, given the size of the counts of around 400 to 800 in dataset <code class="docutils literal notranslate"><span class="pre">teams</span></code>, the points “behave similarly” to continuous data. However, we still could (and should!) use the <code class="docutils literal notranslate"><span class="pre">dither()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">teams</span></code> model, but the results should be fairly similar (compare the output below with the one you obtained at the beginning with <code class="docutils literal notranslate"><span class="pre">teams</span></code>).</p>
+</div>
+<p>Let us refit our parametric Quantile regressions with <code class="docutils literal notranslate"><span class="pre">tau</span> <span class="pre">=</span> <span class="pre">c(0.25,</span> <span class="pre">0.5,</span> <span class="pre">0.75)</span></code> in dataset <code class="docutils literal notranslate"><span class="pre">teams</span></code> using <code class="docutils literal notranslate"><span class="pre">dither()</span></code> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">123</span><span class="p">)</span>
+<span class="n">fit_rq_teams_dither_final</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rq</span><span class="p">(</span><span class="nf">dither</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;right&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">hits</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="n">tau</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.75</span><span class="p">))</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_teams_dither_final</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = dither(runs, type = &quot;right&quot;, value = 1) ~ hits, 
+    tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.25
+
+Coefficients:
+            Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept) -63.80693  16.03006   -3.98046   0.00007
+hits          0.51561   0.01112   46.34972   0.00000
+
+Call: rq(formula = dither(runs, type = &quot;right&quot;, value = 1) ~ hits, 
+    tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.5
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 19.77599  9.41214    2.10112  0.03571
+hits         0.48670  0.00695   70.03725  0.00000
+
+Call: rq(formula = dither(runs, type = &quot;right&quot;, value = 1) ~ hits, 
+    tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.75
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 60.73963 12.33464    4.92431  0.00000
+hits         0.49586  0.00910   54.49468  0.00000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, if we compare them to our initial models, we can see that our modelling summaries are similar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">fit_rq_teams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.25
+
+Coefficients:
+            Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept) -62.88889  16.27505   -3.86413   0.00011
+hits          0.51462   0.01130   45.55183   0.00000
+
+Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.5
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 19.58352  9.23501    2.12057  0.03404
+hits         0.48646  0.00682   71.28212  0.00000
+
+Call: rq(formula = runs ~ hits, tau = c(0.25, 0.5, 0.75), data = teams)
+
+tau: [1] 0.75
+
+Coefficients:
+            Value    Std. Error t value  Pr(&gt;|t|)
+(Intercept) 60.33913 12.27224    4.91672  0.00000
+hits         0.49565  0.00906   54.67984  0.00000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="wrapping-up">
+<h2>6. Wrapping Up<a class="headerlink" href="#wrapping-up" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>We can extend the regression paradigm beyond the conditioned response mean.</p></li>
+<li><p>We could assess association (or causation under a proper experimental framework!) via different response statistics such as quantiles to a set of regressors.</p></li>
+<li><p>Quantile regression can be non-parametric (more suitable for predictions) or parametric (to allow for coefficient interpretation).</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lecture6_local_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 6 - Local Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lecture8_missing_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 8 - Missing Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries-and-scripts">Loading Libraries and Scripts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-quantiles">1. The Quantiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-us-recall-what-a-quantile-is">1.1. Let us recall what a quantile is</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-for-quantile-regression">1.2. Motivation for Quantile Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-quantile-regression">2. Applications of Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-teams-dataset">2.1. The Teams Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">2.2. Exploratory Data Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-quantile-regression">3. Parametric Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-modelling-framework">3.1. General Modelling Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation">3.2. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">3.3. Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-intepretation">3.4. Coefficient Intepretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">3.5. Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-quantile-regression">4. Non-Parametric Quantile Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.1. General Modelling Framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.2. Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">4.3. Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-5-quantile-regression-and-discrete-data">(Optional) 5. Quantile Regression and Discrete Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-crabs-dataset">5.1. The Crabs Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-model-estimation">5.2. Initial Model Estimation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-estimation-via-dither">5.3. Model Estimation via <code class="docutils literal notranslate"><span class="pre">dither()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">6. Wrapping Up</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
