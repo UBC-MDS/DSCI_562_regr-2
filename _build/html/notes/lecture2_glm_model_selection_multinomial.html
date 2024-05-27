@@ -392,7 +392,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-type-responses">2. Categorical Type Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">3. Multinomial Logistic Regression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify® Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-wrangling-and-summary">3.2. Data Wrangling and Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3.3. Exploratory Data Analysis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">3.4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
@@ -771,19 +771,20 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <p><strong>Multinomial Logistic regression</strong> is a maximum likelihood-based GLM that addresses inferential (and predictive!) inquiries where the response is <strong>categorical</strong> and <strong>nominal</strong>. To illustrate the use of this GLM, let us introduce an adequate dataset.</p>
 <section id="the-spotify-dataset">
-<h3>3.1. The Spotify Dataset<a class="headerlink" href="#the-spotify-dataset" title="Permalink to this heading">#</a></h3>
+<h3>3.1. The Spotify® Dataset<a class="headerlink" href="#the-spotify-dataset" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p><em>Copyright © 2024 Spotify AB.</em></p>
+<p><em>Spotify is a registered trademark of the Spotify Group.</em></p>
+</div></blockquote>
 <p>The <code class="docutils literal notranslate"><span class="pre">spotify</span></code> dataset is a sample of <span class="math notranslate nohighlight">\(n = 350\)</span> songs with different variables by column.</p>
 <div class="admonition-the-spotify-dataset admonition">
 <p class="admonition-title">The Spotify Dataset</p>
 <p>This data comes in the <code class="docutils literal notranslate"><span class="pre">bayesrules</span></code> package. Its description is the following:</p>
 <blockquote>
-<div><p><em>A sub-sample of the Spotify song data originally collected by Kaylin Pavlik (kaylinquest) and distributed through the <code class="docutils literal notranslate"><span class="pre">R</span></code> for Data Science TidyTuesday project.</em></p>
+<div><p><em>A sub-sample of the Spotify® song data originally collected by Kaylin Pavlik (kaylinquest) and distributed through the <code class="docutils literal notranslate"><span class="pre">R</span></code> for Data Science TidyTuesday project.</em></p>
 </div></blockquote>
 </div>
-<center>        
-<img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="600" height="180"/>
-</center>
-</br><p>This dataset has 23 variables in total. The <span class="math notranslate nohighlight">\(n = 350\)</span> songs belong to 44 different artists.</p>
+<p>This dataset has 23 variables in total. The <span class="math notranslate nohighlight">\(n = 350\)</span> songs belong to 44 different artists.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">spotify</span>
@@ -817,14 +818,14 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <section id="exercise-content">
 <p>Having checked the description of the <code class="docutils literal notranslate"><span class="pre">spotify</span></code> dataset, suppose we want to conduct an inferential study. What would be the primary nature of our conclusions?</p>
 <p><strong>A.</strong> We could draw causation conclusions across all music platforms.</p>
-<p><strong>B.</strong> We could draw association conclusions on the Spotify platform.</p>
+<p><strong>B.</strong> We could draw association conclusions on the Spotify® platform.</p>
 <p><strong>C.</strong> We could draw association conclusions across all music platforms.</p>
-<p><strong>D.</strong> We could draw causation conclusions on the Spotify platform.</p>
+<p><strong>D.</strong> We could draw causation conclusions on the Spotify® platform.</p>
 </section>
 </div>
 <div class="admonition-main-statistical-inquiries admonition">
 <p class="admonition-title">Main Statistical Inquiries</p>
-<p>I am <strong>big fan</strong> of the electronic dance music (<code class="docutils literal notranslate"><span class="pre">edm</span></code>) catalogue on Spotify. Nevertheless, I do not have access to their whole song database. Still, I want to do the following:</p>
+<p>I am <strong>big fan</strong> of the electronic dance music (<code class="docutils literal notranslate"><span class="pre">edm</span></code>) catalogue on Spotify®. Nevertheless, I do not have access to their whole song database. Still, I want to do the following:</p>
 <ul class="simple">
 <li><p>To statistically measure how danceable this genre is, compared to other genres on the platform, and by how much.</p></li>
 <li><p>To statistically measure how euphoric this genre is, compared to other genres on the platform, and by how much.</p></li>
@@ -1129,7 +1130,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <p>Then, we make the corresponding coefficient interpretations (the previous output already provides the estimate on the odds scale via <code class="docutils literal notranslate"><span class="pre">exponentiate</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>):</p>
 <blockquote>
-<div><p>For each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify catalogue, the song is 1.05 times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p>For each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify® catalogue, the song is 1.05 times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 </section>
 <section id="more-than-one-logit-function">
@@ -1378,7 +1379,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 </table>
 </div></div>
 </div>
-<p>Since our baseline response is <code class="docutils literal notranslate"><span class="pre">edm</span></code>, we can conclude the following with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span> <strong>on the Spotify platform</strong>:</p>
+<p>Since our baseline response is <code class="docutils literal notranslate"><span class="pre">edm</span></code>, we can conclude the following with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span> <strong>on the Spotify® platform</strong>:</p>
 <ul class="simple">
 <li><p>There is a statistical difference in <code class="docutils literal notranslate"><span class="pre">danceability</span></code> in <code class="docutils literal notranslate"><span class="pre">edm</span></code> versus <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> and <code class="docutils literal notranslate"><span class="pre">rock</span></code>.</p></li>
 <li><p>There is a statistical difference in <code class="docutils literal notranslate"><span class="pre">valence</span></code> in <code class="docutils literal notranslate"><span class="pre">edm</span></code> versus <code class="docutils literal notranslate"><span class="pre">latin</span></code>.</p></li>
@@ -1388,13 +1389,13 @@ H_a: \beta_j^{(u, v)} \neq 0.
 <h3>3.7. Coefficient Interpretation<a class="headerlink" href="#coefficient-interpretation" title="Permalink to this heading">#</a></h3>
 <p>Interpretation of the Multinomial Logistic regression coefficients is <strong>quite similar</strong> to the Binary Logistic regression. Let us interpret those significant regression coefficientes from column <code class="docutils literal notranslate"><span class="pre">estimate</span></code>:</p>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_2^{(\texttt{latin},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify catalogue, the song is <span class="math notranslate nohighlight">\(1.052\)</span> times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_2^{(\texttt{latin},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify® catalogue, the song is <span class="math notranslate nohighlight">\(1.052\)</span> times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{r&amp;b},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.963) \times 100\% = 3.7\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{r&amp;b},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify® catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.963) \times 100\% = 3.7\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{ock},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">rock</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.918) \times 100\% = 8.2\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{ock},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify® catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">rock</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.918) \times 100\% = 8.2\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -1522,7 +1523,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-type-responses">2. Categorical Type Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">3. Multinomial Logistic Regression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify® Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-wrangling-and-summary">3.2. Data Wrangling and Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3.3. Exploratory Data Analysis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">3.4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
