@@ -1,0 +1,1678 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 8 - Missing Data &#8212; DSCI 562 - Regression II</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notes/lecture8_missing_data';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Binary Logistic Regression" href="appendix-binary-log-regression.html" />
+    <link rel="prev" title="Lecture 7 - Quantile Regression" href="lecture7_quantile_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Welcome to DSCI 562: Regression II
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lecture-learning-objectives.html">Lecture Learning Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture2_glm_model_selection_multinomial.html">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture3_glm_ordinal_regression.html">Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture4_linear_mixed_effects_models.html">Lecture 4 - Linear Mixed-Effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture5_survival_analysis.html">Lecture 5 - Survival Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture6_local_regression.html">Lecture 6 - Local Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lecture7_quantile_regression.html">Lecture 7 - Quantile Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lecture 8 - Missing Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.ubc.ca/MDS-2023-24/DSCI_562_regr-2_students/issues/new?title=Issue%20on%20page%20%2Fnotes/lecture8_missing_data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notes/lecture8_missing_data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 8 - Missing Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-missing-data">1. Types of Missing Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-completely-at-random-mcar">1.1. Missing Completely At Random (MCAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-at-random-mar">1.2. Missing At Random (MAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-not-at-random-mnar">1.3. Missing Not At Random (MNAR)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-data">2. Handling Missing Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#listwise-deletion">2.1. Listwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-imputation">2.2. Mean Imputation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-imputation">2.3. Regression Imputation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#last-observation-carried-over">2.4. Last Observation Carried Over</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-imputation">2.5. Multiple Imputation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">3. Wrapping Up</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-8-missing-data">
+<h1>Lecture 8 - Missing Data<a class="headerlink" href="#lecture-8-missing-data" title="Permalink to this heading">#</a></h1>
+<section id="today-s-learning-goals">
+<h2>Today’s Learning Goals<a class="headerlink" href="#today-s-learning-goals" title="Permalink to this heading">#</a></h2>
+<p>By the end of this lecture, you should be able to:</p>
+<ul class="simple">
+<li><p>Identify and explain the three common types of missing data mechanisms.</p></li>
+<li><p>Identify a potential consequence of removing missing data on downstream analyses.</p></li>
+<li><p>Identify a potential consequence of a mean imputation method on downstream analyses.</p></li>
+<li><p>Identify the four steps involved with a multiple imputation method for handling missing data.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">mice</span></code> package in <code class="docutils literal notranslate"><span class="pre">R</span></code> to fit multiple imputed models.</p></li>
+</ul>
+</section>
+<section id="loading-libraries">
+<h2>Loading Libraries<a class="headerlink" href="#loading-libraries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">nycflights13</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">mice</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="types-of-missing-data">
+<h2>1. Types of Missing Data<a class="headerlink" href="#types-of-missing-data" title="Permalink to this heading">#</a></h2>
+<p>In Statistics, there are three types of missing data:</p>
+<ul class="simple">
+<li><p><strong>Missing completely at random (MCAR)</strong>.</p></li>
+<li><p><strong>Missing at random (MAR)</strong>.</p></li>
+<li><p><strong>Missing not at random (MNAR)</strong>.</p></li>
+</ul>
+<p>It is in our best interest to identify the type of missing data we have. Proper identification will determine the class of approach we will take to deal with missingness in any statistical analysis.</p>
+<section id="missing-completely-at-random-mcar">
+<h3>1.1. Missing Completely At Random (MCAR)<a class="headerlink" href="#missing-completely-at-random-mcar" title="Permalink to this heading">#</a></h3>
+<p>In this type, missing data appear <strong>totally by chance</strong>. Hence, missingness is independent of the data. Roughly speaking, all our observations (<strong>rows in the dataset</strong>) have the same chance of containing missing data (i.e., an <code class="docutils literal notranslate"><span class="pre">NA</span></code> in one of the columns).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is the ideal class of missing data since <strong>there is no missingness pattern</strong>.</p>
+</div>
+<p><strong>Example</strong></p>
+<p>We are trying to count the number of car accidents in Vancouver. To do that, we are monitoring the traffic in 100 strategic points of the city with cameras. Say that we count how many vehicles passed by each one of those cameras for every minute of the day. We have 101 <strong>variables</strong>: <code class="docutils literal notranslate"><span class="pre">time</span></code>, <code class="docutils literal notranslate"><span class="pre">Camera_1</span></code>, …, <code class="docutils literal notranslate"><span class="pre">Camera_100</span></code>.</p>
+<p>Suppose that <strong>any camera</strong> has a <span class="math notranslate nohighlight">\(1\%\)</span> <strong>chance</strong> of failing for <strong>any given minute</strong>. If a camera fails, you get MCAR data for that minute.</p>
+</section>
+<section id="missing-at-random-mar">
+<h3>1.2. Missing At Random (MAR)<a class="headerlink" href="#missing-at-random-mar" title="Permalink to this heading">#</a></h3>
+<p>In this type, <strong>missingness depends on the observed data we have</strong>. Therefore, we could use some imputation techniques for this missingness, such as <strong>multiple imputation</strong> (to be covered later on today), based on the rest of our available data (a <strong>hot deck</strong> imputation technique).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Missing data imputation techniques are divided into two classes:</p>
+<ul class="simple">
+<li><p><strong>Hot deck:</strong> Those incomplete rows in our current dataset are imputed using the information provided by the complete rows <strong>within the same dataset</strong>.</p></li>
+<li><p><strong>Cold deck:</strong> Those incomplete rows in our current dataset are imputed using the information provided by the complete rows of another dataset <strong>with the same column structure</strong>.</p></li>
+</ul>
+<p><strong>The scope of this lecture pertains to hot deck techniques.</strong></p>
+</div>
+<p><strong>Example</strong></p>
+<p>Following up with the previous example, an external device is attached to the cameras to increase the image quality at low light situations (night time) <strong>and we have the recording time in our dataset</strong>. The external device is activated <strong>from 6 p.m. to 5 a.m.</strong> However, the device has a <span class="math notranslate nohighlight">\(10\%\)</span> <strong>chance</strong> of not working in a given minute. The chances are not the same for all the observations but depend on the data we observed, more specifically, <strong>night</strong> <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+</section>
+<section id="missing-not-at-random-mnar">
+<h3>1.3. Missing Not At Random (MNAR)<a class="headerlink" href="#missing-not-at-random-mnar" title="Permalink to this heading">#</a></h3>
+<p>This is the most serious type of missingness since the MNAR data <strong>depends on unobservable quantities</strong>.</p>
+<p><strong>Example</strong></p>
+<p>With the previous example, <strong>if we did not record time</strong>, we would be MNAR data since we do not have any other information rather than just the car count. Another missingness cause of this type would be that, as the cameras get older, their probability of failure increases, <strong>but we cannot check this from our observed data</strong>.</p>
+</section>
+</section>
+<section id="handling-missing-data">
+<h2>2. Handling Missing Data<a class="headerlink" href="#handling-missing-data" title="Permalink to this heading">#</a></h2>
+<p>We will explore different techniques to impute missing data <strong>based on the type of missingness</strong>.</p>
+<section id="listwise-deletion">
+<h3>2.1. Listwise Deletion<a class="headerlink" href="#listwise-deletion" title="Permalink to this heading">#</a></h3>
+<p>It is the simplest way to deal with missing data.</p>
+<p><strong>Is there any missing data in your row?</strong> If yes, we just remove the row.</p>
+<p>If the data is MCAR, <strong>we are not introducing bias by removing the rows</strong>. We can still get unbiased estimators for whichever our analysis is, such as <strong>regression coefficients</strong>.</p>
+<p>We can also estimate the <strong>standard errors</strong> correctly, but they will be higher than they could be since we discard incomplete observations.</p>
+<div class="exercise admonition" id="lecture8-q1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 27 </span></p>
+<section id="exercise-content">
+<p>Are these higher standard errors related to the fact that we are deleting incomplete MCAR rows?</p>
+<p><strong>A.</strong> Yes.</p>
+<p><strong>B.</strong> No.</p>
+</section>
+</div>
+<p>Let us start with our lecture’s toy dataset: the <code class="docutils literal notranslate"><span class="pre">flights</span></code> dataset from the package <code class="docutils literal notranslate"><span class="pre">nycflights13</span></code>. It contains the <strong>on-time data</strong> of 336,776 flights that departed New York City in 2013.</p>
+<p>We will use the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dep_delay</span></code>: departure delays in minutes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>: arrival delays in minutes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">carrier</span></code>: two-letter carrier abbreviation.</p></li>
+</ul>
+<p>We will try getting the mean <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> per <code class="docutils literal notranslate"><span class="pre">carrier,</span></code> but we have missing data in <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code>, which will return a summary with <code class="docutils literal notranslate"><span class="pre">NA</span></code>s.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">flights</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">group_by</span><span class="p">(</span><span class="n">carrier</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">summarise</span><span class="p">(</span><span class="n">dep_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 16 × 2</caption>
+<thead>
+	<tr><th scope=col>carrier</th><th scope=col>dep_delay</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>9E</td><td>   NA</td></tr>
+	<tr><td>AA</td><td>   NA</td></tr>
+	<tr><td>AS</td><td>   NA</td></tr>
+	<tr><td>B6</td><td>   NA</td></tr>
+	<tr><td>DL</td><td>   NA</td></tr>
+	<tr><td>EV</td><td>   NA</td></tr>
+	<tr><td>F9</td><td>   NA</td></tr>
+	<tr><td>FL</td><td>   NA</td></tr>
+	<tr><td>HA</td><td>4.901</td></tr>
+	<tr><td>MQ</td><td>   NA</td></tr>
+	<tr><td>OO</td><td>   NA</td></tr>
+	<tr><td>UA</td><td>   NA</td></tr>
+	<tr><td>US</td><td>   NA</td></tr>
+	<tr><td>VX</td><td>   NA</td></tr>
+	<tr><td>WN</td><td>   NA</td></tr>
+	<tr><td>YV</td><td>   NA</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p><strong>Assuming data is MCAR</strong>, if we want to make a listwise deletion to get the means by <code class="docutils literal notranslate"><span class="pre">carrier</span></code>, we just use <code class="docutils literal notranslate"><span class="pre">na.rm</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> in <code class="docutils literal notranslate"><span class="pre">mean()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">flights</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">group_by</span><span class="p">(</span><span class="n">carrier</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">summarise</span><span class="p">(</span><span class="n">dep_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 16 × 2</caption>
+<thead>
+	<tr><th scope=col>carrier</th><th scope=col>dep_delay</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>9E</td><td>16.73</td></tr>
+	<tr><td>AA</td><td> 8.59</td></tr>
+	<tr><td>AS</td><td> 5.80</td></tr>
+	<tr><td>B6</td><td>13.02</td></tr>
+	<tr><td>DL</td><td> 9.26</td></tr>
+	<tr><td>EV</td><td>19.96</td></tr>
+	<tr><td>F9</td><td>20.22</td></tr>
+	<tr><td>FL</td><td>18.73</td></tr>
+	<tr><td>HA</td><td> 4.90</td></tr>
+	<tr><td>MQ</td><td>10.55</td></tr>
+	<tr><td>OO</td><td>12.59</td></tr>
+	<tr><td>UA</td><td>12.11</td></tr>
+	<tr><td>US</td><td> 3.78</td></tr>
+	<tr><td>VX</td><td>12.87</td></tr>
+	<tr><td>WN</td><td>17.71</td></tr>
+	<tr><td>YV</td><td>19.00</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Nonetheless, we have to be careful. <strong>If the missing data in <code class="docutils literal notranslate"><span class="pre">flights</span></code> is not MCAR</strong>, we can introduce serious bias in our estimates (means in this case) for some given statistical approach.</p>
+<div class="admonition-but-why-a-bias admonition">
+<p class="admonition-title">But, why a bias?</p>
+<p>Let us set another example to explain the bias issue when data missingness is present. Suppose that people with low income have a higher chance of omitting their income (as a <strong>numeric variable</strong>) in a given survey used for regression analysis. Then, <strong>if we just drop those rows</strong>, we are skewing our analysis towards people with higher income without knowing. So, there will be a bias in our regression estimates.</p>
+</div>
+<div class="exercise admonition" id="lecture8-q2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 28 </span></p>
+<section id="exercise-content">
+<p>Let us retake the previous survey example regarding low-income respondents. Suppose this survey collects additional information, such as the respondent’s specific neighbourhood, which is a complete column. Then, you could match this extra information with some other neighbourhood databases identifying low, middle, and high-income areas.</p>
+<p>What class of missing data are these <em>missing numeric incomes</em> in the survey?</p>
+<p><strong>A.</strong> MCAR.</p>
+<p><strong>B.</strong> MAR.</p>
+<p><strong>C.</strong> MNAR.</p>
+</section>
+</div>
+</section>
+<section id="mean-imputation">
+<h3>2.2. Mean Imputation<a class="headerlink" href="#mean-imputation" title="Permalink to this heading">#</a></h3>
+<p>The title is very suggestive. Let us just use <strong>the mean of our variable of interest to impute the missing data</strong>.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>This imputation technique can only be used with continuous and count-type variables!</p>
+</div>
+<p>Re-taking the <code class="docutils literal notranslate"><span class="pre">flights</span></code> dataset, <strong>for the exercise’s sake</strong> (not to be generalized to other data cases), we will filter those observations with <code class="docutils literal notranslate"><span class="pre">NA</span></code>s in <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> <strong>OR</strong> <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> values larger than 100 minutes. Then, we will only sample 1000 flights.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">123</span><span class="p">)</span>
+<span class="n">sampled_flights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">flights</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">arr_delay</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">dep_delay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">100</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">sample_n</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)</span>
+
+<span class="n">scatterplot_flights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sampled_flights</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Observed Data (Without NAs)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lm&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Departure Delay (min)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Arrival Delay (min)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">scatterplot_flights</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4f1e1d415dd1eaf0e37e6248307b43962644789368b8623f1721b32dda10f3ee.png" src="../_images/4f1e1d415dd1eaf0e37e6248307b43962644789368b8623f1721b32dda10f3ee.png" />
+</div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note the condition <code class="docutils literal notranslate"><span class="pre">dep_delay</span> <span class="pre">&gt;</span> <span class="pre">100</span></code> is also depicted in the plot.</p>
+</div>
+<p>The blue line is just the estimated Ordinary Least-Squares (OLS) linear regression of <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> versus <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> <strong>with 593 complete observations</strong>. Nonetheless, since the conditional is <code class="docutils literal notranslate"><span class="pre">is.na(arr_delay)</span> <span class="pre">|</span> <span class="pre">dep_delay</span> <span class="pre">&gt;</span> <span class="pre">100</span></code> (i.e., <strong>OR</strong>), <strong>we would eventually have an imputed subset of observations with negative <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code></strong>, i.e., flights on time but missing <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>. We can see some rows under this situation in the below data frame.</p>
+<p>This missigness pattern will provide a <strong>particular behaviour in our subsequent mean imputations</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_flights</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">arr_delay</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 53 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>  2</td><td>NA</td></tr>
+	<tr><td>  1</td><td>NA</td></tr>
+	<tr><td> 43</td><td>NA</td></tr>
+	<tr><td> -4</td><td>NA</td></tr>
+	<tr><td>  8</td><td>NA</td></tr>
+	<tr><td>  7</td><td>NA</td></tr>
+	<tr><td> 31</td><td>NA</td></tr>
+	<tr><td>-11</td><td>NA</td></tr>
+	<tr><td> 12</td><td>NA</td></tr>
+	<tr><td> -2</td><td>NA</td></tr>
+	<tr><td>⋮</td><td>⋮</td></tr>
+	<tr><td> 59</td><td>NA</td></tr>
+	<tr><td> -6</td><td>NA</td></tr>
+	<tr><td> 79</td><td>NA</td></tr>
+	<tr><td>105</td><td>NA</td></tr>
+	<tr><td> -5</td><td>NA</td></tr>
+	<tr><td> 36</td><td>NA</td></tr>
+	<tr><td> 41</td><td>NA</td></tr>
+	<tr><td> -3</td><td>NA</td></tr>
+	<tr><td> -6</td><td>NA</td></tr>
+	<tr><td>120</td><td>NA</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Moving along, it is necessary to perform an <strong>exploratory data analysis (EDA)</strong> on our data missingness. We can use the function <code class="docutils literal notranslate"><span class="pre">md.pattern()</span></code> from the package <code class="docutils literal notranslate"><span class="pre">mice</span></code> to display missing data patterns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">md.pattern</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 4 × 3 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>dep_delay</th><th scope=col>arr_delay</th><th scope=col></th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>593</th><td>  1</td><td>  1</td><td>  0</td></tr>
+	<tr><th scope=row>53</th><td>  1</td><td>  0</td><td>  1</td></tr>
+	<tr><th scope=row>354</th><td>  0</td><td>  0</td><td>  2</td></tr>
+	<tr><th scope=row></th><td>354</td><td>407</td><td>761</td></tr>
+</tbody>
+</table>
+</div><img alt="../_images/37d1ffd8e3e5468f01e793f3593bdb13595f80080324aa80881ffda029ea7ee5.png" src="../_images/37d1ffd8e3e5468f01e793f3593bdb13595f80080324aa80881ffda029ea7ee5.png" />
+</div>
+</div>
+<p>We can interpret the <span class="math notranslate nohighlight">\(4 \times 3\)</span> matrix (and diagram) above in the following way:</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>For the <span class="math notranslate nohighlight">\(4 \times 3\)</span> table, in the columns <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> (rows 1 to 3):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> indicates that neither of the variables is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> indicates that one variable is present.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code> indicates that two variables are missing.</p></li>
+<li><p>Row numbers indicate those observations with the variables present/missing:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">593</span></code> indicates the number of rows where <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> are <strong>jointly</strong> present.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">53</span></code> indicates the number of rows where <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> is present and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> is missing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">354</span></code> indicates the number of rows where <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> are <strong>jointly</strong> missing.</p></li>
+<li><p>Then, we have <span class="math notranslate nohighlight">\(593 + 53 + 354 = 1000\)</span> rows in total (our sample size!).</p></li>
+</ul>
+</li>
+<li><p>Column numbers indicate those observations with the <strong>standalone</strong> missing variables:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">354</span></code> indicates the number of rows where <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> is missing, <strong>regardless</strong> of whether <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> is missing or not.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">407</span></code> indicates the number of rows where <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> is missing, <strong>regardless</strong> of whether <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> is missing or not.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>For the columns in the diagram <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>, the coloured cells indicate:</p>
+<ul>
+<li><p>Blue indicates that the variable is present.</p></li>
+<li><p>Red indicates that the variable is missing.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Therefore, we have 593 observations with non-missing data in both <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>, 53 with <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> missing, and 354 with both <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> missing.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">md.pattern()</span></code> summary shows that our sample <strong>does NOT contain</strong> observations where <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> is missing and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> is present.</p>
+<p>Now, we will impute the overall means of <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manually imputing the missing data.</span>
+
+<span class="n">sampled_flights_imputed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sampled_flights</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as_factor</span><span class="p">(</span><span class="nf">if_else</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">is.na</span><span class="p">(</span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;missing&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;observed&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">dep_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">dep_delay</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">arr_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">arr_delay</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, using mice() from the mice package.</span>
+
+<span class="n">sampled_flights_imputed_mice</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mice</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mean&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">maxit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">)</span><span class="w"> </span><span class="c1"># Checking first rows in our original sample.</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">sampled_flights_imputed_mice</span><span class="o">$</span><span class="n">where</span><span class="p">)</span><span class="w"> </span><span class="c1"># Checking logical flags for missing data in mice() object.</span>
+
+<span class="n">flag</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">pmin</span><span class="p">(</span><span class="nf">rowSums</span><span class="p">(</span><span class="n">sampled_flights_imputed_mice</span><span class="o">$</span><span class="n">where</span><span class="p">),</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="c1"># Flag for imputed data.</span>
+<span class="n">flag</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;observed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;missing&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Flag for imputed data.</span>
+<span class="n">sampled_flights_imputed_mice</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mice</span><span class="o">::</span><span class="nf">complete</span><span class="p">(</span><span class="n">sampled_flights_imputed_mice</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> iter imp variable
+  1   1  dep_delay  arr_delay
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 6 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td> NA</td><td> NA</td></tr>
+	<tr><td>178</td><td>185</td></tr>
+	<tr><td>109</td><td>107</td></tr>
+	<tr><td>  2</td><td> NA</td></tr>
+	<tr><td> NA</td><td> NA</td></tr>
+	<tr><td>198</td><td>182</td></tr>
+</tbody>
+</table>
+</div><div class="output text_html"><table class="dataframe">
+<caption>A matrix: 6 × 2 of type lgl</caption>
+<thead>
+	<tr><th></th><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td> TRUE</td><td> TRUE</td></tr>
+	<tr><th scope=row>2</th><td>FALSE</td><td>FALSE</td></tr>
+	<tr><th scope=row>3</th><td>FALSE</td><td>FALSE</td></tr>
+	<tr><th scope=row>4</th><td>FALSE</td><td> TRUE</td></tr>
+	<tr><th scope=row>5</th><td> TRUE</td><td> TRUE</td></tr>
+	<tr><th scope=row>6</th><td>FALSE</td><td>FALSE</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sanity check of amount of imputed values.</span>
+
+<span class="nf">table</span><span class="p">(</span><span class="n">sampled_flights_imputed</span><span class="o">$</span><span class="n">flag</span><span class="p">)</span>
+<span class="nf">table</span><span class="p">(</span><span class="n">sampled_flights_imputed_mice</span><span class="o">$</span><span class="n">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> missing observed 
+     407      593 
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> missing observed 
+     407      593 
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will now plot the imputed values as purple points, and another estimated OLS linear regression in red with the <span class="math notranslate nohighlight">\(n = 1000\)</span> sampled observations (non-imputed <strong>AND</strong> imputed).</p>
+<p>Note the horizontal pattern in the imputed purple points, which is the subset of observations with the <strong>particular behaviour we previously mentioned</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">## Plotting imputed versus observed.</span>
+
+<span class="n">scatterplot_flights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sampled_flights_imputed_mice</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="s">&#39;lm&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lm&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;purple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Imputed Fit (red) versus Observed Fit (blue)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Departure Delay (min)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Arrival Delay (min)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">scatterplot_flights</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/aa864b515176533d1d090135c367c66ad7c610bb3d96ffbc1ac037f1a119f5f9.png" src="../_images/aa864b515176533d1d090135c367c66ad7c610bb3d96ffbc1ac037f1a119f5f9.png" />
+</div>
+</div>
+<p>Also, notice that by imputing the mean, <strong>we are artificially reducing the standard deviation of our data</strong> which is a drawback of mean imputation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard deviation of the complete observed data.</span>
+
+<span class="n">sampled_flights</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">na.omit</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">summarise_all</span><span class="p">(</span><span class="n">.funs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sd</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>61.05</td><td>65.45</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard deviation of all the data (imputed and non-imputed).</span>
+
+<span class="n">sampled_flights_imputed</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">flag</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">  </span><span class="nf">summarise_all</span><span class="p">(</span><span class="n">.funs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sd</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>56.54</td><td>50.38</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This behaviour on the sample standard deviation is explained given its mathematical computation:</p>
+<div class="math notranslate nohighlight">
+\[s = \sqrt{\sum_{i = 1}^n \frac{(x_i - \bar{x})^2}{n - 1}}.\]</div>
+<p>Note that this <span class="math notranslate nohighlight">\(s\)</span> will be quite sensitive when imputing values with the corresponding mean <span class="math notranslate nohighlight">\(\bar{x}\)</span>.</p>
+</div>
+<p>Having said all this, let us proceed to a more “robust” imputation method.</p>
+</section>
+<section id="regression-imputation">
+<h3>2.3. Regression Imputation<a class="headerlink" href="#regression-imputation" title="Permalink to this heading">#</a></h3>
+<p>From the black points (<strong>complete observations</strong>) in the previous plot, we can notice <strong>a clear positive relation between <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> changes with <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code></strong>. Hence, why not using the estimated OLS linear regression in blue (<strong>fitted with those complete 593 observations</strong>) to estimate those missing values?</p>
+<p>We can do it automatically via <code class="docutils literal notranslate"><span class="pre">mice()</span></code> using <code class="docutils literal notranslate"><span class="pre">method</span> <span class="pre">=</span> <span class="pre">&quot;norm.predict&quot;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_flights_imputed_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mice</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;norm.predict&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">print</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="n">flag</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">pmin</span><span class="p">(</span><span class="nf">rowSums</span><span class="p">(</span><span class="n">sampled_flights_imputed_reg</span><span class="o">$</span><span class="n">where</span><span class="p">),</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="c1"># Flag for imputed data.</span>
+<span class="n">flag</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;observed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;missing&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Flag for imputed data.</span>
+<span class="n">sampled_flights_imputed_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="n">sampled_flights_imputed_reg</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span>
+
+<span class="c1"># Sanity check of amount of imputed values.</span>
+
+<span class="nf">table</span><span class="p">(</span><span class="n">sampled_flights_imputed_reg</span><span class="o">$</span><span class="n">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> missing observed 
+     407      593 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we plot our dataset (including those imputted data points using OLS).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">## Plotting imputed versus observed.</span>
+<span class="n">scatterplot_flights_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sampled_flights_imputed_reg</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="s">&#39;lm&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;lm&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;purple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Imputed Fit (red) versus Observed Fit (blue)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Departure Delay (min)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Arrival Delay (min)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, all the purple points (imputed values) are on the imputed fit (red) line, <strong>which is now just an extension of the observed fit (blue) line</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">scatterplot_flights_reg</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4c08b26d222d5f2d71007b58de6671fa83123cc38ed6c845f42087d2c3c0fd37.png" src="../_images/4c08b26d222d5f2d71007b58de6671fa83123cc38ed6c845f42087d2c3c0fd37.png" />
+</div>
+</div>
+<p>Since the method imputes all the points perfectly in the regression line, <strong>we will reinforce the data’s relationships</strong>. For example, let us calculate the correlation of the imputed data vs the observed data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only complete observations.</span>
+<span class="nf">as_tibble</span><span class="p">(</span><span class="nf">cor</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;complete.obs&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 2 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1.00</td><td>0.94</td></tr>
+	<tr><td>0.94</td><td>1.00</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># All observations (complete and imputed).</span>
+<span class="nf">as_tibble</span><span class="p">(</span><span class="nf">cor</span><span class="p">(</span><span class="n">sampled_flights_imputed_reg</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">flag</span><span class="p">)))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 2 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1.00</td><td>0.96</td></tr>
+	<tr><td>0.96</td><td>1.00</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Regression imputation seems to have a more “inline” behaviour for imputed data than just using the mean since we are basically using regression-fitted values for this missing data. Moreover, <strong>we can extend this framework to more than two variables simultaneously</strong>.</p>
+<p>Nevertheless, we still fix our imputation on a single set of estimated regression parameters. In fact, we could have a more clever strategy that would rely on different simulated datasets <strong>given what prior COMPLETE information we have in our dataset</strong>.</p>
+</div>
+</section>
+<section id="last-observation-carried-over">
+<h3>2.4. Last Observation Carried Over<a class="headerlink" href="#last-observation-carried-over" title="Permalink to this heading">#</a></h3>
+<p>Another method that we might see out there is imputing data by repeating the previous observation. This is more frequent when dealing with temporal data, <strong>and will be out of the scope of this course</strong>.</p>
+</section>
+<section id="multiple-imputation">
+<h3>2.5. Multiple Imputation<a class="headerlink" href="#multiple-imputation" title="Permalink to this heading">#</a></h3>
+<p>Having explored mean and regression imputations, let us proceed to a simulation-based method called <strong>multiple imputation</strong>.</p>
+<p>We have seen that using a single value for the imputation causes problems, such as reducing our dataset variance. Then, a handy approach is the multiple imputation method.</p>
+<p>The idea here is, instead of imputing one value for missing data, we impute multiple values. <strong>But how can we do it?</strong></p>
+<p>We can do it via the <code class="docutils literal notranslate"><span class="pre">mice()</span></code> function, which offers this multiple imputation method. <strong>MICE</strong> stands for <strong>Multiple Imputation by Chained Equations</strong>.</p>
+<p>Roughly speaking, for a data frame <code class="docutils literal notranslate"><span class="pre">data</span></code>, the four <strong>automatic steps</strong> in this <code class="docutils literal notranslate"><span class="pre">R</span></code> function are the following:</p>
+<ol class="arabic simple">
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">m</span></code> copies of this dataset: <code class="docutils literal notranslate"><span class="pre">data_1</span></code>, <code class="docutils literal notranslate"><span class="pre">data_2</span></code>,…, <code class="docutils literal notranslate"><span class="pre">data_m</span></code>.</p></li>
+<li><p>In each copy, impute the missing data with different values (the observed values will remain the same).</p></li>
+<li><p>Carry out the analysis for each dataset separately. For example, <strong>fit an OLS linear regression model for each one of the datasets <code class="docutils literal notranslate"><span class="pre">data_1</span></code>, <code class="docutils literal notranslate"><span class="pre">data_2</span></code>,…,<code class="docutils literal notranslate"><span class="pre">data_m</span></code> when you have a continuous variable to impute</strong>.</p></li>
+<li><p>Combine the separate models into one final <strong>pooled model</strong>.</p></li>
+</ol>
+<p>We would use our <strong>pooled model</strong>, fitted with our response of interest subject to our regressor set, to answer our inferential or predictive inquiries. The below diagram provides a clearer perspective</p>
+<figure class="align-default" id="mult-imp">
+<a class="reference internal image-reference" href="../_images/mult-imp-workflow.png"><img alt="../_images/mult-imp-workflow.png" src="../_images/mult-imp-workflow.png" style="height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Source: <a class="reference external" href="https://stefvanbuuren.name/fimd/workflow.html">van Buuren (2012)</a>.</span><a class="headerlink" href="#mult-imp" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note that the suitable regression model will be chosen accordingly depending on the nature of our variable of interest to impute. Therefore, <code class="docutils literal notranslate"><span class="pre">mice()</span></code> will use the following regression models:</p>
+<ul class="simple">
+<li><p>Binary Logistic regression for binary variables.</p></li>
+<li><p>Multinomial Logistic regression for categorical and nominal variables.</p></li>
+<li><p>Ordinal Logistic regression for categorical and ordinal variables.</p></li>
+</ul>
+<p><strong>We have to make sure to set up the correct variable type before imputing!</strong></p>
+</div>
+<p><strong>Now, how do we impute the missing data in step 2?</strong></p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">mice()</span></code> implements the predictive mean matching (PMM) found in <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/log?L=GW2JH3XR2C&amp;D=ZEEST&amp;J=TC0000340639&amp;P=Link&amp;PT=EZProxy&amp;H=6c88ebd0c3&amp;U=https%3A%2F%2Fezproxy.library.ubc.ca%2Flogin%3Furl%3Dhttps%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2Fbook%2F10.1002%2F9780470316696">Rubin (1987)</a> on page 166.
+This is a univariate Bayesian method that does the following <strong>for each column</strong>:</p>
+<ol class="arabic simple">
+<li><p>Estimate the OLS linear regression coefficient <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> of the column where the missing values to impute are located (as the response) versus the other column (as the regressor), <strong>using the observed complete rows only</strong>.</p></li>
+<li><p>Draw <span class="math notranslate nohighlight">\(\hat{\beta}_1^*\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}^*\)</span> using a proper posterior distribution.</p></li>
+<li><p>Compute the fitted values for the column used as response in step (1), either using <span class="math notranslate nohighlight">\(\hat{\beta}_1\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}\)</span> for those non-missing cases (i.e., <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>) or <span class="math notranslate nohighlight">\(\hat{\beta}_1^*\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}^*\)</span> (i.e., <span class="math notranslate nohighlight">\(\hat{y}_i^*\)</span>) for those missing cases.</p></li>
+<li><p>For each fitted value <span class="math notranslate nohighlight">\(\hat{y}_i^*\)</span>, we find a given number of donors (5 by default in <code class="docutils literal notranslate"><span class="pre">mice()</span></code>) from all the <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>s which are the closest ones to <span class="math notranslate nohighlight">\(\hat{y}_i^*\)</span>.</p></li>
+<li><p>We randomly select one of these donors to impute the corresponding missing value.</p></li>
+<li><p>The process is repeated <code class="docutils literal notranslate"><span class="pre">m</span></code> times.</p></li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note that this algorithm also has a multivariate version in matrix notation.</p>
+</div>
+<p>Let us implement this univariate process with <code class="docutils literal notranslate"><span class="pre">sampled_flights</span></code> with <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">20</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">123</span><span class="p">)</span><span class="w"> </span><span class="c1"># We are running a simulation, this we need to set a seed.</span>
+<span class="n">sampled_flights_imputed_PMM</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mice</span><span class="p">(</span><span class="n">sampled_flights</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">printFlag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="n">sampled_flights_imputed_PMM</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Class: mids
+Number of multiple imputations:  20 
+Imputation methods:
+dep_delay arr_delay 
+    &quot;pmm&quot;     &quot;pmm&quot; 
+PredictorMatrix:
+          dep_delay arr_delay
+dep_delay         0         1
+arr_delay         1         0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check the imputed values for a specific column (e.g., <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code>) in these 20 datasets as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_flights_imputed_PMM</span><span class="o">$</span><span class="n">imp</span><span class="o">$</span><span class="n">arr_delay</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 407 × 20</caption>
+<thead>
+	<tr><th></th><th scope=col>1</th><th scope=col>2</th><th scope=col>3</th><th scope=col>4</th><th scope=col>5</th><th scope=col>6</th><th scope=col>7</th><th scope=col>8</th><th scope=col>9</th><th scope=col>10</th><th scope=col>11</th><th scope=col>12</th><th scope=col>13</th><th scope=col>14</th><th scope=col>15</th><th scope=col>16</th><th scope=col>17</th><th scope=col>18</th><th scope=col>19</th><th scope=col>20</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>258</td><td> 92</td><td>146</td><td>218</td><td>133</td><td> 82</td><td>194</td><td>179</td><td>169</td><td>138</td><td>179</td><td>243</td><td> 77</td><td>113</td><td>127</td><td>104</td><td>154</td><td> 99</td><td>227</td><td>108</td></tr>
+	<tr><th scope=row>4</th><td>127</td><td> 85</td><td>100</td><td>100</td><td> 97</td><td>131</td><td>131</td><td>127</td><td> 97</td><td>127</td><td> 85</td><td> 55</td><td> 92</td><td> 90</td><td> 85</td><td> 62</td><td> 90</td><td> 90</td><td> 97</td><td> 90</td></tr>
+	<tr><th scope=row>5</th><td>166</td><td>185</td><td>124</td><td>111</td><td>166</td><td>308</td><td>100</td><td> 90</td><td>111</td><td>222</td><td>221</td><td>163</td><td>187</td><td>158</td><td>107</td><td>195</td><td>141</td><td>100</td><td>108</td><td>107</td></tr>
+	<tr><th scope=row>7</th><td>113</td><td> 97</td><td>195</td><td>300</td><td>270</td><td>250</td><td>162</td><td> 98</td><td>127</td><td>150</td><td>238</td><td>126</td><td>100</td><td>166</td><td>129</td><td>144</td><td>116</td><td>140</td><td>273</td><td>314</td></tr>
+	<tr><th scope=row>8</th><td>128</td><td>103</td><td>108</td><td>158</td><td>154</td><td>153</td><td>154</td><td>105</td><td> 81</td><td> 80</td><td>194</td><td>102</td><td>100</td><td>100</td><td>124</td><td>324</td><td>160</td><td> 84</td><td>180</td><td>181</td></tr>
+	<tr><th scope=row>9</th><td>162</td><td>181</td><td>101</td><td>138</td><td>117</td><td>165</td><td>117</td><td>166</td><td>160</td><td>112</td><td>115</td><td> 62</td><td>187</td><td>273</td><td>170</td><td> 62</td><td>107</td><td>129</td><td>161</td><td>105</td></tr>
+	<tr><th scope=row>17</th><td>103</td><td>128</td><td>100</td><td>125</td><td>114</td><td>160</td><td>107</td><td>127</td><td>112</td><td>213</td><td> 92</td><td> 62</td><td>148</td><td>215</td><td>130</td><td> 80</td><td> 80</td><td> 80</td><td>108</td><td>100</td></tr>
+	<tr><th scope=row>24</th><td>107</td><td>302</td><td> 82</td><td> 82</td><td>153</td><td>258</td><td>112</td><td> 91</td><td>132</td><td>127</td><td>131</td><td>297</td><td>181</td><td>105</td><td>125</td><td>115</td><td>123</td><td>141</td><td>110</td><td>380</td></tr>
+	<tr><th scope=row>28</th><td> 92</td><td> 81</td><td> 88</td><td>317</td><td>135</td><td>158</td><td> 81</td><td>243</td><td>130</td><td>158</td><td> 79</td><td>152</td><td>134</td><td>100</td><td>186</td><td>218</td><td>302</td><td> 82</td><td>134</td><td>172</td></tr>
+	<tr><th scope=row>30</th><td>127</td><td>144</td><td>228</td><td>152</td><td>107</td><td>167</td><td>195</td><td>148</td><td>218</td><td>114</td><td>190</td><td>219</td><td>160</td><td>254</td><td>258</td><td>240</td><td>130</td><td>131</td><td>102</td><td>222</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>975</th><td>138</td><td>114</td><td>312</td><td>148</td><td>132</td><td>137</td><td>140</td><td>160</td><td>162</td><td>112</td><td>109</td><td>209</td><td>117</td><td>285</td><td>113</td><td>119</td><td>179</td><td> 92</td><td>201</td><td>292</td></tr>
+	<tr><th scope=row>977</th><td>100</td><td>106</td><td>274</td><td>223</td><td>119</td><td>137</td><td>104</td><td>112</td><td>114</td><td>105</td><td>130</td><td>242</td><td> 98</td><td>160</td><td>119</td><td>110</td><td>152</td><td> 77</td><td>143</td><td>129</td></tr>
+	<tr><th scope=row>979</th><td>253</td><td>176</td><td>124</td><td>161</td><td>178</td><td>317</td><td>190</td><td>158</td><td>186</td><td>178</td><td>116</td><td>116</td><td>140</td><td>131</td><td>142</td><td>140</td><td> 87</td><td>308</td><td>201</td><td>115</td></tr>
+	<tr><th scope=row>982</th><td>158</td><td>162</td><td>127</td><td>153</td><td>143</td><td>137</td><td>215</td><td>250</td><td> 81</td><td>137</td><td>244</td><td>201</td><td>160</td><td>116</td><td> 91</td><td>175</td><td>201</td><td>130</td><td>183</td><td>180</td></tr>
+	<tr><th scope=row>985</th><td>160</td><td>315</td><td>216</td><td>161</td><td>114</td><td>132</td><td> 97</td><td> 90</td><td>124</td><td>136</td><td>234</td><td>189</td><td>120</td><td> 92</td><td>271</td><td>139</td><td>204</td><td>150</td><td>221</td><td> 98</td></tr>
+	<tr><th scope=row>986</th><td> 62</td><td> 85</td><td> 97</td><td> 62</td><td> 97</td><td> 92</td><td> 62</td><td> 98</td><td> 97</td><td> 97</td><td> 90</td><td> 92</td><td> 98</td><td> 97</td><td> 98</td><td> 62</td><td> 92</td><td> 90</td><td> 90</td><td>100</td></tr>
+	<tr><th scope=row>991</th><td>158</td><td>104</td><td>170</td><td>108</td><td>126</td><td>109</td><td>152</td><td>118</td><td>300</td><td>149</td><td>218</td><td> 69</td><td>148</td><td>149</td><td> 85</td><td>153</td><td>160</td><td>139</td><td> 89</td><td>250</td></tr>
+	<tr><th scope=row>992</th><td>100</td><td>135</td><td>128</td><td>103</td><td> 98</td><td>158</td><td>122</td><td>124</td><td>111</td><td>109</td><td>124</td><td>122</td><td>120</td><td>103</td><td>128</td><td>158</td><td>158</td><td>114</td><td>128</td><td>158</td></tr>
+	<tr><th scope=row>993</th><td>131</td><td>201</td><td>115</td><td>114</td><td>133</td><td>100</td><td>160</td><td>137</td><td>152</td><td>112</td><td> 96</td><td>257</td><td>184</td><td>167</td><td>120</td><td>131</td><td>135</td><td>323</td><td>138</td><td>130</td></tr>
+	<tr><th scope=row>994</th><td>174</td><td>138</td><td>158</td><td> 81</td><td>124</td><td>132</td><td>110</td><td> 97</td><td>131</td><td>108</td><td>110</td><td>128</td><td>166</td><td> 94</td><td> 98</td><td>135</td><td>157</td><td>208</td><td>103</td><td>271</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Each row corresponds to a missing observation in your original dataset. The columns are the <code class="docutils literal notranslate"><span class="pre">m</span></code> imputed datasets that were created.</p>
+<p>We can get each one of the <code class="docutils literal notranslate"><span class="pre">m</span></code> imputed datasets with <code class="docutils literal notranslate"><span class="pre">complete()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is dataset number 3.</span>
+<span class="nf">complete</span><span class="p">(</span><span class="n">sampled_flights_imputed_PMM</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 1000 × 2</caption>
+<thead>
+	<tr><th scope=col>dep_delay</th><th scope=col>arr_delay</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>153</td><td>146</td></tr>
+	<tr><td>178</td><td>185</td></tr>
+	<tr><td>109</td><td>107</td></tr>
+	<tr><td>  2</td><td>100</td></tr>
+	<tr><td>121</td><td>124</td></tr>
+	<tr><td>198</td><td>182</td></tr>
+	<tr><td>213</td><td>195</td></tr>
+	<tr><td>110</td><td>108</td></tr>
+	<tr><td>105</td><td>101</td></tr>
+	<tr><td>179</td><td>169</td></tr>
+	<tr><td>⋮</td><td>⋮</td></tr>
+	<tr><td>168</td><td>170</td></tr>
+	<tr><td>120</td><td>128</td></tr>
+	<tr><td>114</td><td>115</td></tr>
+	<tr><td>174</td><td>158</td></tr>
+	<tr><td>161</td><td>154</td></tr>
+	<tr><td>139</td><td>138</td></tr>
+	<tr><td>152</td><td>136</td></tr>
+	<tr><td>150</td><td>175</td></tr>
+	<tr><td>383</td><td>394</td></tr>
+	<tr><td>267</td><td>253</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>We can plot the imputed dataset number 3 a follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_flights_imputed_PMM_3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cbind</span><span class="p">(</span><span class="nf">complete</span><span class="p">(</span><span class="n">sampled_flights_imputed_PMM</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="n">sampled_flights_imputed</span><span class="o">$</span><span class="n">flag</span><span class="p">)</span>
+<span class="n">sampled_flights_imputed_PMM_3_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sampled_flights_imputed_PMM_3</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">dep_delay</span><span class="p">,</span><span class="w"> </span><span class="n">arr_delay</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">.</span><span class="m">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;purple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Departure Delay (min)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Arrival Delay (min)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Complete (black) and Imputed (purple) Data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sampled_flights_imputed_PMM_3_plot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3067ae6ac53824b49fc65a5c71c8ed787aff41f2bc68c65ed7b0157b10db1182.png" src="../_images/3067ae6ac53824b49fc65a5c71c8ed787aff41f2bc68c65ed7b0157b10db1182.png" />
+</div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note this imputation method allows incomplete observations to be imputed with more realistic values, rather than just an overall mean or a fitted value coming from simple OLS regression (<strong>check purple points on top of the cloud of black points on the right-hand side</strong>). Nevertheless, it is not entirely perfect if it does not have enough complete information to impute (<strong>check purple points on the left-hand side where we do not have any complete data points in black</strong>).</p>
+</div>
+<p>Now, let us estimate an OLS linear regression for each one of the 20 imputed datasets in <code class="docutils literal notranslate"><span class="pre">sampled_flights_imputed_PMM</span></code>. <strong>Our response will be <code class="docutils literal notranslate"><span class="pre">arr_delay</span></code> subject <code class="docutils literal notranslate"><span class="pre">dep_delay</span></code></strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">PMM_LR_models</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">with</span><span class="p">(</span><span class="n">sampled_flights_imputed_PMM</span><span class="p">,</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">arr_delay</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dep_delay</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">PMM_LR_models</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>call :
+with.mids(data = sampled_flights_imputed_PMM, expr = lm(arr_delay ~ 
+    dep_delay))
+
+call1 :
+mice(data = sampled_flights, m = 20, printFlag = FALSE)
+
+nmis :
+dep_delay arr_delay 
+      354       407 
+
+analyses :
+[[1]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    30.6428       0.8202  
+
+
+[[2]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    21.8563       0.8677  
+
+
+[[3]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    35.0526       0.8003  
+
+
+[[4]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+     29.967        0.821  
+
+
+[[5]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    26.5144       0.8451  
+
+
+[[6]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    27.2239       0.8385  
+
+
+[[7]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    29.7340       0.8223  
+
+
+[[8]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    28.0674       0.8332  
+
+
+[[9]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    28.6254       0.8354  
+
+
+[[10]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    27.6203       0.8414  
+
+
+[[11]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    25.4984       0.8484  
+
+
+[[12]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    31.2887       0.8183  
+
+
+[[13]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    22.0089       0.8653  
+
+
+[[14]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    25.2515       0.8534  
+
+
+[[15]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    29.8358       0.8192  
+
+
+[[16]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    24.0202       0.8576  
+
+
+[[17]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+     22.100        0.868  
+
+
+[[18]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    33.2085       0.8029  
+
+
+[[19]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    30.6784       0.8208  
+
+
+[[20]]
+
+Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    36.0514       0.7932  
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can access to each model separately as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieving the third model.</span>
+<span class="n">PMM_LR_models</span><span class="o">$</span><span class="n">analyses</span><span class="p">[[</span><span class="m">3</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
+lm(formula = arr_delay ~ dep_delay)
+
+Coefficients:
+(Intercept)    dep_delay  
+    35.0526       0.8003  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let us combine the models altogether in a <strong>single pooled model</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">pooled_PMM_LR_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">pool</span><span class="p">(</span><span class="n">PMM_LR_models</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">pooled_PMM_LR_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Class: mipo    m = 20 
+         term  m  estimate         ubar            b            t dfcom
+1 (Intercept) 20 28.262276 5.2134906153 1.668369e+01 22.731369026   998
+2   dep_delay 20  0.833603 0.0001842278 5.009364e-04  0.000710211   998
+        df      riv    lambda       fmi
+1 28.06200 3.360105 0.7706478 0.7854151
+2 30.54513 2.855070 0.7406014 0.7560670
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">estimate</span></code> column is just the averages of all <code class="docutils literal notranslate"><span class="pre">m</span></code> models. Full details about the computation on these columns are provided by <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/log?L=GW2JH3XR2C&amp;D=ZEEST&amp;J=TC0000340639&amp;P=Link&amp;PT=EZProxy&amp;H=6c88ebd0c3&amp;U=https%3A%2F%2Fezproxy.library.ubc.ca%2Flogin%3Furl%3Dhttps%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2Fbook%2F10.1002%2F9780470316696">Rubin (1987)</a> on pages 76 and 77. The columns are explained as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">estimate</span></code>: the average of the regression coefficients across <code class="docutils literal notranslate"><span class="pre">m</span></code> models.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ubar</span></code>: the average variance (i.e., average <code class="docutils literal notranslate"><span class="pre">SE</span></code>^2) across <code class="docutils literal notranslate"><span class="pre">m</span></code> models.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: the sample variance of the <code class="docutils literal notranslate"><span class="pre">m</span></code> regression coefficients.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: a final estimate of the <code class="docutils literal notranslate"><span class="pre">SE</span></code>^2 of each regression coefficient.</p>
+<ul>
+<li><p>= <code class="docutils literal notranslate"><span class="pre">ubar</span> <span class="pre">+</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">1/m)</span> <span class="pre">*</span> <span class="pre">b</span></code></p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dfcom</span></code>: the degrees of freedom associated with the final regression coefficient estimates.</p>
+<ul>
+<li><p>An <code class="docutils literal notranslate"><span class="pre">alpha</span></code>-level confidence interval: <code class="docutils literal notranslate"><span class="pre">estimate</span> <span class="pre">+/-</span> <span class="pre">qt(alpha/2,</span> <span class="pre">df)</span> <span class="pre">*</span> <span class="pre">sqrt(t)</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">riv</span></code>: the relative increase in variance due to randomness.</p>
+<ul>
+<li><p>= <code class="docutils literal notranslate"><span class="pre">t/ubar</span> <span class="pre">-</span> <span class="pre">1</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda</span></code>: the proportion of total variance due to missingness.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fmi</span></code>: the fraction of missing information.</p></li>
+</ul>
+<p><strong>Where are the usual outputs (<code class="docutils literal notranslate"><span class="pre">std.error</span></code>, <code class="docutils literal notranslate"><span class="pre">p.value</span></code>,…)?</strong></p>
+<p>We can call <code class="docutils literal notranslate"><span class="pre">summary()</span></code> on the pooled model to obtain them. <strong>The usual coefficient interpretations and inferential rules also apply in this pooled OLS model</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="n">pooled_PMM_LR_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A mipo.summary: 2 × 6</caption>
+<thead>
+	<tr><th scope=col>term</th><th scope=col>estimate</th><th scope=col>std.error</th><th scope=col>statistic</th><th scope=col>df</th><th scope=col>p.value</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>(Intercept)</td><td>28.262276</td><td>4.76774255</td><td> 5.927811</td><td>28.06200</td><td>2.203849e-06</td></tr>
+	<tr><td>dep_delay  </td><td> 0.833603</td><td>0.02664978</td><td>31.279914</td><td>30.54513</td><td>9.205948e-25</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="wrapping-up">
+<h2>3. Wrapping Up<a class="headerlink" href="#wrapping-up" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Data imputation involves some wrangling effort and proper missingness visualizations.</p></li>
+<li><p>We have to be careful when defining our class of data missingness since this will determine the type of data imputation we need to make (or maybe data deletion!).</p></li>
+<li><p>In general, <strong>multiple imputation will work OK for MAR and MNAR data.</strong></p></li>
+<li><p>We only saw continuous imputation in this example. Nonetheless, the <code class="docutils literal notranslate"><span class="pre">mice()</span></code> approach can be extended to other data types such as binary or categorical. In those cases, we have to switch to generalized linear models (GLMs), even with a Bayesian approach.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lecture7_quantile_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 7 - Quantile Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="appendix-binary-log-regression.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Binary Logistic Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-s-learning-goals">Today’s Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-libraries">Loading Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-missing-data">1. Types of Missing Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-completely-at-random-mcar">1.1. Missing Completely At Random (MCAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-at-random-mar">1.2. Missing At Random (MAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-not-at-random-mnar">1.3. Missing Not At Random (MNAR)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-data">2. Handling Missing Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#listwise-deletion">2.1. Listwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-imputation">2.2. Mean Imputation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-imputation">2.3. Regression Imputation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#last-observation-carried-over">2.4. Last Observation Carried Over</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-imputation">2.5. Multiple Imputation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">3. Wrapping Up</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
