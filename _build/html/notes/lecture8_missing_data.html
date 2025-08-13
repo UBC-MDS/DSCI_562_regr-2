@@ -511,13 +511,6 @@ document.write(`
 <p><strong>B.</strong> No.</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture8-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture8-q1"> Exercise 27</a></p>
-<section id="solution-content">
-<p>No. These higher standard errors are not due to the MCAR nature of our rows per se. Instead, these standard errors are larger because we have fewer data points to estimate our modelling parameters (recall the frequentist paradigm!).</p>
-</section>
-</div>
 <p>Let us start with our lecture’s toy dataset: the <code class="docutils literal notranslate"><span class="pre">flights</span></code> dataset from the package <code class="docutils literal notranslate"><span class="pre">nycflights13</span></code>. It contains the <strong>on-time data</strong> of 336,776 flights that departed New York City in 2013.</p>
 <p>We will use the following columns:</p>
 <ul class="simple">
@@ -615,14 +608,6 @@ document.write(`
 <p><strong>A.</strong> MCAR.</p>
 <p><strong>B.</strong> MAR.</p>
 <p><strong>C.</strong> MNAR.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture8-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture8-q2"> Exercise 28</a></p>
-<section id="solution-content">
-<p>It is <strong>MAR</strong> since the <strong>missingness depends on the observed data we have</strong>, which is the collected neighbourhood.</p>
-<p>If we had not collected this extra information, we would not have been able to match our survey with these neighbourhood databases, making the MNAR case!</p>
 </section>
 </div>
 </section>

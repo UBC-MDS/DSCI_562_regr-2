@@ -532,13 +532,6 @@ document.write(`
 <p>Nevertheless, why is this different? Cannot we just use the techniques we have learned so far (e.g., a Binary Logistic regression model)?</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture5-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q1"> Exercise 18</a></p>
-<section id="solution-content">
-<p>The answer would be <em>yes</em> if we could observe the actual time in all occurrences, <strong>but you usually cannot</strong>. Frequently, there will be some <strong>censoring</strong> that will not allow you to observe the exact time that the event happened for all units/individuals studied.</p>
-</section>
-</div>
 <p>Now, what are the implications of <strong>not taking into account censoring in data</strong>?</p>
 <ul class="simple">
 <li><p>Removing censored data will result in <strong>estimation uncertainty to be larger than it could be if we were to include the censored data</strong>. Under a frequentist approach, we would lose data points which will decrease the precision of our estimates.</p></li>
@@ -735,15 +728,6 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p><strong>C.</strong> <em>Type D</em> is a more agressive type of cancer than <em>Type A</em>.</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture5-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q2"> Exercise 19</a></p>
-<section id="solution-content">
-<p>The correct option is <strong>C</strong>.</p>
-<p>The survival function indicates on the <span class="math notranslate nohighlight">\(y\)</span>-axis the proportion of patients still alive at time <span class="math notranslate nohighlight">\(t\)</span> on the <span class="math notranslate nohighlight">\(x\)</span>-axis. Hence, <em>Type D</em> (blue) cancer is very aggressive, as the patients are dying quite quickly, while the <em>Type A</em> (green) cancer is not as aggressive as <em>Type D</em>.</p>
-<p>For example, after two years, a patient’s survival probability is around 14% for <em>Type D</em> (blue) cancer patients, while it is around 75% for <em>Type A</em> (green) cancer patients.</p>
-</section>
-</div>
 <p>Note that we can use <code class="docutils literal notranslate"><span class="pre">pweibull()</span></code> in <code class="docutils literal notranslate"><span class="pre">R</span></code> to get the survival probability of each time <span class="math notranslate nohighlight">\(t\)</span>. For the <em>Type D</em> (blue) cancer at year 2, the probability is obtained as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -765,19 +749,6 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p><strong>A.</strong> The Weibull’s hazard function increases over time.</p>
 <p><strong>B.</strong> The Weibull’s hazard function is constant (does not depend on the time).</p>
 <p><strong>C.</strong> The Weibull’s hazard function decreases over time.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture5-ans3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q3"> Exercise 20</a></p>
-<section id="solution-content">
-<p>The correct option is <strong>B</strong>.</p>
-<p>Let us plug in <span class="math notranslate nohighlight">\(\alpha = 1\)</span> in the hazard function <a class="reference internal" href="#equation-hazard-weibull">(19)</a>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{gather*}
-\lambda \left( t \mid \alpha = 1\right) = \frac{1}{\beta} t^{1 - 1} = \frac{1}{\beta}.
-\end{gather*}\]</div>
-<p>We can see that the function becomes a constant <span class="math notranslate nohighlight">\(\frac{1}{\beta}\)</span>, which does not depend on time but on one of the Weibull distributional parameters, <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
 </section>
 </div>
 <p>Now, let us compare Weibull hazard functions with different values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> for each type of cancer. Firstly, in general, we know that the Weibull hazard function is the following:</p>
@@ -864,19 +835,6 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p class="admonition-title"><span class="caption-number">Exercise 21 </span></p>
 <section id="exercise-content">
 <p>Suppose that the curves above are the hazard functions of cancer patients for different types of cancer. Let us compare the <em>blue</em> (<em>Type D</em>) and <em>green</em> (<em>Type A</em>) curves.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture5-ans4">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q4"> Exercise 21</a></p>
-<section id="solution-content">
-<p>Recall that <span class="math notranslate nohighlight">\(\lambda(t) \Delta t\)</span> is the approximate probability of the immediate occurrence of the event, <strong>given that it has not occurred until time <span class="math notranslate nohighlight">\(t\)</span></strong>.</p>
-<p>As we can see, a patient with <em>blue</em> (<em>Type D</em>) cancer has a probability of death constant over time. For the <em>green</em> (<em>Type A</em>) cancer, the chance of dying is relatively low in the early stages of cancer, while it grows substantially over time.</p>
-<p>At first, it might be tricky to establish a relationship between the survival and hazard functions. That said, we can provide the following rationale:</p>
-<ul class="simple">
-<li><p>The <em>blue</em> (<em>Type D</em>) cancer has an equal hazard over time (i.e., it does not increase or decrease over time). Note that its hazard equal to <span class="math notranslate nohighlight">\(1\)</span> is not as small as the initial hazard values of other less aggressive types of cancer (such as <em>green</em>, <em>Type A</em>, or <em>red</em>, <em>Type B</em>). Therefore, this not-so-small constant hazard in the <em>blue</em> (<em>Type D</em>) cancer sheds light on its particular aggressiveness over time.</p></li>
-<li><p>The <em>green</em> (<em>Type A</em>) cancer might not be quite aggressive at early stages. Nevertheless, its aggressiveness increases at the last stages of time (we can compare it versus the <em>purple</em> cancer, <em>Type C</em>, in terms of their survival functions). At the last stages of time, this particular aggressiveness of the <em>green</em> (<em>Type A</em>) cancer is reflected in its corresponding increasing hazard function over time.</p></li>
-</ul>
 </section>
 </div>
 <div class="admonition important">
@@ -1344,13 +1302,6 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <p class="admonition-title"><span class="caption-number">Exercise 22 </span></p>
 <section id="exercise-content">
 <p>What is the advantage or disadvantage of making a distributional assumption?</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture5-ans5">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q5"> Exercise 22</a></p>
-<section id="solution-content">
-<p>If we make a distributional assumption, we are less vulnerable (not immune) to the random fluctuations’ impacts. Our estimate will be smoother and (much!) more stable. However, if our assumption is off, the bias can be considerable.</p>
 </section>
 </div>
 </section>

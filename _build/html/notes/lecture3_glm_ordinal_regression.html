@@ -682,13 +682,6 @@ document.write(`
 <p>What can we see <strong>descriptively</strong> from the above plots?</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture3-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q1"> Exercise 9</a></p>
-<section id="solution-content">
-<p>Those students with higher <code class="docutils literal notranslate"><span class="pre">GPA</span></code> tend to be <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school. Interestingly, those students with at least one parent with a graduate degree tend to be <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school.</p>
-</section>
-</div>
 </section>
 <section id="data-modelling-framework">
 <h2>4. Data Modelling Framework<a class="headerlink" href="#data-modelling-framework" title="Permalink to this heading">#</a></h2>
@@ -787,30 +780,6 @@ P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = 
 <p><strong>B.</strong> Five link functions, five intercepts, and five regression coefficients.</p>
 <p><strong>C.</strong> Five link functions, five intercepts, and twenty regression coefficients.</p>
 <p><strong>D.</strong> Four link functions, four intercepts, and four regression coefficients.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture3-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q2"> Exercise 10</a></p>
-<section id="solution-content">
-<p>The categories <span class="math notranslate nohighlight">\(1, 2, 3, 4, 5\)</span> in the <span class="math notranslate nohighlight">\(i\)</span>th response <span class="math notranslate nohighlight">\(Y_i\)</span> implicate an ordinal scale here, i.e., <span class="math notranslate nohighlight">\(1 &lt; 2 &lt; 3 &lt; 4 &lt; 5\)</span>.</p>
-<p>Hence, our Ordinal Logistic regression model will indicate how each one of the <span class="math notranslate nohighlight">\(4\)</span> regressors <span class="math notranslate nohighlight">\(X_{i,1}\)</span>, <span class="math notranslate nohighlight">\(X_{i,2}\)</span>, <span class="math notranslate nohighlight">\(X_{i,3}\)</span>, and <span class="math notranslate nohighlight">\(X_{i,4}\)</span> affects the <strong>cumulative logarithm of the odds</strong> in the ordinal response  for the following <span class="math notranslate nohighlight">\(4\)</span> situations:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{gather*}
-\text{Level } 4 \text{ or any lesser degree versus level } 5 \\
-\text{Level } 3 \text{ or any lesser degree versus level } 4 \text{ or any higher degree}\\
-\text{Level } 2 \text{ or any lesser degree versus level } 3 \text{ or any higher degree}\\
-\text{Level } 1 \text{ versus level } 2 \text{ or any higher degree}\\
-\end{gather*}\end{split}\]</div>
-<p>Then, our system of modelling equations will be:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{gather*}
-\eta_i^{(4)} = \log\left[\frac{P(Y_i \leq 4 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i = 5 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(4)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
-\eta_i^{(3)} = \log\left[\frac{P(Y_i \leq 3 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 3 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(3)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
-\eta_i^{(2)} = \log\left[\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 2 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
-\eta_i^{(1)} = \log\left[\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 1 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4}.
-\end{gather*}\end{split}\]</div>
-<p>As we can see above; we would need four link functions, four intercepts <span class="math notranslate nohighlight">\(\left( \beta_0^{(4)}, \beta_0^{(3)}, \beta_0^{(2)}, \beta_1^{(1)} \right)\)</span>, and four coefficients <span class="math notranslate nohighlight">\(\left( \beta_1, \beta_2, \beta_3, \beta_4 \right)\)</span>.</p>
 </section>
 </div>
 <section id="a-graphical-intuition-of-the-proportional-odds-assumption">
@@ -1218,13 +1187,6 @@ H0: Parallel Regression Assumption holds
 <p class="admonition-title"><span class="caption-number">Exercise 11 </span></p>
 <section id="exercise-content">
 <p>Why would we have to be cautious when fitting a non-proportional odds model in the context of a response with a considerable number of ordinal levels and regressors?</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture3-ans3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q3"> Exercise 11</a></p>
-<section id="solution-content">
-<p>The Ordinal Logistic regression framework makes complex modelling since we deal with cumulative probabilities by each logit function in the system. On top of that, adding a considerable number of regression parameters to estimate in our optimization procedure via maximum likelihood might make convergence slow when fitting the model.</p>
 </section>
 </div>
 </section>
