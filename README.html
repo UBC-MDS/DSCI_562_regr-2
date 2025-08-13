@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Welcome to DSCI 562: Regression II &#8212; DSCI 562 - Regression II</title>
   
@@ -15,32 +15,33 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -49,18 +50,14 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -75,19 +72,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -109,12 +110,22 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -129,9 +140,13 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="#">
+  
   
   
   
@@ -141,12 +156,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/UBC_MDS_logo.png" class="logo__image only-light" alt="DSCI 562 - Regression II - Home"/>
+    <script>document.write(`<img src="_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="DSCI 562 - Regression II - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -173,13 +199,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="notes/appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes/appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes/appendix-reg-mindmap.html">Regression Mind Map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notes/appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes/appendix-binary-multivariate-normal.html">Fundamentals of the Multivariate Normal Distribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes/appendix-greek-alphabet.html">Greek Alphabet</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CODE-OF-CONDUCT.html">Code of Conduct</a></li>
 </ul>
 
     </div>
@@ -195,7 +216,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -204,14 +225,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -333,26 +354,28 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
 
+
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -374,13 +397,14 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-level-goals">High-Level Goals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessments">Assessments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lecture-schedule">Lecture Schedule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-mind-map">Regression Mind Map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deliverables">Deliverables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-llms">Use of LLMs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-material">Reference Material</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-course-reviews">Recommended Course Reviews</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-references">Dataset References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policies">Policies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previous-release">Previous Release</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
 </ul>
@@ -392,7 +416,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="welcome-to-dsci-562-regression-ii">
 <h1>Welcome to DSCI 562: Regression II<a class="headerlink" href="#welcome-to-dsci-562-regression-ii" title="Permalink to this heading">#</a></h1>
@@ -403,7 +427,7 @@ document.write(`
 <li><p>Moreover, what if we have censored data?</p></li>
 <li><p>In many other cases, we might be interested in modelling a response different from a conditioned mean. Different Data Science-related projects will require making inference on different conditioned response quantiles.</p></li>
 </ul>
-<p>We cover useful extensions to ordinary linear regression: generalized linear models (GLMs), mixed-effects, local, survival, and quantile regression, and techniques for dealing with missing data.</p>
+<p>We will cover useful extensions to classical linear regression: generalized linear models (GLMs), mixed-effects, local, survival, and quantile regression, and techniques for dealing with missing data.</p>
 <section id="high-level-goals">
 <h2>High-Level Goals<a class="headerlink" href="#high-level-goals" title="Permalink to this heading">#</a></h2>
 <p>By the end of the course, students are expected to:</p>
@@ -413,13 +437,65 @@ document.write(`
 <li><p>Identify situations where OLS regression is sub-optimal, and apply alternative regression methods that better address the situation.</p></li>
 </ul>
 </section>
-<section id="assessments">
-<h2>Assessments<a class="headerlink" href="#assessments" title="Permalink to this heading">#</a></h2>
-<p>This is an <strong>assignment-based course</strong>. The following deliverables will determine your course grade:</p>
-<table class="table">
+<section id="lecture-schedule">
+<h2>Lecture Schedule<a class="headerlink" href="#lecture-schedule" title="Permalink to this heading">#</a></h2>
+<p>This course occurs during <strong>Block 4</strong> in the 2024/25 school year. The course notes can be accessed <a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/README.html"><strong>here</strong></a>. Typically, you should review these notes before each lecture.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>Assessment</p></th>
-<th class="head text-center"><p>Weight</p></th>
+<tr class="row-odd"><th class="text-center head"><p>Lecture</p></th>
+<th class="text-center head"><p>Topic</p></th>
+<th class="text-center head"><p>Optional Readings</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture1-glm-link-functions-and-count-regression.html"><strong>Generalized Linear Models: Link Functions and Count Regression</strong></a></p></td>
+<td class="text-center"><p><ul> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-MLRreview.html">Chapter 1 (<em>Review of Multiple Linear Regression</em>): BMLR</a> (<strong>optional, only as a review</strong>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-logreg.html">Chapter 6 (<em>Logistic Regression</em>): BMLR</a> (<strong>optional, only as a review</strong>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-glms.html#learning-objectives-4">Chapter 5 (<em>Generalized Linear Models: A Unifying Theory</em>): BMLR</a> (<strong>short chapter</strong>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html">Chapter 4 (<em>Poisson Regression</em>): BMLR</a> </ul></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture2_glm_model_selection_multinomial.html"><strong>Generalized Linear Models: Model Selection and Multinomial Logistic Regression</strong></a></p></td>
+<td class="text-center"><p><ul> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-beyondmost.html#summary-of-model-building">Chapter 2 (Beyond Least Squares: Using Likelihoods): BMLR</a> <li> <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000296029&amp;amp;title=Extending%20the%20Linear%20Model%20with%20R%3A%20Generalized%20Linear%2C%20Mixed%20Effects%20and%20Nonparametric%20Regression%20Models">Faraway: 5.1 (Multinomial Logit Model)</a> </ul></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture3_glm_ordinal_regression.html"><strong>Generalized Linear Models: Ordinal Logistic Regression</strong></a></p></td>
+<td class="text-center"><p><ul> <li> <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000296029&amp;amp;title=Extending%20the%20Linear%20Model%20with%20R%3A%20Generalized%20Linear%2C%20Mixed%20Effects%20and%20Nonparametric%20Regression%20Models">Faraway: 5.3 (Ordinal Multinomial Responses)</a> </ul></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture4_linear_mixed_effects_models.html"><strong>Linear Mixed-Effects Models</strong></a></p></td>
+<td class="text-center"><p><ul> <li> <a class="reference external" href="https://www.statlearning.com">Initial motivation (ISL): 3.3.3 Potential Problems (<em>2. Correlation of Error Terms</em>)</a> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-multilevelintro.html">Chapter 8 (<em>Introduction to Multilevel Models</em>): BMLR (from 8.1 to 8.8)</a> </ul></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture5_survival_analysis.html"><strong>Survival Analysis</strong></a></p></td>
+<td class="text-center"><p>See Kleinbaum and Klein (2005) in <a class="reference internal" href="#reference-material"><span class="xref myst">Reference Material</span></a></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>6</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture6_local_regression.html"><strong>Local Regression</strong></a></p></td>
+<td class="text-center"><p><ul><li> <a class="reference external" href="https://www.statlearning.com">ISL</a> 7.2 Step Functions <li><a class="reference external" href="https://www.statlearning.com">ISL</a> 7.6 Local Regression </ul></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>7</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture7_quantile_regression.html"><strong>Quantile Regression</strong></a></p></td>
+<td class="text-center"><p><ul><li><a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000904267&amp;amp;title=Regression%20Models%2C%20Methods%20and%20Applications">Fahrmeir (2013)</a> 10. Quantile Regression (except 10.2.2 Bayesian Quantile Regression) </ul></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>8</p></td>
+<td class="text-center"><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture8_missing_data.html"><strong>Missing Data</strong></a></p></td>
+<td class="text-center"><p>See van Buuren, S. (2012) in <a class="reference internal" href="#reference-material"><span class="xref myst">Reference Material</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See the <a class="reference internal" href="lecture-learning-objectives.html"><span class="std std-doc">lecture learning objectives</span></a> for a detailed breakdown of lecture-by-lecture learning objectives.</p>
+</section>
+<section id="regression-mind-map">
+<h2>Regression Mind Map<a class="headerlink" href="#regression-mind-map" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/appendix-reg-mindmap.html"><strong>Here</strong></a> is a mind map we created to summarize all regression models to be covered in this course.</p>
+</section>
+<section id="deliverables">
+<h2>Deliverables<a class="headerlink" href="#deliverables" title="Permalink to this heading">#</a></h2>
+<p>This is an <strong>assignment-based course</strong>. The following deliverables will determine your course grade:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p>Assessment</p></th>
+<th class="text-center head"><p>Weight</p></th>
 </tr>
 </thead>
 <tbody>
@@ -446,81 +522,49 @@ document.write(`
 </tr>
 </tbody>
 </table>
+</div>
 </section>
-<section id="lecture-schedule">
-<h2>Lecture Schedule<a class="headerlink" href="#lecture-schedule" title="Permalink to this heading">#</a></h2>
-<p>This course occurs during <strong>Block 4</strong> in the academic year. The course notes can be accessed <a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/README.html"><strong>here</strong></a>. Typically, students are expected to review these notes before each lecture.</p>
-<blockquote>
-<div><p><strong>Note:</strong> Answers to the iClicker questions are not included in these public materials.</p>
-</div></blockquote>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Lecture</p></th>
-<th class="head"><p>Topic</p></th>
-<th class="head"><p>Suggested Reading Material</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p>1</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture1-glm-link-functions-and-count-regression.html"><strong>Generalized Linear Models: Link Functions and Count Regression</strong></a></p></td>
-<td><p><ul> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-MLRreview.html">Chapter 1 (<em>Review of Multiple Linear Regression</em>): BMLR</a> (<em>as a review</em>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-logreg.html">Chapter 6 (<em>Logistic Regression</em>): BMLR</a> (<em>as a review</em>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-glms.html#learning-objectives-4">Chapter 5 (<em>Generalized Linear Models: A Unifying Theory</em>): BMLR</a> (<em>short chapter</em>) <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html">Chapter 4 (<em>Poisson Regression</em>): BMLR</a> </ul></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>2</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture2_glm_model_selection_multinomial.html"><strong>Generalized Linear Models: Model Selection and Multinomial Logistic Regression</strong></a></p></td>
-<td><p><ul> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-beyondmost.html#summary-of-model-building">Chapter 2 (Beyond Least Squares: Using Likelihoods): BMLR</a> <li> <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;SS_jc=TC0000296029&amp;title=Extending%20the%20Linear%20Model%20with%20R%3A%20Generalized%20Linear%2C%20Mixed%20Effects%20and%20Nonparametric%20Regression%20Models">Faraway: 5.1 (Multinomial Logit Model)</a> </ul></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>3</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture3_glm_ordinal_regression.html"><strong>Generalized Linear Models: Ordinal Logistic Regression</strong></a></p></td>
-<td><p><ul> <li> <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;SS_jc=TC0000296029&amp;title=Extending%20the%20Linear%20Model%20with%20R%3A%20Generalized%20Linear%2C%20Mixed%20Effects%20and%20Nonparametric%20Regression%20Models">Faraway: 5.3 (Ordinal Multinomial Responses)</a> </ul></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>4</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture4_linear_mixed_effects_models.html"><strong>Linear Mixed-Effects Models</strong></a></p></td>
-<td><p><ul> <li> <a class="reference external" href="https://www.statlearning.com">Initial motivation (ISL): 3.3.3 Potential Problems (<em>2. Correlation of Error Terms</em>)</a> <li> <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-multilevelintro.html">Chapter 8 (<em>Introduction to Multilevel Models</em>): BMLR (from 8.1 to 8.8)</a> </ul></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>5</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture5_survival_analysis.html"><strong>Survival Analysis</strong></a></p></td>
-<td><p>See Kleinbaum and Klein (2005) in <span class="xref myst">Reference Material</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>6</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture6_local_regression.html"><strong>Local Regression</strong></a></p></td>
-<td><p><ul><li> <a class="reference external" href="https://www.statlearning.com">ISL</a> 7.2 Step Functions <li><a class="reference external" href="https://www.statlearning.com">ISL</a> 7.6 Local Regression </ul></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>7</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture7_quantile_regression.html"><strong>Quantile Regression</strong></a></p></td>
-<td><p><ul><li><a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;SS_jc=TC0000904267&amp;title=Regression%20Models%2C%20Methods%20and%20Applications">Fahrmeir (2013)</a> 10. Quantile Regression (except 10.2.2 Bayesian Quantile Regression) </ul></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>8</p></td>
-<td><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_562_regr-2/notes/lecture8_missing_data.html"><strong>Missing Data</strong></a></p></td>
-<td><p>See van Buuren, S. (2012) in <span class="xref myst">Reference Material</span></p></td>
-</tr>
-</tbody>
-</table>
-<p>See the <a class="reference internal" href="lecture-learning-objectives.html"><span class="doc std std-doc">lecture learning objectives</span></a> for a detailed breakdown of lecture-by-lecture learning objectives.</p>
+<section id="use-of-llms">
+<h2>Use of LLMs<a class="headerlink" href="#use-of-llms" title="Permalink to this heading">#</a></h2>
+<p>LLMs, such as ChatGPT, can be helpful tools if we use them responsibly. In this course, students are permitted to use these tools to gather more information, review concepts, or brainstorm, and students must cite these tools if they use them for assignment. Having said all this, it is <strong>not</strong> permitted to write any given assignment via copying and pasting AI-generated responses.</p>
 </section>
 <section id="reference-material">
 <h2>Reference Material<a class="headerlink" href="#reference-material" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Agresti, A (2012). <a class="reference external" href="https://onlinelibrary.wiley.com/doi/book/10.1002/0471249688"><em>Categorical Data Analysis</em></a>, John Wiley &amp; Sons, Incorporated. ProQuest Ebook Central.</p>
+<li><p>Agresti, A (2013). <em>Categorical Data Analysis</em>, John Wiley &amp; Sons, Incorporated. ProQuest Ebook Central.</p>
 <ul>
-<li><p>This book is helpful for generalized linear models with discrete responses.</p></li>
+<li><p>The e-book is available through the <a class="reference external" href="https://ebookcentral.proquest.com/lib/ubc/detail.action?docID=1168529">UBC Library</a>. You can obtain a PDF copy with your CWL account. This book is helpful for generalized linear models with discrete responses.</p></li>
 </ul>
 </li>
-<li><p>Collett, D. (2003). <a class="reference external" href="https://www.taylorfrancis.com/books/mono/10.1201/b16654/modelling-binary-data-david-collett"><em>Modelling Binary Data (2nd ed.)</em></a>. Chapman and Hall/CRC. https://doi.org/10.1201/b16654</p></li>
-<li><p>Fahrmeir, L. (2013). <a class="reference external" href="https://link.springer.com/book/10.1007/978-3-642-34333-9"><em>Regression Models, Methods and Applications</em></a>. Springer Berlin Heidelberg.</p></li>
+<li><p>Collett, D. (2003). <em>Modelling Binary Data (2nd ed.)</em>. Chapman and Hall/CRC. https://doi.org/10.1201/b16654</p>
+<ul>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0001459465&amp;amp;title=Modelling%20binary%20data">UBC Library</a>.</p></li>
+</ul>
+</li>
+<li><p>Fahrmeir, L. (2013). <em>Regression Models, Methods and Aplications</em>. Springer Berlin Heidelberg.</p>
+<ul>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000904267&amp;amp;title=Regression%20Models%2C%20Methods%20and%20Applications">UBC Library</a>. You can obtain a PDF copy with your CWL account.</p></li>
+</ul>
+</li>
 <li><p>Faraway, Julian J. (2005). <em>Extending the Linear Model with <code class="docutils literal notranslate"><span class="pre">R</span></code>: Generalized Linear, Mixed Effects and Nonparametric Regression Models</em>, CRC Press LLC. ProQuest Ebook Central.</p>
 <ul>
-<li><p>This book is great for learning how to work within the <code class="docutils literal notranslate"><span class="pre">R</span></code> environment with the models we will be working on. Its approach is essentially practical.</p></li>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000296029&amp;amp;title=Extending%20the%20Linear%20Model%20with%20R%3A%20Generalized%20Linear%2C%20Mixed%20Effects%20and%20Nonparametric%20Regression%20Models">UBC Library</a>. You can obtain a PDF copy with your CWL account. This book is great for learning how to work within the <code class="docutils literal notranslate"><span class="pre">R</span></code> environment with the models we will be working on. Its approach is essentially practical.</p></li>
 </ul>
 </li>
-<li><p>Gelman, A. and Hill, J. (2007). <a class="reference external" href="https://www.cambridge.org/highereducation/books/data-analysis-using-regression-and-multilevel-hierarchical-models/32A29531C7FD730C3A68951A17C9D983#overview"><em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em></a>. Analytical Methods for Social Research. Cambridge University Press.</p>
+<li><p>Gelman, A. and Hill, J. (2007). <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Analytical Methods for Social Research. Cambridge University Press.</p>
 <ul>
-<li><p>This book is pretty useful and practical as introductory material.</p></li>
+<li><p>The physical book is available through the <a class="reference external" href="http://webcat2.library.ubc.ca/vwebv/search?searchArg=Data%20analysis%20using%20regression%20and%20multilevel%2Fhierarchical%20models%20%2F&amp;amp;searchCode=TALL&amp;amp;searchType=1">UBC Library</a>. This book is pretty useful and practical as introductory material.</p></li>
+</ul>
+</li>
+<li><p>Hastie, T., Tibshirani, R., and Friedman, J. H. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>, Springer Publising Company, Incorporated.</p>
+<ul>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000145389&amp;amp;title=The%20Elements%20of%20Statistical%20Learning%3A%20Data%20Mining%2C%20Inference%2C%20and%20Prediction%2C%20Second%20Edition">UBC Library</a>.</p></li>
 </ul>
 </li>
 <li><p>James, G., Witten, D., Hastie, T., and Tibshirani, R. (2014). <a class="reference external" href="https://www.statlearning.com"><em>An Introduction to Statistical Learning: with Applications in <code class="docutils literal notranslate"><span class="pre">R</span></code></em></a>. Springer Publishing Company, Incorporated.</p></li>
-<li><p>Kleinbaum, D. G. and Klein, M. (2005). <a class="reference external" href="https://link.springer.com/book/10.1007/978-1-4419-6646-9"><em>Survival analysis : A Self-Learning Text</em></a>. Springer.</p>
+<li><p>Kleinbaum, D. G. and Klein, M. (2005). <em>Survival analysis : A Self-Learning Text</em>. Springer.</p>
 <ul>
-<li><p>This book is a good start for Survival Analysis:</p>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000320278&amp;amp;title=Survival%20analysis%20%3A%20a%20self-learning%20text">UBC Library</a>. This book is a good start for Survival Analysis:</p>
 <ul>
 <li><p><strong>Chapter 1 (Introduction):</strong> Introduction to Survival Analysis (I), Censored Data (II), Terminology and Notation (III).</p></li>
 <li><p><strong>Chapter 2 (Kaplan-Meier Curves):</strong> Review (I), Example of Kaplan-Meier Curves (II), General Features of  Kaplan-Meier Curves (III), Confidence Intervals for Kaplan-Meier Curves (VII and VIII).</p></li>
@@ -530,8 +574,17 @@ document.write(`
 </li>
 </ul>
 </li>
+<li><p>Rousseeuw, L. P. J. and Leroy A. M. (2003). <em>Robust Regression and Outlier Detection</em>. Hoboken, NJ : Wiley-Interscience.</p>
+<ul>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/log?L=GW2JH3XR2C&amp;amp;D=ZEEST&amp;amp;J=TC0000239030&amp;amp;P=Link&amp;amp;PT=EZProxy&amp;amp;H=48e3fef958&amp;amp;U=https%3A%2F%2Fezproxy.library.ubc.ca%2Flogin%3Furl%3Dhttps%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2Fbook%2F10.1002%2F0471725382">UBC Library</a>. You can obtain a PDF copy with your CWL account.</p></li>
+</ul>
+</li>
 <li><p>Roback, P. and  Legler, J. (2020). <a class="reference external" href="https://bookdown.org/roback/bookdown-BeyondMLR/"><em>Beyond Multiple Linear Regression</em></a>.</p></li>
-<li><p>Rubin, D. B. (1987). <a class="reference external" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316696"><em>Multiple Imputation for Nonresponse in Surveys</em></a>. Wiley.</p></li>
+<li><p>Rubin, D. B. (1987). <em>Multiple Imputation for Nonresponse in Surveys</em>. Wiley.</p>
+<ul>
+<li><p>The e-book is available through the <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/log?L=GW2JH3XR2C&amp;amp;D=ZEEST&amp;amp;J=TC0000340639&amp;amp;P=Link&amp;amp;PT=EZProxy&amp;amp;H=6c88ebd0c3&amp;amp;U=https%3A%2F%2Fezproxy.library.ubc.ca%2Flogin%3Furl%3Dhttps%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2Fbook%2F10.1002%2F9780470316696">UBC Library</a>. You can obtain a PDF copy with your CWL account.</p></li>
+</ul>
+</li>
 <li><p>van Buuren, S. (2012). <a class="reference external" href="https://stefvanbuuren.name/fimd/"><em>Flexible Imputation of Missing Data</em></a>:</p>
 <ul>
 <li><p><strong>1.1 The problem of missing data.</strong></p></li>
@@ -546,32 +599,28 @@ document.write(`
 <h2>Recommended Course Reviews<a class="headerlink" href="#recommended-course-reviews" title="Permalink to this heading">#</a></h2>
 <p>This course is entirely taught in <code class="docutils literal notranslate"><span class="pre">R</span></code> (we will follow the <a class="reference external" href="https://style.tidyverse.org/index.html"><code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> style guide</a>) with a reasonable mathematical and statistical basis. We strongly recommend reviewing the following courses:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/UBC-MDS/DSCI_551_stat-prob-dsci"><em>DSCI 551: Descriptive Statistics and Probability for Data Science</em></a>, for basic statistical concepts and familiarity with the mathematical notation.</p></li>
-<li><p><a class="reference external" href="https://github.com/UBC-MDS/DSCI_552_stat-inf-1"><em>DSCI 552: Statistical Inference and Computation I</em></a>, for statistical inference concepts with a frequentist approach.</p></li>
-<li><p><a class="reference external" href="https://github.com/UBC-MDS/DSCI_561_regr-1"><em>DSCI 561: Regression I</em></a>, since the topics of this course follow the same thread.</p></li>
-<li><p><a class="reference external" href="https://github.com/UBC-MDS/DSCI_531_viz-1"><em>DSCI 531: Data Visualization I</em></a>, for plotting tools using the package <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p></li>
+<li><p><strong>DSCI 551: Descriptive Statistics and Probability for Data Science</strong>, for basic statistical concepts and familiarity with the mathematical notation.</p></li>
+<li><p><strong>DSCI 552: Statistical Inference and Computation I</strong>, for statistical inference concepts with a frequentist approach.</p></li>
+<li><p><strong>DSCI 561: Regression I</strong>, since the topics of this course follow the same thread.</p></li>
+<li><p><strong>DSCI 531: Data Visualization I</strong>, for plotting tools using the package <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p></li>
 </ul>
 </section>
 <section id="dataset-references">
 <h2>Dataset References<a class="headerlink" href="#dataset-references" title="Permalink to this heading">#</a></h2>
-<p>These are the papers from which each dataset used in the lectures comes from:</p>
+<p>These are the papers from which each dataset used in the lectures comes from. If you are interested in knowing more about them, you can obtain a PDF copy of each paper with your CWL account via the UBC library:</p>
 <ul class="simple">
-<li><p>Brockmann, H.J. (1996). <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x">Satellite Male Groups in Horseshoe Crabs, Limulus polyphemus</a>. <em>Ethology</em>, 102: 1-21.</p></li>
-<li><p>Deb, P. and Trivedi, P. (1997). <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291099-1255%28199705%2912%3A3%3C313%3A%3AAID-JAE440%3E3.0.CO%3B2-G">Demand for medical care by the elderly: a finite mixture approach</a>. <em>Journal of Applied Econometrics</em>, 12(3), 313-336.</p></li>
-<li><p>Grunfeld Y. (1958). <a class="reference external" href="https://www.proquest.com/docview/301899386?pq-origsite=gscholar&amp;fromopenview=true&amp;sourcetype=Dissertations%20&amp;%20Theses">The determinants of corporate investment</a>. Ph.D. thesis, Department of Economics, University of Chicago.</p></li>
-<li><p>Harrison, D. and Rubinfeld, D.L. (1978). <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/0095069678900062">Hedonic prices and the demand for clean air</a>. <em>Journal of Environmental Economics and Management</em>, 5, 81–102.</p></li>
-<li><p>Mangasarian, O. L., Street, W. N., and Wolberg, W. H. (1995). <a class="reference external" href="https://www.jstor.org/stable/171686">Breast cancer diagnosis and prognosis via linear programming</a>. <em>Operations Research</em>, 43(4), 570-577.</p></li>
-<li><p>Wolberg, W. H. and Mangasarian, O. L. (1990). <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC55130/">Multisurface method of pattern separation for medical diagnosis applied to breast cytology</a>. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, 87(23), 9193–9196.</p></li>
-<li><p>Wood, P. (1967). <a class="reference external" href="https://www.nature.com/articles/216164a0">Algebraic Model of the Lactation Curve in Cattle</a>. <em>Nature</em>, 216, 164–165.</p></li>
+<li><p>Brockmann, H.J. (1996). <a class="reference external" href="https://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwrV3JasMwEBUlpZBLl7Sl6YY_oE4sy5sgFEpICKU9NadcjFYSmtghCyRf0t-tJC_EPhRaepMHS8jSSPM0M3oGALkdx67tCYRyKV0GacCp9CBX60RCySMcYiigy2qpOq_F1ZiMLqL0v-mFYrZvvd4JXXcPEnOUZbU1z6W-fxdoh6eO-XQUvDyGCnXrbK_hxCkDDCHKgs9KH20FelDOR_pzWxXbdYhljTEanoF10e8iC6V2SbDK9Pg_H3gOTnPsar1kynYBjkTSAs1yC923wMkkNaVL8NVbkNXn8wcxjJ8b0euaZysTvyuzVJUYH9i6Kpsl1ijVOSbTtPZ2f6V6nYuectnbbLGdb2tNLNP5fjkVi1J-BcbDwbg_svOfQNhMIRdsu4KHEnIsIiQYJoGQvsKQmAuOsE8lojRnrPEIlZQHHIUEEs8PBVHQjaJr0EjSRNwAS8ebmMNk4DHkRYgQSt2ARoxRnzuhJG2AitmNlxnVR3x4REI41sMf6-GP8-GPd20QmVn7RZV4MB7p0u3fq96BZpY-rn1B96CxWW3FgyGOeDR6_g1rIQSN">Satellite Male Groups in Horseshoe Crabs, Limulus polyphemus</a>. <em>Ethology</em>, 102: 1-21.</p></li>
+<li><p>Deb, P. and Trivedi, P. (1997). <a class="reference external" href="https://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwnV1tS8MwEA5uftAvvk6cL6N_oK5L0pfJUEr34gQZ4j75JaZLCsOtzqng_os_1kuTDjsVwU-lF9oL5Mg9x909hxDBZ469cick3G0GggcJ9YXHSUIDb6RyXn6DgsPmcqVUx89bY1SVZVYmmCX1AS_FE1nHOHCxiy9nz7aaHqWyrGaURgmVwEI1Te7yPlYM7BpLEtvHLi54IF2E-AWZUuNautvoId9FXlOy0vJX5G38x3Z30JaBnVao7WQXrcl0D23kXckv--ijNeXzx4u2nPJUtOrZi6VlAGstk88pLqjepaIkXlgAKK2OGv09WZi1c7MYWt2xQrjFT27G7yqJURSGhuncSCto2O0MoyvbTG6wAT4Ejg0xVSAVdTyn2PeJkBC4yKRBhUdHHuFurPphMSAzAXCPOwnAGgHOWkoVrwEoPUDl9CmVh6rySgDkGIlmTByaSCfmIwExYRx7SSBjX1bRID9MNtP8HEwzMWPG7vpRX6XYmwxgnMtUTY0DD8wIIw3CWNhvs-uwQ6kDEodFA4ZZr4oq2REuf2fOr4puMxv5puYPLT8qMZKjX3Qdo01Nk6sKK09Q-XX-Jk8zXogaWm9H94NeLbPxT5yWAM4">Demand for medical care by the elderly: a finite mixture approach</a>. <em>Journal of Applied Econometrics</em>, 12(3), 313-336.</p></li>
+<li><p>Grunfeld Y. (1958). <a class="reference external" href="https://www.proquest.com/docview/301899386?pq-origsite=summon&amp;amp;accountid=14656">The determinants of corporate investment</a>. Ph.D. thesis, Department of Economics, University of Chicago.</p></li>
+<li><p>Harrison, D. and Rubinfeld, D.L. (1978). <a class="reference external" href="http://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwnV07T8MwELYQDLDwKCDeyghDaOy0TixVSICourBVYrRc50wBNVRtQeLfc-fEpYAQiMF5nB9JbOf8Obn7zFgqzpP4i04wgANV7iQgPC-gZTOligRsAiYRhfWLOSya6pz_8EOfyyZhgjiRSp5m-RmteClj0sBpm5NBV-_2aq6H88QvLTfPEBznfijk88BE9pkWQd-nMWplAmOwC-NPd4PdBS-eYHjyxS_wG7njH59pk63XkDS6rPrQFluCssFWg8fytMF2bz684TBhrQ6m22zWGZnJ00UPCiLY7TT9WTR8JmP6-6iKHBNr0TTEmbKIEHLWcQWMUBDiED7XcrwNUwZxJTIPk1qww_rdm_51L66XcYh5KomtVGZGtJwcEO-NQplVvCDqQwlKcGvBtp2yhjxghZFu4KRSTqZcDFomFZDusuXyuYQ9FqlMICISMLA0L3WpqrhpXAvz2MLl-ywOTajHFVmHDlZsVMea6lhnufZ1rAWmD-38x_RZ6Ay6BigV8NDYor_kvPR9Z34ZAHgEqmT9qlPTxvCGgeOcHncPdIhhjCHnWKrQw9no4N9XP2Rr3DMp05ejI7Y8m7zAsaeZOPGvjN9evwO2Ww2r">Hedonic prices and the demand for clean air</a>. <em>Journal of Environmental Economics and Management</em>, 5, 81–102.</p></li>
+<li><p>Mangasarian, O. L., Street, W. N., and Wolberg, W. H. (1995). <a class="reference external" href="http://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwlV1Nb9QwEB2xPSA4tHQLohRKDoDgsDSJndiRKlApVBx74PNk2bGDKui2jbf8Ff4uM46tbpZKFZdIO55NvNLLeLx-8waAla_z2UpMEAZXtlZKzllZGSk7WTBdtDa3ts6N61aoOnUqjSGWZaAJhkN9zJfML7dHCi-yfnt-MaPmUXTIGjtpTGAi2cDr-rKkvFsPbQwYBpyafxsvQMTDbPEOVxE5yQSH8iZKHH2iKv4TrsMadLQBKk03kU9WagPHAo___7vuwXpMT7ODAU-bcMvNp3A7seOnsJG6QGQxKEzh7pKk4RQ2o91nL6Oi9ast-LN_qvufb94RAX6xvxc-ZIPtkFDXj23vB_rfiR-b9dxmx_3ZdUO_T_TYgFtsfIXHtuOBinaK84wD9-Hz0YdPhx9nsSPEDPeBJWmp6pJ3VS1tzlvR8Ua6WljWlm3RaMkMs52R1jmJWGu4a6wwtugaaauGtQWaH8Da_GzuHkJWVlpwbgpthKOz3aZsmeRWC9mJxnG7DS8STNT5IPyhaMOEO0xF_WkUZ4qrSuTomEB0k-MzgpiK3UXx4un_F_9DX3qvDjCPw2yPMbxfcCPwLXrd6lgngdMmqa5lx6cJqyoiNTzQLz3xeRq4YWZbAYxXXgGJ27CT8K5iZPOqJEFAUnl8dP2XduDOUPVPjObHsLboL92TIGmxCxPx9TteMcDshnf0L2aRR50">Breast cancer diagnosis and prognosis via linear programming</a>. <em>Operations Research</em>, 43(4), 570-577.</p></li>
+<li><p>Wolberg, W. H. and Mangasarian, O. L. (1990). <a class="reference external" href="https://libkey.io/libraries/498/articles/35797998/full-text-file?utm_source=api_542">Multisurface method of pattern separation for medical diagnosis applied to breast cytology</a>. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, 87(23), 9193–9196.</p></li>
+<li><p>Wood, P. (1967). <a class="reference external" href="https://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwfV1LS8NAEF6kIHhRW98voic9xGYzyW4WilCqxYN4ED2XzXRXim2qrRX99242SW0i7TGzEwiZycw3zOQbQsC_9txKTIg8yYw_U2awHBUyFIwr1JE0RZEG3sfKqM7FkoY-RE3fQBQWSFulc56WW0-Pt39DHRXe5YJuduHGcgJK5zDRgLs5k-ZCduluZWuKpgVvwvdP9a-_f9SNK554m2zmINNpZ15RJ2sqaZB1O-yJ0wap5x_01LnMWaevdshHayQnbzft4WvaSh5gq2mvnUycrkwblkVj7Rjw6DxIzLr55dPObPKlyqJB4nQsZXIu3iUv3bvnzr2b72Nw0WR5z6WxgV_UZ5iCCm1qF8VBMlTgaRUjgKAKgcUgI_SBa8H6QkrsM8Yx5MA57JFaMk7UAXGCCEMQ0gQ3oYKYU6GFBMG0L1CHmseH5LwwUu89o93o2XY5RL3ifRqdwnordPYzs841ipOjpSfHZMOEJZ4mKBqckNrnZKZOLSnDmXW2X2pLzng">Algebraic Model of the Lactation Curve in Cattle</a>. <em>Nature</em>, 216, 164–165.</p></li>
 </ul>
 </section>
 <section id="policies">
 <h2>Policies<a class="headerlink" href="#policies" title="Permalink to this heading">#</a></h2>
 <p>See the general <a class="reference external" href="https://ubc-mds.github.io/policies/">MDS policies</a>.</p>
-</section>
-<section id="previous-release">
-<h2>Previous Release<a class="headerlink" href="#previous-release" title="Permalink to this heading">#</a></h2>
-<p>A 2019 release of these course’s notes can be found <a class="reference external" href="https://github.com/UBC-MDS/DSCI_562_regr-2/releases/tag/2019">here</a>.</p>
 </section>
 <section id="attribution">
 <h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this heading">#</a></h2>
@@ -579,11 +628,9 @@ document.write(`
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this heading">#</a></h2>
-<p>See our <a class="reference internal" href="LICENSE.html"><span class="doc std std-doc">license</span></a> for further details.</p>
-<p>© 2024 <a class="reference external" href="https://alexrod.netlify.app">G. Alexi Rodríguez-Arelis</a>, Rodolfo Lourenzutti, and Vincenzo Coia</p>
+<p>© 2025 G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia.</p>
+<p>Software licensed under <a class="reference external" href="https://spdx.org/licenses/MIT.html">the MIT License</a>, non-software content licensed under <a class="reference external" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a>. See the <span class="xref myst">license file</span> for more information.</p>
 </section>
-<div class="toctree-wrapper compound">
-</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -615,11 +662,10 @@ document.write(`
 
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="right-next"
        href="lecture-learning-objectives.html"
@@ -630,10 +676,7 @@ document.write(`
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -642,6 +685,7 @@ document.write(`
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -649,13 +693,14 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-level-goals">High-Level Goals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessments">Assessments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lecture-schedule">Lecture Schedule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-mind-map">Regression Mind Map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deliverables">Deliverables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-llms">Use of LLMs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-material">Reference Material</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-course-reviews">Recommended Course Reviews</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-references">Dataset References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policies">Policies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previous-release">Previous Release</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
 </ul>
@@ -672,16 +717,17 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+By G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
 </p>
 
   </div>
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2024.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -705,8 +751,8 @@ By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

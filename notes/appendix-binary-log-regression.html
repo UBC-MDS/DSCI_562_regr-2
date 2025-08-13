@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Binary Logistic Regression &#8212; DSCI 562 - Regression II</title>
   
@@ -15,32 +15,33 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -49,18 +50,14 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -78,19 +75,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -112,12 +113,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -132,9 +141,13 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="../README.html">
+  
   
   
   
@@ -144,12 +157,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="DSCI 562 - Regression II - Home"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="DSCI 562 - Regression II - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -176,13 +200,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Binary Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-multivariate-normal.html">Fundamentals of the Multivariate Normal Distribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
 </ul>
 
     </div>
@@ -198,7 +217,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -207,14 +226,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -336,26 +355,28 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
 
+
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -408,7 +429,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="binary-logistic-regression">
 <h1>Binary Logistic Regression<a class="headerlink" href="#binary-logistic-regression" title="Permalink to this heading">#</a></h1>
@@ -434,7 +455,7 @@ document.write(`
 </section>
 <section id="the-breast-cancer-dataset">
 <h2>1. The Breast Cancer Dataset<a class="headerlink" href="#the-breast-cancer-dataset" title="Permalink to this heading">#</a></h2>
-<p>The data frame <code class="docutils literal notranslate"><span class="pre">breast_cancer</span></code> is the Wisconsin Diagnostic Breast Cancer dataset (<a class="reference external" href="https://www.jstor.org/stable/171686">Mangasarian et al., 1995</a>). It has a <strong>binary</strong> response <code class="docutils literal notranslate"><span class="pre">target</span></code>: <strong>whether the tumour is <code class="docutils literal notranslate"><span class="pre">benign</span></code> or <code class="docutils literal notranslate"><span class="pre">malignant</span></code></strong>.</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">breast_cancer</span></code> is the Wisconsin Diagnostic Breast Cancer dataset (<a class="reference external" href="http://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwlV1Nb9QwEB2xPSA4tHQLohRKDoDgsDSJndiRKlApVBx74PNk2bGDKui2jbf8Ff4uM46tbpZKFZdIO55NvNLLeLx-8waAla_z2UpMEAZXtlZKzllZGSk7WTBdtDa3ts6N61aoOnUqjSGWZaAJhkN9zJfML7dHCi-yfnt-MaPmUXTIGjtpTGAi2cDr-rKkvFsPbQwYBpyafxsvQMTDbPEOVxE5yQSH8iZKHH2iKv4TrsMadLQBKk03kU9WagPHAo___7vuwXpMT7ODAU-bcMvNp3A7seOnsJG6QGQxKEzh7pKk4RQ2o91nL6Oi9ast-LN_qvufb94RAX6xvxc-ZIPtkFDXj23vB_rfiR-b9dxmx_3ZdUO_T_TYgFtsfIXHtuOBinaK84wD9-Hz0YdPhx9nsSPEDPeBJWmp6pJ3VS1tzlvR8Ua6WljWlm3RaMkMs52R1jmJWGu4a6wwtugaaauGtQWaH8Da_GzuHkJWVlpwbgpthKOz3aZsmeRWC9mJxnG7DS8STNT5IPyhaMOEO0xF_WkUZ4qrSuTomEB0k-MzgpiK3UXx4un_F_9DX3qvDjCPw2yPMbxfcCPwLXrd6lgngdMmqa5lx6cJqyoiNTzQLz3xeRq4YWZbAYxXXgGJ27CT8K5iZPOqJEFAUnl8dP2XduDOUPVPjObHsLboL92TIGmxCxPx9TteMcDshnf0L2aRR50">Mangasarian et al., 1995</a>). It has a <strong>binary</strong> response <code class="docutils literal notranslate"><span class="pre">target</span></code>: <strong>whether the tumour is <code class="docutils literal notranslate"><span class="pre">benign</span></code> or <code class="docutils literal notranslate"><span class="pre">malignant</span></code></strong>.</p>
 <div class="admonition-the-breast-cancer-dataset admonition">
 <p class="admonition-title">The Breast Cancer Dataset</p>
 <p>This training dataset contains  569 observations from a digitized image of a fine needle aspirate (FNA) of a breast mass. The dataset details 30 real-valued characteristics (i.e., continuous regressors) plus the binary response and <code class="docutils literal notranslate"><span class="pre">ID</span></code> number. We will start working with the response <code class="docutils literal notranslate"><span class="pre">target</span></code> subject to the regressor <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>.</p>
@@ -443,7 +464,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">read_csv</span><span class="p">(</span><span class="s">&quot;../datasets/breast_cancer.csv&quot;</span><span class="p">)))</span>
 
-<span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">mean_radius</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">)</span>
 <span class="n">breast_cancer_binary</span>
 </pre></div>
@@ -494,15 +515,15 @@ Y_i =
 \[Y_i \sim \text{Bernoulli}(p_i).\]</div>
 <section id="using-ordinary-least-squares-to-model-probabilities">
 <h3>2.1. Using Ordinary Least-Squares to Model Probabilities<a class="headerlink" href="#using-ordinary-least-squares-to-model-probabilities" title="Permalink to this heading">#</a></h3>
-<p>We will take a “<em>naive</em>” approach to address our above main statistical inquiries. Suppose we use the “1” and “0” in the response as probabilities, and we estimate an ordinary least-squares (OLS) regression model to predict the mean of <span class="math notranslate nohighlight">\(Y_i\)</span> subject to <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, <span class="math notranslate nohighlight">\(X_{\texttt{mr}_i}\)</span>:</p>
+<p>We will take a “<em>naive</em>” approach to address our above main statistical inquiries. Suppose we use the “1” and “0” in the response as probabilities, and we estimate an Ordinary Least-squares (OLS) regression model to predict the mean of <span class="math notranslate nohighlight">\(Y_i\)</span> subject to <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, <span class="math notranslate nohighlight">\(X_{\texttt{mr}_i}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb{E}(Y_i \mid X_{\texttt{mr}_i}) = p_i = \beta_0 + \beta_1 X_{\texttt{mr}_i}
+\mathbb{E}(Y_i \mid X_{\texttt{mr}_i}) = p_i = \beta_0 + \beta_1 X_{\texttt{mr}_i}.
 \]</div>
 <p>The code below transforms the response <code class="docutils literal notranslate"><span class="pre">target</span></code>, via <code class="docutils literal notranslate"><span class="pre">mutate()</span></code>, as a probability with two possible outcomes: <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">malignant</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">benign</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;malignant&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">))</span>
 <span class="n">breast_cancer_binary</span>
 </pre></div>
@@ -534,7 +555,9 @@ Y_i =
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
+
+<span class="n">breast_cancer_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer_binary</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">mean_radius</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">mean_radius</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">),</span>
@@ -543,16 +566,18 @@ Y_i =
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Prob. of a Malignant Tumour&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Mean Radius&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;OLS Fitted Regression Line&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
-<span class="w">  </span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">30</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">-0.5</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w"> </span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-0.5</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">))</span>
 <span class="n">breast_cancer_plot</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3fa60da4fdf3f4597a7edee42e6543b8e446f6f26381354e1757554fc1d135d4.png" src="../_images/3fa60da4fdf3f4597a7edee42e6543b8e446f6f26381354e1757554fc1d135d4.png" />
+<a class="reference internal image-reference" href="../_images/21bc3507ccffc3e6ccd47e69fd9784f71531cd8cc8eec6edf9a9d36f053f9362.png"><img alt="../_images/21bc3507ccffc3e6ccd47e69fd9784f71531cd8cc8eec6edf9a9d36f053f9362.png" src="../_images/21bc3507ccffc3e6ccd47e69fd9784f71531cd8cc8eec6edf9a9d36f053f9362.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 </section>
@@ -562,7 +587,7 @@ Y_i =
 <blockquote>
 <div><p>Is there a way to overcome the above out-of-range issue?</p>
 </div></blockquote>
-<p>Of course, there is a way involving a link function as explained in <a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html#link-function"><span class="std std-ref">4.9. Link Function</span></a>. Nonetheless, a simple logarithmic transformation will not save the day here since we have <span class="math notranslate nohighlight">\(Y_i\)</span> values equal to zero. Therefore, let us play around with the distribution theory from <a class="reference external" href="https://pages.github.ubc.ca/MDS-2023-24/DSCI_551_stat-prob-dsci_students/notes/appendix-dist-cheatsheet.html#bernoulli"><strong>DSCI 551</strong></a>. Recall these facts:</p>
+<p>Of course, there is a way involving a link function as explained in <a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html#link-function"><span class="std std-ref">4.9. Link Function</span></a>. Nonetheless, a simple logarithmic transformation will not save the day here since we have <span class="math notranslate nohighlight">\(Y_i\)</span> values equal to zero. Therefore, let us play around with the distribution theory from <a class="reference external" href="https://ubc-mds.github.io/DSCI_551_stat-prob-dsci/notes/appendix-dist-cheatsheet.html#bernoulli"><strong>DSCI 551</strong></a>. Recall these facts:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather*}
 Y_i \sim \text{Bernoulli}(p_i) \\
@@ -570,12 +595,12 @@ Y_i \sim \text{Bernoulli}(p_i) \\
 \end{gather*}\end{split}\]</div>
 <p>Given that the <strong>mean</strong> of a Bernoulli random variable <span class="math notranslate nohighlight">\(Y_i\)</span> is <span class="math notranslate nohighlight">\(p_i\)</span> under this modelling framework, we can establish the following link function (which is <a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html#link-function"><span class="std std-ref"><strong>monotonic and differentiable</strong></span></a>):</p>
 <div class="math notranslate nohighlight" id="equation-eq-logit">
-<span class="eqno">(22)<a class="headerlink" href="#equation-eq-logit" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(25)<a class="headerlink" href="#equation-eq-logit" title="Permalink to this equation">#</a></span>\[
 h(p_i) = \mbox{logit}(p_i)= \log\left(\frac{p_i}{1 - p_i}\right) = \beta_0 + \beta_1 X_{\texttt{mr}_i}.
 \]</div>
 <div class="tip admonition">
 <p class="admonition-title">Definition of the Logit Function</p>
-<p>The link function <a class="reference internal" href="#equation-eq-logit">(22)</a> is called the <strong>logarithm of the odds</strong> or <strong>logit function</strong>. This logit function <span class="math notranslate nohighlight">\(\log\left(\frac{p_i}{1 - p_i}\right)\)</span> covers the entire real line, which solves the out-of-range problem from OLS in this case.</p>
+<p>The link function <a class="reference internal" href="#equation-eq-logit">(25)</a> is called the <strong>logarithm of the odds</strong> or <strong>logit function</strong>. This logit function <span class="math notranslate nohighlight">\(\log\left(\frac{p_i}{1 - p_i}\right)\)</span> covers the entire real line, which solves the out-of-range problem from OLS in this case.</p>
 </div>
 <p>As a link function, the logit function is <strong>monotonic</strong>. Hence, how can we transform back <span class="math notranslate nohighlight">\(h(p_i)\)</span> to the probability <span class="math notranslate nohighlight">\(p_i\)</span>? With some algebraic arrangements, we can come up with the following expression:</p>
 <div class="math notranslate nohighlight">
@@ -601,7 +626,7 @@ p_i = \frac{\exp \left( \beta_0 + \beta_1 X_{\texttt{mr}_i} \right) }{ \left[ 1 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/78f37a643878d598754546b5f7e76195d0122c5e488fd8a2ec4a56dd57a3ffe3.png" src="../_images/78f37a643878d598754546b5f7e76195d0122c5e488fd8a2ec4a56dd57a3ffe3.png" />
+<a class="reference internal image-reference" href="../_images/68fd10e677f07c3ea4999a31e84e161627afe4250fabb3d005c9983dc81e6535.png"><img alt="../_images/68fd10e677f07c3ea4999a31e84e161627afe4250fabb3d005c9983dc81e6535.png" src="../_images/68fd10e677f07c3ea4999a31e84e161627afe4250fabb3d005c9983dc81e6535.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 </section>
@@ -623,10 +648,8 @@ Y_i \sim \text{Bernoulli}(p_i).
 \]</div>
 <p>The Binary Logistic regression approach models the probability of success, <span class="math notranslate nohighlight">\(p_i\)</span>, of the binary response <span class="math notranslate nohighlight">\(Y_i\)</span>. To re-express <span class="math notranslate nohighlight">\(p_i\)</span> <strong>on an unrestricted scale</strong>, the modelling is done in terms of the logit function (the link function in this model).</p>
 <p>Specifically, for a training set of size <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(p_i\)</span> (<span class="math notranslate nohighlight">\(i = 1, 2, \dots, n\)</span>) will depend on the values of the <span class="math notranslate nohighlight">\(k\)</span> regressors <span class="math notranslate nohighlight">\(X_{i, 1}, X_{i, 2}, \dots, X_{i, k}\)</span> in the form:</p>
-<div class="math notranslate nohighlight">
-\[
-h(p_i) = \mbox{logit}(p_i) = \log \left( \frac{p_i}{1 - p_i} \right) = \beta_0 + \beta_1 X_{i, 1} + \beta_1 X_{i, 2} + \ldots + \beta_k X_{i, k},
-\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-gen-logit-function">
+<span class="eqno">(26)<a class="headerlink" href="#equation-eq-gen-logit-function" title="Permalink to this equation">#</a></span>\[h(p_i) = \mbox{logit}(p_i) = \log \left( \frac{p_i}{1 - p_i} \right) = \beta_0 + \beta_1 X_{i, 1} + \beta_1 X_{i, 2} + \ldots + \beta_k X_{i, k},\]</div>
 <p>or equivalently</p>
 <div class="math notranslate nohighlight">
 \[
@@ -638,7 +661,7 @@ p_i = \frac{\exp \left[ \mbox{logit} (p_i) \right]}{1 + \exp \left[ \mbox{logit}
 <p>The response in this GLM is called the log-odds, the logarithm of the odds</p>
 <div class="math notranslate nohighlight">
 \[\frac{p_i}{1 - p_i},\]</div>
-<p>the ratio of the probability of the event to the probability of the non-event. For instance, if the event is that the tumour is malignant, the odds denote how likely the <span class="math notranslate nohighlight">\(i\)</span>th tumour is to be malignant compared to how unlikely it is. The coefficient <span class="math notranslate nohighlight">\(\beta_j\)</span> (<span class="math notranslate nohighlight">\(j = 1, \dots, k\)</span>) denotes how much the log-odds increases or decreases when the corresponding continuous regressor changes by one unit.</p>
+<p>the ratio of the probability of the event to the probability of the non-event. For instance, if the event is that the tumour is malignant, the odds denote how likely the <span class="math notranslate nohighlight">\(i\)</span>th tumour is to be malignant compared to how unlikely it is. The coefficient <span class="math notranslate nohighlight">\(\beta_j\)</span> (<span class="math notranslate nohighlight">\(j = 1, \dots, k\)</span>) in <a class="reference internal" href="#equation-eq-gen-logit-function">(26)</a> denotes how much the log-odds increases or decreases when a given continuous regressor changes by one unit.</p>
 </div>
 </section>
 </section>
@@ -688,7 +711,8 @@ H_a: \beta_j \neq 0.
 <p>We can also use the function <code class="docutils literal notranslate"><span class="pre">tidy()</span></code> from the <code class="docutils literal notranslate"><span class="pre">broom</span></code> package along with argument <code class="docutils literal notranslate"><span class="pre">conf.int</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> to get the 95% confidence intervals <strong>by default</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -716,7 +740,8 @@ H_a: \beta_j \neq 0.
 <p>We have to transform back our estimated coefficient <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> to the original scale of the odds <span class="math notranslate nohighlight">\(\frac{p_i}{1 - p_i}\)</span>. Function <code class="docutils literal notranslate"><span class="pre">tidy()</span></code> has the handy argument <code class="docutils literal notranslate"><span class="pre">exponentiate</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> which exponentiates the <code class="docutils literal notranslate"><span class="pre">estimate</span></code> column along with the CIs (note the rest of the columns remain untransformed).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -728,15 +753,15 @@ H_a: \beta_j \neq 0.
 	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>(Intercept)</td><td>0.00</td><td>1.32</td><td>-11.51</td><td>0</td><td>0.00</td><td>0.00</td></tr>
-	<tr><td>mean_radius</td><td>2.81</td><td>0.09</td><td> 11.10</td><td>0</td><td>2.37</td><td>3.42</td></tr>
+	<tr><td>(Intercept)</td><td>0.000</td><td>1.325</td><td>-11.510</td><td>0</td><td>0.000</td><td>0.00</td></tr>
+	<tr><td>mean_radius</td><td>2.811</td><td>0.093</td><td> 11.101</td><td>0</td><td>2.372</td><td>3.42</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
 <p>The interpretation is:</p>
 <blockquote>
-<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, the tumour is 2.81 times more likely to be malignant than to be benign.</p>
+<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, the tumour is 2.811 times more likely to be malignant than to be benign.</p>
 </div></blockquote>
 <p>This example does not provide interpretations for <strong>categorical explanatory variables</strong>. That said, as in OLS multiple regression, the model would estimate multiple regression coefficients for that categorical explanatory variable: one for each level other than the <strong>baseline level</strong>. The interpretation of each estimated regression coefficient will depend on which category is specified as the baseline category.</p>
 <p>Recall <a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html#dummy-var"><span class="std std-numref">Table 1</span></a>, which describes dummy variables for a nominal explanatory variable with <span class="math notranslate nohighlight">\(u\)</span> categories, where <strong>Level 1</strong> was specified as the baseline level, so all <span class="math notranslate nohighlight">\(u - 1\)</span> dummy variables are zero for that level. The estimated regression coefficient for <strong>Level 2</strong> represents how much the log-odds increases or decreases compared to the baseline category. The same interpretation applies to the regression coefficients for levels <span class="math notranslate nohighlight">\(3, \dots, u\)</span>. If we want to interpret these coefficients on the original scale of the odds <span class="math notranslate nohighlight">\(\frac{p_i}{1 - p_i}\)</span>, then we exponentiate each one of these estimated coefficients.</p>
@@ -748,7 +773,7 @@ H_a: \beta_j \neq 0.
 <p>Firstly, we select the necessary columns from our dataset <code class="docutils literal notranslate"><span class="pre">breast_cancer</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer_binary_2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">breast_cancer_binary_2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">breast_cancer</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">mean_radius</span><span class="p">,</span><span class="w"> </span><span class="n">mean_texture</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">)</span>
 <span class="n">breast_cancer_binary_2</span>
 </pre></div>
@@ -778,7 +803,8 @@ H_a: \beta_j \neq 0.
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binary_log_model_2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">glm</span><span class="p">(</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">mean_radius</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mean_texture</span><span class="p">,</span>
 <span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">breast_cancer_binary_2</span><span class="p">,</span><span class="w"> </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binomial</span><span class="p">)</span>
-<span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -800,7 +826,8 @@ H_a: \beta_j \neq 0.
 <p>Note that both regressors (<code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code>) are statistically significant for the response <code class="docutils literal notranslate"><span class="pre">target</span></code> (<span class="math notranslate nohighlight">\(p\text{-values} &lt; .001\)</span>). Then, we make the corresponding coefficient interpretations:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -812,20 +839,20 @@ H_a: \beta_j \neq 0.
 	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>(Intercept) </td><td>0.00</td><td>1.77</td><td>-11.19</td><td>0</td><td>0.00</td><td>0.00</td></tr>
-	<tr><td>mean_radius </td><td>2.88</td><td>0.10</td><td> 10.42</td><td>0</td><td>2.39</td><td>3.57</td></tr>
-	<tr><td>mean_texture</td><td>1.24</td><td>0.04</td><td>  5.89</td><td>0</td><td>1.16</td><td>1.34</td></tr>
+	<tr><td>(Intercept) </td><td>0.000</td><td>1.774</td><td>-11.189</td><td>0</td><td>0.000</td><td>0.000</td></tr>
+	<tr><td>mean_radius </td><td>2.878</td><td>0.101</td><td> 10.417</td><td>0</td><td>2.393</td><td>3.566</td></tr>
+	<tr><td>mean_texture</td><td>1.244</td><td>0.037</td><td>  5.885</td><td>0</td><td>1.159</td><td>1.341</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
 <p>The interpretation for <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> is:</p>
 <blockquote>
-<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, the tumour is 2.88 times more likely to be malignant than to be benign while holding <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code> constant.</p>
+<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code>, the tumour is 2.878 times more likely to be malignant than to be benign while holding <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code> constant.</p>
 </div></blockquote>
 <p>The interpretation for <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code> is:</p>
 <blockquote>
-<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code>, the tumour is 1.24 times more likely to be malignant than to be benign while holding <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> constant.”</p>
+<div><p>For each unit increase in <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code>, the tumour is 1.244 times more likely to be malignant than to be benign while holding <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> constant.</p>
 </div></blockquote>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -846,8 +873,7 @@ H_a: \beta_j \neq 0.
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">exp</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span>
 <span class="w">  </span><span class="nf">tibble</span><span class="p">(</span><span class="n">mean_radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">mean_texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
-<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;link&quot;</span>
-<span class="p">)),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;link&quot;</span><span class="p">)),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -856,7 +882,7 @@ H_a: \beta_j \neq 0.
 </div>
 <p>Hence, a tumour with <span class="math notranslate nohighlight">\(x_{\texttt{mr}} = 16\)</span> and <span class="math notranslate nohighlight">\( x_{\texttt{mt}} = 20\)</span> is predicted to be 4.17 times more likely to be malignant than benign.</p>
 <p><strong>Can We Predict Probabilities For Classification Purposes?</strong></p>
-<p>Using the function <code class="docutils literal notranslate"><span class="pre">predict()</span></code> via the argument <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;response&quot;</span></code> with the object <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>, we can obtain the estimated probability for a tumour to be malignant with the following values for <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code>: <span class="math notranslate nohighlight">\(x_{\texttt{mr}} = 16\)</span> and <span class="math notranslate nohighlight">\( x_{\texttt{mt}} = 20\)</span> respectively.</p>
+<p>Using the function <code class="docutils literal notranslate"><span class="pre">predict()</span></code> via the argument <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;response&quot;</span></code> with the object <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>, we can obtain the estimated probability for a tumour to be malignant with the following values for <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code>: <span class="math notranslate nohighlight">\(x_{\texttt{mr}} = 16\)</span> and <span class="math notranslate nohighlight">\( x_{\texttt{mt}} = 20\)</span>, respectively.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span>
@@ -892,28 +918,28 @@ H_a: \beta_j \neq 0.
 <p>The <strong>maximized likelihood</strong> of this full model is denoted as <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_f\)</span>. Now, let <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_k\)</span> be the value of the maximized likelihood computed from our dataset of <span class="math notranslate nohighlight">\(n\)</span> observation with <span class="math notranslate nohighlight">\(k\)</span> regressors.</p>
 <p>We can compare the fits provided by these two models by the deviance <span class="math notranslate nohighlight">\(D_k\)</span> given by</p>
 <div class="math notranslate nohighlight" id="equation-deviance-general-app">
-<span class="eqno">(23)<a class="headerlink" href="#equation-deviance-general-app" title="Permalink to this equation">#</a></span>\[D_k = -2 \log \left( \frac{\hat{\mathscr{l}}_k}{\hat{\mathscr{l}}_f} \right) =  -2 \left[ \log \left( \hat{\mathscr{l}}_k \right) - \log \left( \hat{\mathscr{l}}_f \right) \right].\]</div>
+<span class="eqno">(27)<a class="headerlink" href="#equation-deviance-general-app" title="Permalink to this equation">#</a></span>\[D_k = -2 \log \left( \frac{\hat{\mathscr{l}}_k}{\hat{\mathscr{l}}_f} \right) =  -2 \left[ \log \left( \hat{\mathscr{l}}_k \right) - \log \left( \hat{\mathscr{l}}_f \right) \right].\]</div>
 <p>Note that <span class="math notranslate nohighlight">\(D_k\)</span> expresses <strong>how much our given model deviates from the full model on log-likelihood scale</strong>. This metric is interpreted as follows:</p>
 <ul class="simple">
 <li><p><strong>Large values</strong> of <span class="math notranslate nohighlight">\(D_k\)</span> arise when <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_k\)</span> is small relative to <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_f\)</span>, indicating that <strong>our given model fits the data poorly compared to the baseline model</strong>.</p></li>
 <li><p><strong>Small values</strong> of <span class="math notranslate nohighlight">\(D_k\)</span> arise when <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_k\)</span> is similar to <span class="math notranslate nohighlight">\(\hat{\mathscr{l}}_f\)</span>, indicating that <strong>our given model provides a good fit to the data compared to the baseline model</strong>.</p></li>
 </ul>
-<p><strong>For the specific case of the Binary Logistic regression</strong>, it can be shown that <span class="math notranslate nohighlight">\(D_k\)</span> <a class="reference internal" href="#equation-deviance-general-app">(23)</a> is represented by the following equation:</p>
+<p><strong>For the specific case of the Binary Logistic regression</strong>, it can be shown that <span class="math notranslate nohighlight">\(D_k\)</span> <a class="reference internal" href="#equation-deviance-general-app">(27)</a> is represented by the following equation:</p>
 <div class="math notranslate nohighlight" id="equation-deviance-bin-log">
-<span class="eqno">(24)<a class="headerlink" href="#equation-deviance-bin-log" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(28)<a class="headerlink" href="#equation-deviance-bin-log" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_k = -2 \sum_{i = 1}^n \left[\hat{p}_i \text{logit}(\hat{p}_i) + \log (1 - \hat{p}_i) \right],
 \end{equation}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> is the estimated probability of success for the <span class="math notranslate nohighlight">\(i\)</span>th observation for <span class="math notranslate nohighlight">\(i = 1, \dots, n\)</span> in our training set <strong>with our fitted model of <span class="math notranslate nohighlight">\(k\)</span> regressors</strong>. Equation <a class="reference internal" href="#equation-deviance-bin-log">(24)</a> above comes from <strong>maximum likelihood estimation (MLE)</strong>.</p>
-<div class="warning admonition">
+<p>where <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> is the estimated probability of success for the <span class="math notranslate nohighlight">\(i\)</span>th observation for <span class="math notranslate nohighlight">\(i = 1, \dots, n\)</span> in our training set <strong>with our fitted model of <span class="math notranslate nohighlight">\(k\)</span> regressors</strong>. Equation <a class="reference internal" href="#equation-deviance-bin-log">(28)</a> above comes from <strong>maximum likelihood estimation (MLE)</strong>.</p>
+<div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>The mathematical proof for Equation <a class="reference internal" href="#equation-deviance-bin-log">(24)</a> can be checked in <a class="reference external" href="https://www.taylorfrancis.com/books/mono/10.1201/b16654/modelling-binary-data-david-collett">Collett (2003)</a> in Chapter 3 (Section 3.8.2).</p>
+<p>The mathematical proof for Equation <a class="reference internal" href="#equation-deviance-bin-log">(28)</a> can be checked in <a class="reference external" href="https://www-taylorfrancis-com.ezproxy.library.ubc.ca/chapters/models-binary-binomial-data-david-collett/10.1201/b16654-6?context=ubx&amp;amp;refId=fa9f451b-9961-4928-99be-036c68551115">Collett (2003)</a> in Chapter 3 (Section 3.8.2).</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><strong>For the specific case of Binary Logistic regression</strong>, deviance <span class="math notranslate nohighlight">\(D_k\)</span> <a class="reference internal" href="#equation-deviance-bin-log">(24)</a> cannot be used as a standalone metric of <strong>goodness of fit</strong> because of <strong>data sparsity</strong>; i.e., each <span class="math notranslate nohighlight">\(i\)</span>th observation has a different set of observed values for the <span class="math notranslate nohighlight">\(k\)</span> regressors if at least one of them is of <strong>continuous-type</strong>.</p>
+<p><strong>For the specific case of Binary Logistic regression</strong>, deviance <span class="math notranslate nohighlight">\(D_k\)</span> <a class="reference internal" href="#equation-deviance-bin-log">(28)</a> cannot be used as a standalone metric of <strong>goodness of fit</strong> because of <strong>data sparsity</strong>; i.e., each <span class="math notranslate nohighlight">\(i\)</span>th observation has a different set of observed values for the <span class="math notranslate nohighlight">\(k\)</span> regressors if at least one of them is of <strong>continuous-type</strong>.</p>
 <p>This data sparsity puts <span class="math notranslate nohighlight">\(D_k\)</span> just in function of the fitted probabilities <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> and not on the observed values <span class="math notranslate nohighlight">\(y_i\)</span> (which tells us nothing about the agreement of our model with <span class="math notranslate nohighlight">\(k\)</span> regressors to the observed data!).</p>
 </div>
-<p>Still, for the case of Binary Logistic regression, we can use the analysis of deviance to perform model selection <strong>between two models where one is nested in the other</strong> (as in this example for <strong>Model 1</strong> and <strong>Model 2</strong>). So we will use our two models: <code class="docutils literal notranslate"><span class="pre">binary_log_model</span></code> with <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> as a regressor, which is nested in <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code> with <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code> as regressors.</p>
+<p>Still, for the case of Binary Logistic regression, we can use the analysis of deviance to perform model selection <strong>between two models where one is nested in the other</strong> (as in this example for <strong>Model 1</strong> and <strong>Model 2</strong>). So we will use our two models: <code class="docutils literal notranslate"><span class="pre">binary_log_model</span></code> (<strong>Model 1</strong>) with <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> as a regressor, which is nested in <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code> (<strong>Model 2</strong>) with <code class="docutils literal notranslate"><span class="pre">mean_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">mean_texture</span></code> as regressors.</p>
 <p>This specific model selection will involve a hypothesis testing. The hypotheses are:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather*}
@@ -960,7 +986,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <section id="akaike-information-criterion">
 <h3>8.2. Akaike Information Criterion<a class="headerlink" href="#akaike-information-criterion" title="Permalink to this heading">#</a></h3>
 <p><strong>One of the drawbacks of the analysis of deviance</strong> is that it only allows to test <strong>nested</strong> regression models when we have sparse data (i.e., each response is associated with a different set of values in the regressors).</p>
-<p>Fortunately, we have alternatives for model selection. <strong>The Akaike Information Criterion (AIC) makes possible to compare models that are either nested or not.</strong> For a model with <span class="math notranslate nohighlight">\(k\)</span> model terms and a deviance <span class="math notranslate nohighlight">\(D_k\)</span> is defined as:</p>
+<p>Fortunately, we have alternatives for model selection. <strong>The Akaike Information Criterion (AIC) makes it possible to compare models that are either nested or not.</strong> For a model with <span class="math notranslate nohighlight">\(k\)</span> regressors and a deviance <span class="math notranslate nohighlight">\(D_k\)</span> is defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 \mbox{AIC}_k = D_k + 2k.
@@ -974,7 +1000,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>The function <code class="docutils literal notranslate"><span class="pre">glance()</span></code> shows us the <span class="math notranslate nohighlight">\(\mbox{AIC}_k\)</span> by model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -993,7 +1020,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1016,7 +1044,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </section>
 <section id="bayesian-information-criterion">
 <h3>8.3. Bayesian Information Criterion<a class="headerlink" href="#bayesian-information-criterion" title="Permalink to this heading">#</a></h3>
-<p>An alternative to AIC is the Bayesian Information Criterion (BIC). <strong>The BIC also makes possible to compare models that are either nested or not.</strong> For a model with <span class="math notranslate nohighlight">\(k\)</span> regressors, <span class="math notranslate nohighlight">\(n\)</span> observations used for training, and a deviance <span class="math notranslate nohighlight">\(D_k\)</span>; it is defined as:</p>
+<p>An alternative to AIC is the Bayesian Information Criterion (BIC). <strong>The BIC also makes it possible to compare models that are either nested or not.</strong> For a model with <span class="math notranslate nohighlight">\(k\)</span> regressors, <span class="math notranslate nohighlight">\(n\)</span> observations used for training, and a deviance <span class="math notranslate nohighlight">\(D_k\)</span>; it is defined as:</p>
 <div class="math notranslate nohighlight">
 \[\mbox{BIC}_k = D_k + k \log (n).\]</div>
 <p>Models with <strong>smaller</strong> values of <span class="math notranslate nohighlight">\(\mbox{BIC}_k\)</span> are preferred. That said, <span class="math notranslate nohighlight">\(\mbox{BIC}_k\)</span> also favours models with small values of <span class="math notranslate nohighlight">\(D_k\)</span>.</p>
@@ -1047,7 +1075,8 @@ d_i=
 <p>The sum all the <span class="math notranslate nohighlight">\(n\)</span> <span class="math notranslate nohighlight">\(d_i\)</span>s in the model is the deviance <span class="math notranslate nohighlight">\(D_k\)</span> (column <code class="docutils literal notranslate"><span class="pre">deviance</span></code> below via function <code class="docutils literal notranslate"><span class="pre">glance()</span></code> by model).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1066,7 +1095,8 @@ d_i=
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1086,7 +1116,9 @@ d_i=
 <p>With a large enough sample size <span class="math notranslate nohighlight">\(n\)</span>, the deviance residuals are approximately normally distributed. Hence, we could use <strong><span class="math notranslate nohighlight">\(Q\)</span>-<span class="math notranslate nohighlight">\(Q\)</span> plots</strong> for both models. To deliver these <span class="math notranslate nohighlight">\(Q\)</span>-<span class="math notranslate nohighlight">\(Q\)</span> plots, we need to extract the deviance residuals from the Binary Logistic regression models. We can do it via the function <code class="docutils literal notranslate"><span class="pre">residuals()</span></code> with the argument <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;deviance&quot;</span></code>. Below you can find the code to extract these residuals from <code class="docutils literal notranslate"><span class="pre">binary_log_model</span></code> and <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binary_log_model_dev_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">dev_residuals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;deviance&quot;</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binary_log_model_dev_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">dev_residuals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">binary_log_model</span><span class="p">,</span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;deviance&quot;</span>
+<span class="p">))</span>
 <span class="n">binary_log_model_dev_residuals</span>
 </pre></div>
 </div>
@@ -1112,7 +1144,9 @@ d_i=
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binary_log_model_2_dev_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">dev_residuals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;deviance&quot;</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">binary_log_model_2_dev_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">dev_residuals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">,</span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;deviance&quot;</span>
+<span class="p">))</span>
 <span class="n">binary_log_model_2_dev_residuals</span>
 </pre></div>
 </div>
@@ -1148,7 +1182,7 @@ d_i=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9b71f27a0d4c8b4e89a7a11c23316b04e6e53dd08db9b3393459a056b0a55a8f.png" src="../_images/9b71f27a0d4c8b4e89a7a11c23316b04e6e53dd08db9b3393459a056b0a55a8f.png" />
+<a class="reference internal image-reference" href="../_images/3313e98c0cad5256c63b55f946f1eb82589c778c06d861e63373bd6022b4232e.png"><img alt="../_images/3313e98c0cad5256c63b55f946f1eb82589c778c06d861e63373bd6022b4232e.png" src="../_images/3313e98c0cad5256c63b55f946f1eb82589c778c06d861e63373bd6022b4232e.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1161,7 +1195,7 @@ d_i=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/7e0e4ca1f6597e834d5d231316223f4dfdec1e9087398fe844d6358e940249f2.png" src="../_images/7e0e4ca1f6597e834d5d231316223f4dfdec1e9087398fe844d6358e940249f2.png" />
+<a class="reference internal image-reference" href="../_images/fa18557c3d8861aa7e4ed08c60c5e59ff3b427e4fc3ef12482e0c92d7e764b49.png"><img alt="../_images/fa18557c3d8861aa7e4ed08c60c5e59ff3b427e4fc3ef12482e0c92d7e764b49.png" src="../_images/fa18557c3d8861aa7e4ed08c60c5e59ff3b427e4fc3ef12482e0c92d7e764b49.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 </section>
@@ -1175,7 +1209,7 @@ d_i=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2e99039a009f1a54249314e198eaec7be22cc274c445f8a183a0c4df043562e2.png" src="../_images/2e99039a009f1a54249314e198eaec7be22cc274c445f8a183a0c4df043562e2.png" />
+<a class="reference internal image-reference" href="../_images/8bd38539b087d4317013a685dbf0afe61718276a4510d1e361cd05f61c94e16a.png"><img alt="../_images/8bd38539b087d4317013a685dbf0afe61718276a4510d1e361cd05f61c94e16a.png" src="../_images/8bd38539b087d4317013a685dbf0afe61718276a4510d1e361cd05f61c94e16a.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <p>Besides deviance residuals, the Binary Logistic regression model has the <span class="math notranslate nohighlight">\(i\)</span>th <strong>raw residual</strong> <span class="math notranslate nohighlight">\(r_i\)</span> as the difference between the binary observed <span class="math notranslate nohighlight">\(y_i\)</span> and the fitted value <span class="math notranslate nohighlight">\(\hat{p}_i\)</span>:</p>
@@ -1183,7 +1217,7 @@ d_i=
 \[
 r_i = y_i - \hat{p}_i \in [-1, 1]
 \]</div>
-<p><a class="reference external" href="http://webcat2.library.ubc.ca/vwebv/search?searchArg=Data%20analysis%20using%20regression%20and%20multilevel%2Fhierarchical%20models%20%2F&amp;searchCode=TALL&amp;searchType=1">Gelman and Hill (2007)</a> recommend using <strong>binned residual plots</strong>. These plots are available via the package <code class="docutils literal notranslate"><span class="pre">performance</span></code> and its function <code class="docutils literal notranslate"><span class="pre">binned_residuals()</span></code>. Its argument is the fitted model as in the code below. The output is a data frame used to build the corresponding diagnostic plot.</p>
+<p><a class="reference external" href="https://webcat2.library.ubc.ca/vwebv/holdingsInfo?searchId=545508&amp;amp;recCount=100&amp;amp;recPointer=0&amp;amp;bibId=3725818">Gelman and Hill (2007)</a> recommend using <strong>binned residual plots</strong>. These plots are available via the package <code class="docutils literal notranslate"><span class="pre">performance</span></code> and its function <code class="docutils literal notranslate"><span class="pre">binned_residuals()</span></code>. Its argument is the fitted model as in the code below. The output is a data frame used to build the corresponding diagnostic plot.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">diagnostic_bins</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">binned_residuals</span><span class="p">(</span><span class="n">binary_log_model_2</span><span class="p">)</span>
@@ -1215,18 +1249,19 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">plot</span><span class="p">(</span><span class="n">diagnostic_bins</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">plot.subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">23</span><span class="p">),</span><span class="w"> </span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">24</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w"> </span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span>
 <span class="w">  </span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2cf10c46bd1098fa551d637db3a45fa91b443dcb15240366819955e9c92df65e.png" src="../_images/2cf10c46bd1098fa551d637db3a45fa91b443dcb15240366819955e9c92df65e.png" />
+<a class="reference internal image-reference" href="../_images/8e257b2d26aec2fca3a41c71edf005b93228cdb3166e78be59d2f44ec4f8b044.png"><img alt="../_images/8e257b2d26aec2fca3a41c71edf005b93228cdb3166e78be59d2f44ec4f8b044.png" src="../_images/8e257b2d26aec2fca3a41c71edf005b93228cdb3166e78be59d2f44ec4f8b044.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <p>The plot above corresponds to <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>. Function <code class="docutils literal notranslate"><span class="pre">binned_residuals()</span></code> does the following:</p>
@@ -1252,7 +1287,7 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
 </div>
 </div>
 </div>
-<p>Therefore, using a binned residual plot for <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>, we can conclude this model is not a good for our training data.</p>
+<p>Therefore, using a binned residual plot for <code class="docutils literal notranslate"><span class="pre">binary_log_model_2</span></code>, we can conclude this model is not a good fit for our training data <strong>since only 45.85% of the points in the above plot are within the bounds</strong>.</p>
 </section>
 </section>
 </section>
@@ -1282,11 +1317,10 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
 
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="lecture8_missing_data.html"
@@ -1306,10 +1340,7 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1317,6 +1348,7 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1361,16 +1393,17 @@ r_i = y_i - \hat{p}_i \in [-1, 1]
   <div class="footer-item">
     
 <p class="component-author">
-By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+By G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
 </p>
 
   </div>
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2024.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -1394,8 +1427,8 @@ By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression &#8212; DSCI 562 - Regression II</title>
   
@@ -15,32 +15,33 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -49,18 +50,14 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -78,19 +75,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -112,12 +113,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -132,9 +141,13 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="../README.html">
+  
   
   
   
@@ -144,12 +157,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="DSCI 562 - Regression II - Home"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="DSCI 562 - Regression II - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -176,13 +200,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-multivariate-normal.html">Fundamentals of the Multivariate Normal Distribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
 </ul>
 
     </div>
@@ -198,7 +217,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -207,14 +226,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -336,26 +355,28 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
 
+
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -392,7 +413,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-type-responses">2. Categorical Type Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">3. Multinomial Logistic Regression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify® Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-wrangling-and-summary">3.2. Data Wrangling and Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3.3. Exploratory Data Analysis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">3.4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
@@ -407,6 +428,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">3.9. Model Selection</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-model-selection-and-multinomial-logistic-regression">4. Wrapping Up on Model Selection and Multinomial Logistic Regression</a></li>
 </ul>
             </nav>
         </div>
@@ -416,7 +438,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lecture-2-generalized-linear-models-model-selection-and-multinomial-logistic-regression">
 <h1>Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression<a class="headerlink" href="#lecture-2-generalized-linear-models-model-selection-and-multinomial-logistic-regression" title="Permalink to this heading">#</a></h1>
@@ -451,7 +473,7 @@ document.write(`
 </section>
 <section id="likelihood-based-model-selection">
 <h2>1. Likelihood-based Model Selection<a class="headerlink" href="#likelihood-based-model-selection" title="Permalink to this heading">#</a></h2>
-<p>In <strong>DSCI 561</strong>, you learned about <strong>model selection</strong> in Ordinary Least-Squares (OLS) via specific metrics such as the Mallow’s <span class="math notranslate nohighlight">\(C_p\)</span>, Akaike information criterion (AIC), and Bayesian information criterion (BIC). These metrics are also helpful tools to perform <strong>model selection</strong> in GLMs. Additionally, it is essential to highlight that <strong>many</strong> GLMs are estimated via maximum likelihood.</p>
+<p>In <strong>DSCI 561</strong>, you learned about <strong>model selection</strong> in Ordinary Least-squares (OLS) via specific metrics such as the Mallow’s <span class="math notranslate nohighlight">\(C_p\)</span>, Akaike information criterion (AIC), and Bayesian information criterion (BIC). These metrics are also helpful tools to perform <strong>model selection</strong> in GLMs. Additionally, it is essential to highlight that <strong>many</strong> GLMs are estimated via maximum likelihood.</p>
 <p>Having said all this, you will learn today that metrics such as AIC and BIC are likelihood-based. Hence, the concept of maximum likelihood estimation (MLE) will come into play again for model selection <strong>in many GLMs</strong>. Firstly, let us explore model selection for Poisson regression via the dataset from <a class="reference internal" href="lecture1-glm-link-functions-and-count-regression.html"><span class="doc">Lecture 1 - Generalized Linear Models: Link Functions and Count Regression</span></a>.</p>
 <section id="the-crabs-dataset">
 <h3>1.1. The Crabs Dataset<a class="headerlink" href="#the-crabs-dataset" title="Permalink to this heading">#</a></h3>
@@ -461,12 +483,12 @@ document.write(`
 <p><span class="caption-number">Fig. 6 </span><span class="caption-text">Hello! I’m the Crab, again!</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> (<a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x">Brockmann, 1996</a>) is a dataset detailing the <strong>counts of satellite male crabs</strong> residing around a female crab nest. The code below renames the original response’s name, <code class="docutils literal notranslate"><span class="pre">satell</span></code>, to <code class="docutils literal notranslate"><span class="pre">n_males</span></code>.</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> (<a class="reference external" href="https://ubc.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwrV3JasMwEBUlpZBLl7Sl6YY_oE4sy5sgFEpICKU9NadcjFYSmtghCyRf0t-tJC_EPhRaepMHS8jSSPM0M3oGALkdx67tCYRyKV0GacCp9CBX60RCySMcYiigy2qpOq_F1ZiMLqL0v-mFYrZvvd4JXXcPEnOUZbU1z6W-fxdoh6eO-XQUvDyGCnXrbK_hxCkDDCHKgs9KH20FelDOR_pzWxXbdYhljTEanoF10e8iC6V2SbDK9Pg_H3gOTnPsar1kynYBjkTSAs1yC923wMkkNaVL8NVbkNXn8wcxjJ8b0euaZysTvyuzVJUYH9i6Kpsl1ijVOSbTtPZ2f6V6nYuectnbbLGdb2tNLNP5fjkVi1J-BcbDwbg_svOfQNhMIRdsu4KHEnIsIiQYJoGQvsKQmAuOsE8lojRnrPEIlZQHHIUEEs8PBVHQjaJr0EjSRNwAS8ebmMNk4DHkRYgQSt2ARoxRnzuhJG2AitmNlxnVR3x4REI41sMf6-GP8-GPd20QmVn7RZV4MB7p0u3fq96BZpY-rn1B96CxWW3FgyGOeDR6_g1rIQSN">Brockmann, 1996</a>) is a dataset detailing the <strong>counts of satellite male crabs</strong> residing around a female crab nest. The code below renames the original response’s name, <code class="docutils literal notranslate"><span class="pre">satell</span></code>, to <code class="docutils literal notranslate"><span class="pre">n_males</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">data</span><span class="p">(</span><span class="n">crabs</span><span class="p">)</span>
-<span class="n">crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crabs</span><span class="w"> </span><span class="o">%&gt;%</span>
-<span class="w">  </span><span class="nf">rename</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">satell</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">crabs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crabs</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">rename</span><span class="p">(</span><span class="n">n_males</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">satell</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>
 <span class="n">crabs</span>
 </pre></div>
@@ -494,7 +516,7 @@ document.write(`
 </div>
 <div class="admonition-the-crabs-dataset admonition">
 <p class="admonition-title">The Crabs Dataset</p>
-<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> contains 173 observations on horseshoe crabs (Limulus polyphemus). The response is the count of male crabs (<code class="docutils literal notranslate"><span class="pre">n_males</span></code>) around a female breeding nest. It is subject to four explanatory variables: <code class="docutils literal notranslate"><span class="pre">color</span></code> of the prosoma with four levels (nominal factor-type), the condition of the posterior <code class="docutils literal notranslate"><span class="pre">spine</span></code> with three levels (nominal factor-type), the continuous variables carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> (mm), and <code class="docutils literal notranslate"><span class="pre">weight</span></code> (g).</p>
+<p>The data frame <code class="docutils literal notranslate"><span class="pre">crabs</span></code> contains 173 observations on horseshoe crabs (Limulus polyphemus). The response is <strong>the count of male crabs</strong> (<code class="docutils literal notranslate"><span class="pre">n_males</span></code>) around a female breeding nest. It is subject to four explanatory variables <strong>related to the female crab</strong>: <code class="docutils literal notranslate"><span class="pre">color</span></code> of the prosoma with four levels (categorical factor-type), the condition of the posterior <code class="docutils literal notranslate"><span class="pre">spine</span></code> with three levels (categorical factor-type), the continuous variables carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> (cm), and <code class="docutils literal notranslate"><span class="pre">weight</span></code> (g).</p>
 </div>
 </section>
 <section id="estimation">
@@ -613,7 +635,9 @@ D_0 = 2 \sum_{i = 1}^n \left[ y_i \log \left( \frac{y_i}{\hat{\lambda}_i} \right
 <p class="admonition-title">Important</p>
 <p>A null model is different from a <strong>saturated/baseline/full model</strong>. It is importat to recall that the <strong>saturated/baseline/full model</strong> is a model that perfectly fits the training data, which could be viewed as basically interpolating all the training data points <strong>without caring about any regressor at all</strong>. Mathematically, the saturated model implicates having an exact prediction <span class="math notranslate nohighlight">\(\hat{\lambda}_i\)</span> for each <span class="math notranslate nohighlight">\(y_i\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\hat{\lambda}_i = y_i \text{ for } i = 1, \dots, n.\]</div>
+\[
+\hat{\lambda}_i = y_i \quad \quad \text{for } i = 1, \dots, n.
+\]</div>
 </div>
 </section>
 </section>
@@ -686,7 +710,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>The function <code class="docutils literal notranslate"><span class="pre">glance()</span></code> shows us the <span class="math notranslate nohighlight">\(\mbox{AIC}_k\)</span> by model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">poisson_model</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">poisson_model</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -705,7 +730,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">poisson_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">poisson_model_2</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -732,13 +758,22 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <div class="math notranslate nohighlight">
 \[\mbox{BIC}_k = D_k + k \log (n).\]</div>
 <p>Models with <strong>smaller</strong> values of <span class="math notranslate nohighlight">\(\mbox{BIC}_k\)</span> are preferred. That said, <span class="math notranslate nohighlight">\(\mbox{BIC}_k\)</span> also favours models with small values of <span class="math notranslate nohighlight">\(D_k\)</span>.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The differences between AIC and BIC will be more pronounced in datasets with large sample sizes <span class="math notranslate nohighlight">\(n\)</span>. As the BIC penalty of <span class="math notranslate nohighlight">\(k \log (n)\)</span> will always be larger than the AIC penalty of <span class="math notranslate nohighlight">\(2k\)</span> when <span class="math notranslate nohighlight">\(n &gt; 7\)</span>, <strong>BIC tends to select models with fewer regressors than AIC</strong>.</p>
-</div>
 <blockquote>
 <div><p>Following the results of the <code class="docutils literal notranslate"><span class="pre">AIC</span></code> column, we already chose <code class="docutils literal notranslate"><span class="pre">poisson_model_2</span></code> over <code class="docutils literal notranslate"><span class="pre">poisson_model</span></code>. Nonetheless, the <code class="docutils literal notranslate"><span class="pre">BIC</span></code> is penalizing the <code class="docutils literal notranslate"><span class="pre">poisson_model_2</span></code> for having more model parameters, so <code class="docutils literal notranslate"><span class="pre">poisson_model</span></code> would be chosen under this criterion.</p>
 </div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The differences between AIC and BIC will be more pronounced in datasets with large sample sizes <span class="math notranslate nohighlight">\(n\)</span>. As the BIC penalty of <span class="math notranslate nohighlight">\(k \log (n)\)</span> will always be larger than the AIC penalty of <span class="math notranslate nohighlight">\(2k\)</span> when <span class="math notranslate nohighlight">\(n &gt; 7\)</span>, <strong>BIC tends to select models with fewer regressors than AIC</strong>.</p>
+<p>Having said all this, in general, each metric’s purpose can be summarized as follows:</p>
+<ul class="simple">
+<li><p><strong>AIC:</strong> From a given set of models (either nested or non-nested) fitted via a common training dataset, this metric aims to select the model with the best predictive performance even though this model chosen might not be the true one that generates the training data. In essence, this metric is frequentist.</p></li>
+<li><p><strong>BIC:</strong> From a given set of models (either nested or non-nested) fitted via a common training dataset, this metric will tend to select the true model that is generating the training data as the sample size <span class="math notranslate nohighlight">\(n\)</span> approaches infinity and <strong>as long as the true model is within this given set of models</strong>. This metric is Bayesian, in essence, since it relies on a prior true model probability distribution in conjunction with our observed evidence (i.e., the likelihoods yielded by each model of this set), which results in a posterior true model probability distribution indicating that true model (i.e., the one with the highest posterior probability).</p></li>
+</ul>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>The math behind the rationale of these two metrics is out of the scope of this course. That said, if you would like to get further insights, you can check <em>Chapter 7 (Model Assessment and Selection)</em> in <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000145389&amp;amp;title=The%20Elements%20of%20Statistical%20Learning%3A%20Data%20Mining%2C%20Inference%2C%20and%20Prediction%2C%20Second%20Edition"><strong>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</strong></a>.</p>
+</div>
 </section>
 </section>
 <section id="categorical-type-responses">
@@ -749,7 +784,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <li><p><strong>Nominal.</strong> We have categories that do not follow any specific order—for example, the type of dwelling according to the Canadian census: <em>single-detached house</em>, <em>semi-detached house</em>, <em>row house</em>, <em>apartment</em>, and <em>mobile home</em>.</p></li>
 <li><p><strong>Ordinal.</strong> The categories, in this case, follow a specific order—for example, a Likert scale of survey items: <em>strongly disagree</em>, <em>disagree</em>, <em>neutral</em>, <em>agree</em>, and <em>strongly agree</em>.</p></li>
 </ul>
-<p>Moreover, you have seen in <strong>DSCI 561</strong> that <strong>using OLS to fit a model with a binary response variable has important problems</strong>. Frequently, the restricted range is not respected in terms of the fitted values from our training set or if we use the fitted model to make predictions on a different testing set. So then, we use Binary Logistic regression.</p>
+<p>Moreover, you have seen that <strong>using OLS to fit a model with a binary response variable has important problems</strong>. Frequently, the restricted range is not respected in terms of the fitted values from our training set or if we use the fitted model to make predictions on a different testing set. So then, we use Binary Logistic regression.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Recall that Binary Logistic regression’s link function (the <strong>logarithm of the odds</strong> or <strong>logit function</strong>) restricts the corresponding probability of success to a range between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span> while relating it to the systematic component (i.e., the regressors and its corresponding parameters!).</p>
@@ -763,7 +798,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>Moving along with GLMs, let us expand the regression mind map as in <a class="reference internal" href="#reg-mindmap-3"><span class="std std-numref">Fig. 7</span></a> to include a new model: <strong>Multinomial Logistic regression</strong>.</p>
 <div class="full-width docutils">
 <figure class="align-default" id="reg-mindmap-3">
-<a class="reference internal image-reference" href="../_images/reg-mindmap-3.png"><img alt="../_images/reg-mindmap-3.png" src="../_images/reg-mindmap-3.png" style="height: 1000px;" /></a>
+<a class="reference internal image-reference" href="../_images/reg-mindmap-3.png"><img alt="../_images/reg-mindmap-3.png" src="../_images/reg-mindmap-3.png" style="height: 900px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">Expanded regression modelling mind map.</span><a class="headerlink" href="#reg-mindmap-3" title="Permalink to this image">#</a></p>
 </figcaption>
@@ -771,17 +806,17 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <p><strong>Multinomial Logistic regression</strong> is a maximum likelihood-based GLM that addresses inferential (and predictive!) inquiries where the response is <strong>categorical</strong> and <strong>nominal</strong>. To illustrate the use of this GLM, let us introduce an adequate dataset.</p>
 <section id="the-spotify-dataset">
-<h3>3.1. The Spotify® Dataset<a class="headerlink" href="#the-spotify-dataset" title="Permalink to this heading">#</a></h3>
+<h3>3.1. The Spotify Dataset<a class="headerlink" href="#the-spotify-dataset" title="Permalink to this heading">#</a></h3>
 <blockquote>
-<div><p><em>Copyright © 2024 Spotify AB.</em></p>
-<p><em>Spotify is a registered trademark of the Spotify Group.</em></p>
+<div><p>Copyright © 2025 Spotify AB.</p>
+<p>Spotify is a registered trademark of the Spotify Group.</p>
 </div></blockquote>
 <p>The <code class="docutils literal notranslate"><span class="pre">spotify</span></code> dataset is a sample of <span class="math notranslate nohighlight">\(n = 350\)</span> songs with different variables by column.</p>
 <div class="admonition-the-spotify-dataset admonition">
 <p class="admonition-title">The Spotify Dataset</p>
 <p>This data comes in the <code class="docutils literal notranslate"><span class="pre">bayesrules</span></code> package. Its description is the following:</p>
 <blockquote>
-<div><p><em>A sub-sample of the Spotify® song data originally collected by Kaylin Pavlik (kaylinquest) and distributed through the <code class="docutils literal notranslate"><span class="pre">R</span></code> for Data Science TidyTuesday project.</em></p>
+<div><p><em>A sub-sample of the Spotify song data originally collected by Kaylin Pavlik (kaylinquest) and distributed through the <code class="docutils literal notranslate"><span class="pre">R</span></code> for Data Science TidyTuesday project.</em></p>
 </div></blockquote>
 </div>
 <p>This dataset has 23 variables in total. The <span class="math notranslate nohighlight">\(n = 350\)</span> songs belong to 44 different artists.</p>
@@ -818,14 +853,22 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <section id="exercise-content">
 <p>Having checked the description of the <code class="docutils literal notranslate"><span class="pre">spotify</span></code> dataset, suppose we want to conduct an inferential study. What would be the primary nature of our conclusions?</p>
 <p><strong>A.</strong> We could draw causation conclusions across all music platforms.</p>
-<p><strong>B.</strong> We could draw association conclusions on the Spotify® platform.</p>
+<p><strong>B.</strong> We could draw association conclusions on the Spotify platform.</p>
 <p><strong>C.</strong> We could draw association conclusions across all music platforms.</p>
-<p><strong>D.</strong> We could draw causation conclusions on the Spotify® platform.</p>
+<p><strong>D.</strong> We could draw causation conclusions on the Spotify platform.</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture2-ans1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q1"> Exercise 4</a></p>
+<section id="solution-content">
+<p>A sub-sample is defined as a sample taken from a larger sample. That said, we could still use it to draw inferences from a given population of interest. Thus, since we will basically conduct an observational study, the primary nature of our conclusions would be of association. Later on, in <strong>DSCI 554</strong>, we will see that it might be possible to assess causation in observational studies under different modelling assumptions involving further hypothesis tests (which might not be the case in this example!).</p>
+<p>Regarding the target population of our conclusions, given that the sample was drawn from the Spotify platform, we would be limited to this specific population. In practice, we should be careful on this matter since you could run into studies whose inferential conclusions go too far regarding the population they want to address (even though their sampling could be narrowly framed!).</p>
 </section>
 </div>
 <div class="admonition-main-statistical-inquiries admonition">
 <p class="admonition-title">Main Statistical Inquiries</p>
-<p>I am <strong>big fan</strong> of the electronic dance music (<code class="docutils literal notranslate"><span class="pre">edm</span></code>) catalogue on Spotify®. Nevertheless, I do not have access to their whole song database. Still, I want to do the following:</p>
+<p>I am <strong>big fan</strong> of the electronic dance music (<code class="docutils literal notranslate"><span class="pre">edm</span></code>) catalogue on Spotify. Nevertheless, I do not have access to their whole song database. Still, I want to do the following:</p>
 <ul class="simple">
 <li><p>To statistically measure how danceable this genre is, compared to other genres on the platform, and by how much.</p></li>
 <li><p>To statistically measure how euphoric this genre is, compared to other genres on the platform, and by how much.</p></li>
@@ -848,8 +891,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">spotify_training</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify</span><span class="w"> </span><span class="o">%&gt;%</span>
-<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">artist</span><span class="p">,</span><span class="w"> </span><span class="n">album_name</span><span class="p">,</span><span class="w"> </span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">danceability</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">spotify_training</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">artist</span><span class="p">,</span><span class="w"> </span><span class="n">album_name</span><span class="p">,</span><span class="w"> </span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">danceability</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">genre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">genre</span><span class="p">))</span>
 <span class="n">spotify_training</span>
 </pre></div>
@@ -897,8 +940,9 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>Finally, let us summarize the data by <code class="docutils literal notranslate"><span class="pre">genre</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">tabyl</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
-<span class="w">  </span><span class="nf">adorn_totals</span><span class="p">(</span><span class="s">&quot;row&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">tabyl</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">adorn_totals</span><span class="p">(</span><span class="s">&quot;row&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">adorn_pct_formatting</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -938,22 +982,22 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>The code below creates side-by-side boxplots and violin plots, where <code class="docutils literal notranslate"><span class="pre">danceability</span></code> or <code class="docutils literal notranslate"><span class="pre">valence</span></code> are on the <span class="math notranslate nohighlight">\(y\)</span>-axis, and all categories of <code class="docutils literal notranslate"><span class="pre">genre</span></code> are on the <span class="math notranslate nohighlight">\(x\)</span>-axis. Moreover, the side-by-side violin plots show the mean of <code class="docutils literal notranslate"><span class="pre">danceability</span></code> or <code class="docutils literal notranslate"><span class="pre">valence</span></code> by <code class="docutils literal notranslate"><span class="pre">genre</span></code> as orange points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
 
-<span class="n">genre_danceability_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">genre_danceability_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">danceability</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">genre</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Danceability (0-100)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Genre&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Side-by-Side Boxplots for Danceability&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
 
-<span class="n">genre_danceability_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">genre_danceability_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">danceability</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_violin</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">genre</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Danceability (0-100)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Genre&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
@@ -963,27 +1007,27 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <span class="w">    </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
 
-<span class="n">genre_valence_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">genre_valence_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">genre</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Valence (0-100)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Genre&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Side-by-Side Boxplots for Valence&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
 
-<span class="n">genre_valence_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">genre_valence_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">genre</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_violin</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">genre</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Valence (0-100)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Genre&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
@@ -993,9 +1037,9 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <span class="w">    </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
@@ -1012,7 +1056,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/bdcd1d52bd854990b3213b3fd578417b6056fc36e904c5ca2b99be906cadcd70.png" src="../_images/bdcd1d52bd854990b3213b3fd578417b6056fc36e904c5ca2b99be906cadcd70.png" />
+<a class="reference internal image-reference" href="../_images/a82e23392030a2dd5751409cc4c196ec3070692a09bee20f15347697e1325dcf.png"><img alt="../_images/a82e23392030a2dd5751409cc4c196ec3070692a09bee20f15347697e1325dcf.png" src="../_images/a82e23392030a2dd5751409cc4c196ec3070692a09bee20f15347697e1325dcf.png" style="width: 720px; height: 840px;" /></a>
 </div>
 </div>
 <div class="exercise admonition" id="lecture2-q2">
@@ -1020,6 +1064,17 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p class="admonition-title"><span class="caption-number">Exercise 5 </span></p>
 <section id="exercise-content">
 <p>What can we see <strong>descriptively</strong> from the above plots?</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture2-ans2">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q2"> Exercise 5</a></p>
+<section id="solution-content">
+<ul class="simple">
+<li><p>In terms of <code class="docutils literal notranslate"><span class="pre">danceability</span></code>, we see similar central tendency measures (i.e, sample medians and means) for <code class="docutils literal notranslate"><span class="pre">edm</span></code>, <code class="docutils literal notranslate"><span class="pre">latin</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">rap</span></code>.</p></li>
+<li><p>Surprisingly, <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> does not seem as danceable as the above four genres.</p></li>
+<li><p>When it comes to <code class="docutils literal notranslate"><span class="pre">valence</span></code>, the <code class="docutils literal notranslate"><span class="pre">latin</span></code> genre seems to be the one with the most positivity (i.e., higher <code class="docutils literal notranslate"><span class="pre">valence</span></code> values). However, we have to be cautious about this conclusion since it is merely descriptive. On the other hand, the rest of the genres show similar central tendency measures.</p></li>
+</ul>
 </section>
 </div>
 </section>
@@ -1031,8 +1086,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>Digging into the Multinomial Logistic regression model will require checking <strong>Binary Logistic regression</strong> first. Hence, let us do it quickly. Thus, suppose we are initially interested in two genres: <code class="docutils literal notranslate"><span class="pre">edm</span></code> and <code class="docutils literal notranslate"><span class="pre">latin</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">bin_spotify_training</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
-<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">genre</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;edm&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latin&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">bin_spotify_training</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spotify_training</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">genre</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;edm&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latin&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">genre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">droplevels</span><span class="p">(</span><span class="n">genre</span><span class="p">))</span>
 <span class="n">bin_spotify_training</span>
 </pre></div>
@@ -1109,7 +1164,8 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p>Note that only <code class="docutils literal notranslate"><span class="pre">valence</span></code> is statistically significant for the response <code class="docutils literal notranslate"><span class="pre">genre</span></code> (<span class="math notranslate nohighlight">\(p\text{-value} &lt; .001\)</span>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">spotify_bin_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">spotify_bin_log_model</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1130,7 +1186,7 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 </div>
 <p>Then, we make the corresponding coefficient interpretations (the previous output already provides the estimate on the odds scale via <code class="docutils literal notranslate"><span class="pre">exponentiate</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>):</p>
 <blockquote>
-<div><p>For each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify® catalogue, the song is 1.05 times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p>For each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify catalogue, the song is 1.05 times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 </section>
 <section id="more-than-one-logit-function">
@@ -1170,7 +1226,7 @@ P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = 
 \end{gather*}\end{split}\]</div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Note that the superscript <span class="math notranslate nohighlight">\((j, 1)\)</span> in <a class="reference internal" href="#equation-multinomial-model">(15)</a> indicates that the equation is on level <span class="math notranslate nohighlight">\(j\)</span> (for <span class="math notranslate nohighlight">\(j = 2, \dots, m\)</span>) with respect to level <span class="math notranslate nohighlight">\(1\)</span>. Furthermore, <strong>the regression coefficients are different for each link function</strong>.</p>
+<p>Note that the superscript <span class="math notranslate nohighlight">\((j, 1)\)</span> in <a class="reference internal" href="#equation-multinomial-model">(15)</a> indicates that the equation is on level <span class="math notranslate nohighlight">\(j\)</span> (for <span class="math notranslate nohighlight">\(j = 2, \dots, m\)</span>) with respect to level <span class="math notranslate nohighlight">\(1\)</span>. Furthermore, <strong>the regression intercept and coefficients are different for each link function</strong>.</p>
 </div>
 <p>With some algebraic manipulation, we can show that the probabilities <span class="math notranslate nohighlight">\(p_{i,1}, p_{i,2}, \dots, p_{i,m}\)</span> of <span class="math notranslate nohighlight">\(Y_i\)</span> belonging to categories <span class="math notranslate nohighlight">\(1, 2, \dots, m\)</span> are:</p>
 <div class="math notranslate nohighlight" id="equation-prob-multinomial">
@@ -1244,6 +1300,14 @@ p_{i,\texttt{rock}} = P(Y_i = \texttt{rock} \mid X_{i,\texttt{dance}}, X_{i,\tex
 <p><strong>B.</strong> FALSE</p>
 </section>
 </div>
+<div class="solution admonition" id="lecture2-ans3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q3"> Exercise 6</a></p>
+<section id="solution-content">
+<p>It is <strong>FALSE</strong>.</p>
+<p>We have not removed any distributional assumption. We just replaced the distributional assumption to Multinomial.</p>
+</section>
+</div>
 <div class="exercise admonition" id="lecture2-q4">
 
 <p class="admonition-title"><span class="caption-number">Exercise 7 </span></p>
@@ -1254,6 +1318,14 @@ p_{i,\texttt{rock}} = P(Y_i = \texttt{rock} \mid X_{i,\texttt{dance}}, X_{i,\tex
 <p><strong>B.</strong> FALSE</p>
 </section>
 </div>
+<div class="solution admonition" id="lecture2-ans4">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q4"> Exercise 7</a></p>
+<section id="solution-content">
+<p>It is <strong>FALSE</strong>.</p>
+<p>We are specifying the model function for each one of the logit functions while assuming a Multinomial distribution. Recall each one of these logit functions has its set of regression parameters (i.e., regression coefficients and intercepts). Moreover, we relate these regression parameters to the corresponding means via the <span class="math notranslate nohighlight">\(m - 1\)</span> link functions.</p>
+</section>
+</div>
 <div class="exercise admonition" id="lecture2-q5">
 
 <p class="admonition-title"><span class="caption-number">Exercise 8 </span></p>
@@ -1261,14 +1333,26 @@ p_{i,\texttt{rock}} = P(Y_i = \texttt{rock} \mid X_{i,\texttt{dance}}, X_{i,\tex
 <p>Suppose that, given our inquiries, a peer suggests we fit two separate OLS with <code class="docutils literal notranslate"><span class="pre">genre</span></code> as a regressor and <code class="docutils literal notranslate"><span class="pre">danceability</span></code> <strong>OR</strong> <code class="docutils literal notranslate"><span class="pre">valence</span></code> as the responses. Can you think of some drawbacks of this suggested approach?</p>
 </section>
 </div>
+<div class="solution admonition" id="lecture2-ans5">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q5"> Exercise 8</a></p>
+<section id="solution-content">
+<p>There are some key drawbacks we can mention here:</p>
+<ul class="simple">
+<li><p>First, OLS modelling allows the response to be unbounded, which is against the nature of <code class="docutils literal notranslate"><span class="pre">danceability</span></code> and <code class="docutils literal notranslate"><span class="pre">valence</span></code> (both range from 0 to 100).</p></li>
+<li><p>Secondly, OLS modelling assumes an overall response variance of <span class="math notranslate nohighlight">\(\sigma^2\)</span>, which is not flexible enough for this case (each row in the training set is a different song, and genders can vary!).</p></li>
+<li><p>Finally, using such a basic approach more than once is impractical when we can use a more clever model (<strong>such as Multinomial Logistic regression</strong>) that addresses all inquiries simultaneously.</p></li>
+</ul>
+</section>
+</div>
 </section>
 </section>
 <section id="id1">
 <h3>3.5. Estimation<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p><strong>All parameters</strong> in the Multinomial Logistic regression model are also unknown. To fit the model with the package <code class="docutils literal notranslate"><span class="pre">nnet</span></code>, we use the function <code class="docutils literal notranslate"><span class="pre">multinom()</span></code>, which obtains the corresponding estimates. The estimates are obtained through <strong>maximum likelihood</strong>, where we assume a <strong>Multinomial joint probability mass function</strong> of the <span class="math notranslate nohighlight">\(n\)</span> responses <span class="math notranslate nohighlight">\(Y_i\)</span>.</p>
-<div class="warning admonition">
+<div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>We will not dig into mathematical derivations regarding MLE for this model since it would require digging into matrix notation, which is out of this course’s scope. That said, you can find more information on this matter <a class="reference external" href="https://czep.net/stat/mlelr.pdf"><strong>here</strong></a>.</p>
+<p>We will not dig into mathematical derivations regarding maximum likelihood estimation (MLE) for this model since it would require digging into matrix notation, which is out of this course’s scope. That said, you can find more information on this matter <a class="reference external" href="https://czep.net/stat/mlelr.pdf"><strong>here</strong></a>.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1321,7 +1405,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 
 <span class="n">mult_output</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tidy</span><span class="p">(</span><span class="n">spotify_mult_log_model</span><span class="p">,</span>
 <span class="w">  </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span>
-<span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 <span class="n">mult_output</span>
 </pre></div>
@@ -1354,10 +1438,10 @@ H_a: \beta_j^{(u, v)} \neq 0.
 </table>
 </div></div>
 </div>
-<p>The 15 exponentiated estimated regression parameters (via <code class="docutils literal notranslate"><span class="pre">exponentiate</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> in <code class="docutils literal notranslate"><span class="pre">tidy()</span></code>) from the right-hand side of <a class="reference internal" href="#equation-multinomial-model-spotify-2">(18)</a> appear in the column <code class="docutils literal notranslate"><span class="pre">estimate.</span></code> Note that column <code class="docutils literal notranslate"><span class="pre">y.level</span></code> is related to the <strong>non-baseline</strong> level per function. Finally, to draw our inferential conclusions, let us filter those <span class="math notranslate nohighlight">\(p\)</span>-values less than <span class="math notranslate nohighlight">\(0.05\)</span> from <code class="docutils literal notranslate"><span class="pre">mult_output</span></code>:</p>
+<p>The 15 exponentiated estimated regression parameters (via <code class="docutils literal notranslate"><span class="pre">exponentiate</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> in <code class="docutils literal notranslate"><span class="pre">tidy()</span></code>) from the right-hand side of <a class="reference internal" href="#equation-multinomial-model-spotify-2">(18)</a> appear in the column <code class="docutils literal notranslate"><span class="pre">estimate</span></code>. Note that column <code class="docutils literal notranslate"><span class="pre">y.level</span></code> is related to the <strong>non-baseline</strong> level per function. Finally, to draw our inferential conclusions, let us filter those <span class="math notranslate nohighlight">\(p\)</span>-values less than <span class="math notranslate nohighlight">\(0.05\)</span> from <code class="docutils literal notranslate"><span class="pre">mult_output</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mult_output</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mult_output</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">p.value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0.05</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1379,7 +1463,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 </table>
 </div></div>
 </div>
-<p>Since our baseline response is <code class="docutils literal notranslate"><span class="pre">edm</span></code>, we can conclude the following with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span> <strong>on the Spotify® platform</strong>:</p>
+<p>Since our baseline response is <code class="docutils literal notranslate"><span class="pre">edm</span></code>, we can conclude the following with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span> <strong>on the Spotify platform</strong>:</p>
 <ul class="simple">
 <li><p>There is a statistical difference in <code class="docutils literal notranslate"><span class="pre">danceability</span></code> in <code class="docutils literal notranslate"><span class="pre">edm</span></code> versus <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> and <code class="docutils literal notranslate"><span class="pre">rock</span></code>.</p></li>
 <li><p>There is a statistical difference in <code class="docutils literal notranslate"><span class="pre">valence</span></code> in <code class="docutils literal notranslate"><span class="pre">edm</span></code> versus <code class="docutils literal notranslate"><span class="pre">latin</span></code>.</p></li>
@@ -1389,18 +1473,18 @@ H_a: \beta_j^{(u, v)} \neq 0.
 <h3>3.7. Coefficient Interpretation<a class="headerlink" href="#coefficient-interpretation" title="Permalink to this heading">#</a></h3>
 <p>Interpretation of the Multinomial Logistic regression coefficients is <strong>quite similar</strong> to the Binary Logistic regression. Let us interpret those significant regression coefficientes from column <code class="docutils literal notranslate"><span class="pre">estimate</span></code>:</p>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_2^{(\texttt{latin},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify® catalogue, the song is <span class="math notranslate nohighlight">\(1.052\)</span> times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_2^{(\texttt{latin},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">valence</span></code> score in the Spotify catalogue, the song is <span class="math notranslate nohighlight">\(1.052\)</span> times more likely to be <code class="docutils literal notranslate"><span class="pre">latin</span></code> than <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{r&amp;b},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify® catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.963) \times 100\% = 3.7\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{r&amp;b},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.963) \times 100\% = 3.7\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{ock},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify® catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">rock</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.918) \times 100\% = 8.2\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
+<div><p><span class="math notranslate nohighlight">\(\beta_1^{(\texttt{ock},\texttt{edm})}\)</span>: for each unit increase in the <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score in the Spotify catalogue, the odds for a song for being <code class="docutils literal notranslate"><span class="pre">rock</span></code> decrease by <span class="math notranslate nohighlight">\((1 - 0.918) \times 100\% = 8.2\%\)</span> compared to <code class="docutils literal notranslate"><span class="pre">edm</span></code>.</p>
 </div></blockquote>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>If we want to use another <code class="docutils literal notranslate"><span class="pre">genre</span></code> as a baseline under this modelling approach, we would need to relevel our factor-type response and rerun the whole process.</p>
-<p>Also, this example does not include categorical regressors. Nevertheless, interpreting their corresponding estimated regression coefficients is analogous to [<strong>Binary Logistic regression</strong>] using the baseline response level.</p>
+<p>Also, this example does not include categorical regressors. Nevertheless, interpreting their corresponding estimated regression coefficients is analogous to <strong>Binary Logistic regression</strong> using the baseline response level.</p>
 </div>
 </section>
 <section id="predictions">
@@ -1408,7 +1492,8 @@ H_a: \beta_j^{(u, v)} \neq 0.
 <p>Suppose we want to predict the genre probabilities for a given song with a <code class="docutils literal notranslate"><span class="pre">danceability</span></code> score of <code class="docutils literal notranslate"><span class="pre">27.5</span></code> and <code class="docutils literal notranslate"><span class="pre">valence</span></code> of <code class="docutils literal notranslate"><span class="pre">30</span></code>. We could use the model <code class="docutils literal notranslate"><span class="pre">spotify_mult_log_model</span></code> for making such prediction as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">pred_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">spotify_mult_log_model</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">danceability</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27.5</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;probs&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">pred_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">spotify_mult_log_model</span><span class="p">,</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">danceability</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27.5</span><span class="p">,</span><span class="w"> </span><span class="n">valence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">),</span><span class="w"> </span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;probs&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 <span class="n">pred_probs</span>
 </pre></div>
 </div>
@@ -1438,6 +1523,17 @@ H_a: \beta_j^{(u, v)} \neq 0.
 <p><strong>To perform model selection</strong>, we can use the same techniques from the Binary Logistic regression model (check <a class="reference internal" href="appendix-binary-log-regression.html#bin-log-model-selection"><span class="std std-ref">8. Model Selection</span></a>). That said, some <code class="docutils literal notranslate"><span class="pre">R</span></code> coding functions might not be entirely available for the <code class="docutils literal notranslate"><span class="pre">multinom()</span></code> models. Still, these statistical techniques and metrics can be manually coded.</p>
 </section>
 </section>
+<section id="wrapping-up-on-model-selection-and-multinomial-logistic-regression">
+<h2>4. Wrapping Up on Model Selection and Multinomial Logistic Regression<a class="headerlink" href="#wrapping-up-on-model-selection-and-multinomial-logistic-regression" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>MLE can be used as a tool in model selection to assess the goodness of fit of our estimated models (via some training data).</p></li>
+<li><p>Deviance is a suitable model selection method for nested models.</p></li>
+<li><p>Conversely, AIC and BIC are adequate metrics for model selection when comparing non-nested models.</p></li>
+<li><p>An important advantage of deviance, AIC, and BIC is that they can be used across different regression models (as long as they are estimated via MLE).</p></li>
+<li><p>Multinomial Logistic regression is a key approach for categorical and nominal responses when we have more than two categories.</p></li>
+<li><p>The above regression is an extension of Binary Logistic regression. Hence, we establish a modelling system of logit functions before performing the corresponding parameter estimation. Note that inference and coefficient interpretation are conducted in a similar fashion compared to Binary Logistic regression.</p></li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1465,11 +1561,10 @@ H_a: \beta_j^{(u, v)} \neq 0.
 
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="lecture1-glm-link-functions-and-count-regression.html"
@@ -1489,10 +1584,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1500,6 +1592,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1523,7 +1616,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-type-responses">2. Categorical Type Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">3. Multinomial Logistic Regression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify® Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spotify-dataset">3.1. The Spotify Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-wrangling-and-summary">3.2. Data Wrangling and Summary</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">3.3. Exploratory Data Analysis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-modelling-framework">3.4. Data Modelling Framework</a><ul class="nav section-nav flex-column">
@@ -1538,6 +1631,7 @@ H_a: \beta_j^{(u, v)} \neq 0.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">3.9. Model Selection</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up-on-model-selection-and-multinomial-logistic-regression">4. Wrapping Up on Model Selection and Multinomial Logistic Regression</a></li>
 </ul>
   </nav></div>
 
@@ -1552,16 +1646,17 @@ H_a: \beta_j^{(u, v)} \neq 0.
   <div class="footer-item">
     
 <p class="component-author">
-By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+By G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
 </p>
 
   </div>
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2024.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -1585,8 +1680,8 @@ By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
