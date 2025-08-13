@@ -731,19 +731,6 @@ Y_i = \beta_0 + \beta_1 C_1(X_i) + \beta_2 C_2(X_i) + \dots + \beta_{q-1} C_{q-1
 <p>Discuss the importance of this class of a local regression strategy of having breakpoints by regressor when having prediction inquiries.</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture6-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture6-q1"> Exercise 23</a></p>
-<section id="solution-content">
-<p>In many different predictive inquiries, setting up breakpoints for our intervals is useful, which creates groups that make logical sense. For example:</p>
-<ol class="arabic simple">
-<li><p><strong>Age:</strong> 1 to 5 years, 6 to 10 years, …</p></li>
-<li><p><strong>Income:</strong> up to 1 minimum wage, 1 to 3 minimum wage, …</p></li>
-</ol>
-<p>The rationale behind this strategy is that we can expect different trends in how any given regressor behaves across the whole training set. Then, the benefits of these breakpoints can be taken to any further test set via our trained estimates.</p>
-<p>Nevertheless, it might be hard to define the intervals’ cutpoints in certain contexts. Naturally, bad cuts will compromise the analysis, so we must be cautious.</p>
-</section>
-</div>
 </section>
 <section id="non-continuous-piecewise-linear-regression">
 <h3>1.2. Non-Continuous Piecewise Linear Regression<a class="headerlink" href="#non-continuous-piecewise-linear-regression" title="Permalink to this heading">#</a></h3>
@@ -990,14 +977,6 @@ D^{(\text{Training, New})} = \sqrt{\sum_{j = 1}^p \Big( x_j^{\text{(Training)}} 
 <p><strong>A.</strong> There are no consequences at all; predictions will be highly accurate in any further test set.</p>
 <p><strong>B.</strong> The trained model will be so oversimplified that we will have a high bias in further test set predictions.</p>
 <p><strong>C.</strong> The trained model will be so overfitted that it will also explain random noise in training data. Therefore, we cannot generalize this model in further test set predictions.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture6-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture6-q2"> Exercise 24</a></p>
-<section id="solution-content">
-<p>The correct answer is <strong>C</strong>.</p>
-<p>This question is related to the bias-variance tradeoff. An overfitted trained model will not be suitable to generalize to further test set predictions. This matter will be reflected in high error rates on test data.</p>
 </section>
 </div>
 <p>Now let us run <span class="math notranslate nohighlight">\(k\)</span>-NN algorithm on the <code class="docutils literal notranslate"><span class="pre">fat_content</span></code> dataset.</p>

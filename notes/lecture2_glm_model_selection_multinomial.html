@@ -858,14 +858,6 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p><strong>D.</strong> We could draw causation conclusions on the Spotify platform.</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture2-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q1"> Exercise 4</a></p>
-<section id="solution-content">
-<p>A sub-sample is defined as a sample taken from a larger sample. That said, we could still use it to draw inferences from a given population of interest. Thus, since we will basically conduct an observational study, the primary nature of our conclusions would be of association. Later on, in <strong>DSCI 554</strong>, we will see that it might be possible to assess causation in observational studies under different modelling assumptions involving further hypothesis tests (which might not be the case in this example!).</p>
-<p>Regarding the target population of our conclusions, given that the sample was drawn from the Spotify platform, we would be limited to this specific population. In practice, we should be careful on this matter since you could run into studies whose inferential conclusions go too far regarding the population they want to address (even though their sampling could be narrowly framed!).</p>
-</section>
-</div>
 <div class="admonition-main-statistical-inquiries admonition">
 <p class="admonition-title">Main Statistical Inquiries</p>
 <p>I am <strong>big fan</strong> of the electronic dance music (<code class="docutils literal notranslate"><span class="pre">edm</span></code>) catalogue on Spotify. Nevertheless, I do not have access to their whole song database. Still, I want to do the following:</p>
@@ -1064,17 +1056,6 @@ H_a: \textbf{Model 2} \text{ fits the data better than } \textbf{Model 1}.
 <p class="admonition-title"><span class="caption-number">Exercise 5 </span></p>
 <section id="exercise-content">
 <p>What can we see <strong>descriptively</strong> from the above plots?</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture2-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q2"> Exercise 5</a></p>
-<section id="solution-content">
-<ul class="simple">
-<li><p>In terms of <code class="docutils literal notranslate"><span class="pre">danceability</span></code>, we see similar central tendency measures (i.e, sample medians and means) for <code class="docutils literal notranslate"><span class="pre">edm</span></code>, <code class="docutils literal notranslate"><span class="pre">latin</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">rap</span></code>.</p></li>
-<li><p>Surprisingly, <code class="docutils literal notranslate"><span class="pre">r&amp;b</span></code> does not seem as danceable as the above four genres.</p></li>
-<li><p>When it comes to <code class="docutils literal notranslate"><span class="pre">valence</span></code>, the <code class="docutils literal notranslate"><span class="pre">latin</span></code> genre seems to be the one with the most positivity (i.e., higher <code class="docutils literal notranslate"><span class="pre">valence</span></code> values). However, we have to be cautious about this conclusion since it is merely descriptive. On the other hand, the rest of the genres show similar central tendency measures.</p></li>
-</ul>
 </section>
 </div>
 </section>
@@ -1300,14 +1281,6 @@ p_{i,\texttt{rock}} = P(Y_i = \texttt{rock} \mid X_{i,\texttt{dance}}, X_{i,\tex
 <p><strong>B.</strong> FALSE</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture2-ans3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q3"> Exercise 6</a></p>
-<section id="solution-content">
-<p>It is <strong>FALSE</strong>.</p>
-<p>We have not removed any distributional assumption. We just replaced the distributional assumption to Multinomial.</p>
-</section>
-</div>
 <div class="exercise admonition" id="lecture2-q4">
 
 <p class="admonition-title"><span class="caption-number">Exercise 7 </span></p>
@@ -1318,31 +1291,11 @@ p_{i,\texttt{rock}} = P(Y_i = \texttt{rock} \mid X_{i,\texttt{dance}}, X_{i,\tex
 <p><strong>B.</strong> FALSE</p>
 </section>
 </div>
-<div class="solution admonition" id="lecture2-ans4">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q4"> Exercise 7</a></p>
-<section id="solution-content">
-<p>It is <strong>FALSE</strong>.</p>
-<p>We are specifying the model function for each one of the logit functions while assuming a Multinomial distribution. Recall each one of these logit functions has its set of regression parameters (i.e., regression coefficients and intercepts). Moreover, we relate these regression parameters to the corresponding means via the <span class="math notranslate nohighlight">\(m - 1\)</span> link functions.</p>
-</section>
-</div>
 <div class="exercise admonition" id="lecture2-q5">
 
 <p class="admonition-title"><span class="caption-number">Exercise 8 </span></p>
 <section id="exercise-content">
 <p>Suppose that, given our inquiries, a peer suggests we fit two separate OLS with <code class="docutils literal notranslate"><span class="pre">genre</span></code> as a regressor and <code class="docutils literal notranslate"><span class="pre">danceability</span></code> <strong>OR</strong> <code class="docutils literal notranslate"><span class="pre">valence</span></code> as the responses. Can you think of some drawbacks of this suggested approach?</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture2-ans5">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture2-q5"> Exercise 8</a></p>
-<section id="solution-content">
-<p>There are some key drawbacks we can mention here:</p>
-<ul class="simple">
-<li><p>First, OLS modelling allows the response to be unbounded, which is against the nature of <code class="docutils literal notranslate"><span class="pre">danceability</span></code> and <code class="docutils literal notranslate"><span class="pre">valence</span></code> (both range from 0 to 100).</p></li>
-<li><p>Secondly, OLS modelling assumes an overall response variance of <span class="math notranslate nohighlight">\(\sigma^2\)</span>, which is not flexible enough for this case (each row in the training set is a different song, and genders can vary!).</p></li>
-<li><p>Finally, using such a basic approach more than once is impractical when we can use a more clever model (<strong>such as Multinomial Logistic regression</strong>) that addresses all inquiries simultaneously.</p></li>
-</ul>
 </section>
 </div>
 </section>

@@ -509,14 +509,6 @@ document.write(`
 </ul>
 </section>
 </div>
-<div class="solution admonition" id="lecture7-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture7-q1"> Exercise 25</a></p>
-<section id="solution-content">
-<p><strong>Can we all agree that the mean alone is not enough to describe the distribution?</strong></p>
-<p>Yes! We all agree that knowing the single sample average will not be enough to describe the data distribution. We need more information, <strong>which can come in additional statistics such as the median, quartiles, maximum, and minimum</strong>.</p>
-</section>
-</div>
 <p>This is the reason why a boxplot is more meaningful than just jittered points.</p>
 <p>Hence, let us get more information from the sample via <code class="docutils literal notranslate"><span class="pre">summary()</span></code> and <code class="docutils literal notranslate"><span class="pre">var()</span></code>.</p>
 <div class="cell docutils container">
@@ -540,17 +532,6 @@ document.write(`
 <p>What about now? Do we have a better idea about the distribution?</p>
 <p><strong>A.</strong> Yes, having different quantiles gives us a better idea about the distribution of heights.</p>
 <p><strong>B.</strong> Not, at all!</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture7-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture7-q2"> Exercise 26</a></p>
-<section id="solution-content">
-<ul class="simple">
-<li><p>The mean and median are the same, as well as the distances between the 1st quartile and the median along with the third quartile and the median, which <strong>suggests</strong> (but does not prove, since these are just descriptive statistics) that the distribution is symmetric.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> are reasonably close to the mean, which <strong>suggests</strong> the distribution does not have heavy tails.</p></li>
-<li><p>The first and third quartiles are relatively close to the median, suggesting a high density around the median.</p></li>
-</ul>
 </section>
 </div>
 <p>We can also make a quick histogram (with the sample mean as a vertical red line) or boxplot to confirm our previous statements.</p>

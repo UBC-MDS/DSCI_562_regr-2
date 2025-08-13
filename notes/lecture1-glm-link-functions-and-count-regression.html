@@ -846,18 +846,6 @@ Y_i \mid X_{i, j} \sim \mathcal{N} \big( \beta_0 + \beta_1 g_1(X_{i, 1}) + \ldot
 <a class="reference internal image-reference" href="../_images/ab4e4cb01fa0b64986163a74f8b44e10cd4d1190882abb737dd29baf08a1581e.png"><img alt="../_images/ab4e4cb01fa0b64986163a74f8b44e10cd4d1190882abb737dd29baf08a1581e.png" src="../_images/ab4e4cb01fa0b64986163a74f8b44e10cd4d1190882abb737dd29baf08a1581e.png" style="width: 720px; height: 960px;" /></a>
 </div>
 </div>
-<div class="solution admonition" id="lecture1-ans1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture1-q1"> Exercise 1</a></p>
-<section id="solution-content">
-<p>It turns out that the data used for the three plots above come from a linear model. Note that they are <strong>linear on their parameters (i.e., coefficients)</strong> but not on their corresponding regressor <span class="math notranslate nohighlight">\(X\)</span>. So we have to make three crucial remarks in these examples:</p>
-<ul class="simple">
-<li><p><strong>Example 1</strong> is the classical case of simple OLS regression.</p></li>
-<li><p>Conversely, <strong>Example 2</strong> does not show a clear linear relationship between both variables unless our linear approach makes two subsets of points. In that case, we could apply two local linear regression models (to be covered in this course in a further lecture).</p></li>
-<li><p>Finally, <strong>Example 3</strong> comes from a sinusoidal curve with an additional random noise (below, we provide more details on this case).</p></li>
-</ul>
-</section>
-</div>
 </section>
 <section id="what-makes-a-regression-model-linear">
 <h3>2.3. What makes a regression model “<em>linear</em>”?<a class="headerlink" href="#what-makes-a-regression-model-linear" title="Permalink to this heading">#</a></h3>
@@ -1618,13 +1606,6 @@ h(\mu_i) = \eta_i.
 <p><strong>A.</strong> Of course!</p>
 <p><strong>B.</strong> Not really.</p>
 <p><strong>C.</strong> I am pretty uncertain about an increasing or decreasing pattern.</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture1-ans2">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture1-q2"> Exercise 2</a></p>
-<section id="solution-content">
-<p>It is pretty tricky to visually detect a trend with the above particular point pattern of horizontal lines all over the female carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> axis. We might need to check this trend with further data wrangling and plotting.</p>
 </section>
 </div>
 <p>Therefore, since the scatterplot above is too hard to visualize, let us make a clever visualization. Firstly, we could calculate the average <code class="docutils literal notranslate"><span class="pre">n_males</span></code> using a few female carapace <code class="docutils literal notranslate"><span class="pre">width</span></code> groups.</p>
@@ -2401,14 +2382,6 @@ Number of Fisher Scoring iterations: 6
 <p><strong>B.</strong> We are more prone to commit Type I errors (i.e., rejecting <span class="math notranslate nohighlight">\(H_0\)</span> when in fact it is true).</p>
 <p><strong>C.</strong> We are more prone to commit Type II errors (i.e., rejecting <span class="math notranslate nohighlight">\(H_a\)</span> when in fact it is true).</p>
 <p><strong>D.</strong> We are more prone to commit Type II errors (i.e., rejecting <span class="math notranslate nohighlight">\(H_0\)</span> when in fact it is true).</p>
-</section>
-</div>
-<div class="solution admonition" id="lecture1-ans3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#lecture1-q3"> Exercise 3</a></p>
-<section id="solution-content">
-<p>Suppose we would like to be safe with a regular maximum likelihood approach for our inferential conclusions while allowing for model selection. In that case, Negative Binomial regression is the way to go since it would provide <strong>more realistic standard errors</strong>.</p>
-<p>It is important to stress that <strong>an underestimated standard error</strong> (as in <code class="docutils literal notranslate"><span class="pre">poisson_model_2</span></code>, in this case) would put us at risk of committing Type I errors in our hypothesis testing, which are false positives (i.e., <strong>we would incorrectly conclude</strong> that there is a statistically significant association/causation between the response and regressors: rejecting <span class="math notranslate nohighlight">\(H_0\)</span> when in fact it is true).</p>
 </section>
 </div>
 </section>
