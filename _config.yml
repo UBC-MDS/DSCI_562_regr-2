@@ -1,7 +1,7 @@
 # Book settings
 title: DSCI 562 - Regression II
-author: G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
-copyright: "2024"  # Copyright year to be placed in the footer
+author: G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
+copyright: "2025"  # Copyright year to be placed in the footer
 logo: img/UBC_MDS_logo.png
 exclude_patterns: ["archive/*", "source/*", "release/*", "lectures/teacher*"]
 only_build_toc_files: true

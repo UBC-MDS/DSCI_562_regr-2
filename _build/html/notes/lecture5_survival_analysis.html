@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Lecture 5 - Survival Analysis &#8212; DSCI 562 - Regression II</title>
   
@@ -15,32 +15,33 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -49,18 +50,14 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -78,19 +75,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -112,12 +113,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -132,9 +141,13 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="../README.html">
+  
   
   
   
@@ -144,12 +157,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="DSCI 562 - Regression II - Home"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="DSCI 562 - Regression II - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -176,13 +200,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-multivariate-normal.html">Fundamentals of the Multivariate Normal Distribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
 </ul>
 
     </div>
@@ -198,7 +217,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -207,14 +226,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -336,26 +355,28 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
 
+
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -386,23 +407,20 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#left-censoring">2.3. Left-Censoring</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">3. Key Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-survival-concepts">3. Key Survival Concepts</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-function">3.1. Survival Function</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">3.1.1. Example</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#is-the-survival-function-enough">3.1.2. Is the Survival Function Enough?</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-function">3.2. Hazard Function</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.2.1. Example</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-weibull-case">3.2.2. The Weibull Case</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-function">3.2. Hazard Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-weibull-case">3.3. Example: The Weibull Case</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-survival-function">4. Estimating the Survival Function</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ovarian-dataset">4.1. The Ovarian Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-surv-function">4.2. The <code class="docutils literal notranslate"><span class="pre">Surv</span></code> Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier">4.3. Non-Parametric Estimation and Inference of the Survival Function with Kaplan-Meier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier">4.3. Non-parametric Estimation and Inference of the Survival Function with Kaplan-Meier</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-estimation-and-inference-of-the-survival-function-with-a-distributional-assumption">4.4. Parametric Estimation and Inference of the Survival Function with a Distributional Assumption</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-survreg-function">The <code class="docutils literal notranslate"><span class="pre">survreg()</span></code> function</a></li>
 </ul>
@@ -428,7 +446,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lecture-5-survival-analysis">
 <h1>Lecture 5 - Survival Analysis<a class="headerlink" href="#lecture-5-survival-analysis" title="Permalink to this heading">#</a></h1>
@@ -438,10 +456,13 @@ document.write(`
 <ul class="simple">
 <li><p>Identify when data is censored.</p></li>
 <li><p>Understand the consequence of subsetting to uncensored data or ignoring the censored property instead of using Survival Analysis methods.</p></li>
+<li><p>Obtain univariate estimates for the mean, median, and survival function in <code class="docutils literal notranslate"><span class="pre">R</span></code> with a parametric technique.</p></li>
 <li><p>Obtain univariate estimates for the mean, median, and survival function in <code class="docutils literal notranslate"><span class="pre">R</span></code> with the Kaplan-Meier technique.</p></li>
 <li><p>Identify when the Kaplan-Meier survival function estimate cannot produce mean and high quantile estimates.</p></li>
+<li><p>Outline the modelling framework of a Cox Proportional Hazards model.</p></li>
+<li><p>Fit a Cox Proportional Hazards model in <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p></li>
 <li><p>Interpret the regression coefficients of a Cox Proportional Hazards model, and identify the model assumptions.</p></li>
-<li><p>Obtain predictions from a Cox Proportional Hazards model.</p></li>
+<li><p>Obtain predicted survival functions from a Cox Proportional Hazards model.</p></li>
 </ul>
 </section>
 <section id="loading-libraries">
@@ -462,9 +483,9 @@ document.write(`
 </section>
 <section id="what-have-we-covered-so-far">
 <h2>0. What have we covered so far?<a class="headerlink" href="#what-have-we-covered-so-far" title="Permalink to this heading">#</a></h2>
-<p>In terms of a <strong>conditioned mean response on its respective regressors</strong>, the classical ordinary least-squares (OLS) model is not enough when we encounter the following:</p>
+<p>In terms of a <strong>conditioned mean response on its respective regressors</strong>, the classical Ordinary Least-squares (OLS) model is not enough when we encounter the following:</p>
 <ul class="simple">
-<li><p>Restricted continuous response range.</p></li>
+<li><p>A restricted continuous response range.</p></li>
 <li><p><strong>Discrete responses.</strong></p></li>
 </ul>
 <p>Discrete responses need a different approach, i.e., <strong>generalized linear models (GLMs)</strong> via different <strong>link functions</strong> as follows:</p>
@@ -482,12 +503,12 @@ document.write(`
 <p><span class="caption-number">Fig. 11 </span><span class="caption-text">The Questioning Panda is here, again.</span><a class="headerlink" href="#panda-lec5" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Having said all this, let us dig into this new class of data we have not seen so far. Regarding Regression Analysis, modelling survival times will take us to two statistical approaches: <strong>parametric</strong> and <strong>semiparametric</strong>.</p>
+<p>Having said all this, let us dig into this new class of data we have not seen so far. Regarding Regression Analysis, modelling survival times will take us to three statistical approaches: <strong>parametric</strong>, <strong>semiparametric</strong>, and <strong>non-parametric</strong>.</p>
 <div class="full-width docutils">
 <figure class="align-default" id="reg-mindmap-5">
 <a class="reference internal image-reference" href="../_images/reg-mindmap-5.png"><img alt="../_images/reg-mindmap-5.png" src="../_images/reg-mindmap-5.png" style="height: 750px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Expanded regression modelling mind map (click on the image to expand).</span><a class="headerlink" href="#reg-mindmap-5" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Expanded regression modelling mind map.</span><a class="headerlink" href="#reg-mindmap-5" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -501,7 +522,7 @@ document.write(`
 </ul>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Although this field in Statistics is usually referred to as <strong>Survival Analysis</strong>, the event in question does not need to be related to actual “<em>survival</em>”, like the unemployed example.</p>
+<p>Although this field in Statistics is usually referred to as <strong>Survival Analysis</strong>, the event in question does not need to be related to actual “<em>survival</em>.”</p>
 <p>The important thing is to understand that we are interested in <strong>the time until something happens</strong>.</p>
 </div>
 <div class="exercise admonition" id="lecture5-q1">
@@ -509,6 +530,13 @@ document.write(`
 <p class="admonition-title"><span class="caption-number">Exercise 18 </span></p>
 <section id="exercise-content">
 <p>Nevertheless, why is this different? Cannot we just use the techniques we have learned so far (e.g., a Binary Logistic regression model)?</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture5-ans1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q1"> Exercise 18</a></p>
+<section id="solution-content">
+<p>The answer would be <em>yes</em> if we could observe the actual time in all occurrences, <strong>but you usually cannot</strong>. Frequently, there will be some <strong>censoring</strong> that will not allow you to observe the exact time that the event happened for all units/individuals studied.</p>
 </section>
 </div>
 <p>Now, what are the implications of <strong>not taking into account censoring in data</strong>?</p>
@@ -533,9 +561,9 @@ document.write(`
 <h3>2.2. Random Right-Censoring<a class="headerlink" href="#random-right-censoring" title="Permalink to this heading">#</a></h3>
 <p>We can have other types of censoring as well. Using the previous example, if a patient were hit by a bus and died in the accident, the death would be unrelated to cancer. Hence, <strong>all we know is that the patient did not die due to cancer until that moment</strong>.</p>
 <p>Or, <strong>in a less “dark” example</strong>, what if a patient you were following moves out of the country? It is an analogous situation. All we know is that the patient was alive until they moved.</p>
-<div class="admonition-what-is-the-difference-between-constant-and-random-right-censoring admonition">
-<p class="admonition-title">What is the Difference Between Constant and Random Right-Censoring?</p>
-<p>The most significant difference is that we could have a single and <strong>constant</strong> censoring time point (as shown in the blue vertical line in <a class="reference internal" href="#survival-study-1"><span class="std std-numref">Fig. 13</span></a> on the right-hand side), or a non-defined <strong>random</strong> censoring time point (as in the example of the bus accident or the patient’s moving).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>What is the difference between constant and random right-censoring?</strong> The most significant difference is that we could have a single and <strong>constant</strong> censoring time point (as shown in the blue vertical line in <a class="reference internal" href="#survival-study-1"><span class="std std-numref">Fig. 13</span></a> on the right-hand side), or a non-defined <strong>random</strong> censoring time point (as in the example of the bus accident or the patient’s moving).</p>
 <p>However, <strong>as long as the censoring is independent of the time of the event of interest</strong>, we can deal with both situations quite similarly.</p>
 </div>
 <p>There are other types of censoring besides right-censoring, but right-censoring is the most common one, and it will be the focus of this lecture. However, let us check an example of <strong>left-censoring</strong>.</p>
@@ -545,13 +573,13 @@ document.write(`
 <p><strong>Suppose you want to know when kids learn how to ski.</strong> One of the kids participating in your study already knows how to ski. So, <strong>the event already happened in a past time, but you cannot know precisely when it was</strong>. All you know is that it was before the current time.</p>
 </section>
 </section>
-<section id="key-concepts">
-<h2>3. Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this heading">#</a></h2>
+<section id="key-survival-concepts">
+<h2>3. Key Survival Concepts<a class="headerlink" href="#key-survival-concepts" title="Permalink to this heading">#</a></h2>
 <p>We learned in <strong>DSCI 551</strong> that a random variable is characterized by its <strong>probability distribution</strong> (either density if continuous, or mass if discrete). In <strong>Survival Analysis</strong>, however, we frequently do not try to model the distribution directly. Instead, the focus is on modelling the <strong>survival</strong> or <strong>hazard functions</strong>.</p>
 <p>These two functions are quite crucial in Survival Analysis because they have special interpretations. <strong>If we know either of them, we can obtain the probability distribution for the time until an event occurs.</strong> They are just alternative ways to represent a probability distribution</p>
 <section id="survival-function">
 <h3>3.1. Survival Function<a class="headerlink" href="#survival-function" title="Permalink to this heading">#</a></h3>
-<p>Let us start with some definitions</p>
+<p>Let us start with some definitions.</p>
 <div class="tip admonition">
 <p class="admonition-title">Definition of Survival Function</p>
 <p>For this function, let us consider a <strong>continuous</strong> random variable</p>
@@ -579,10 +607,10 @@ S_Y(10) = P(Y &gt; 10) = 1 - F_Y(10).
 <figure class="align-default" id="survival-study-2">
 <a class="reference internal image-reference" href="../_images/survival_function.png"><img alt="../_images/survival_function.png" src="../_images/survival_function.png" style="height: 400px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Example of survival function (from <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;SS_jc=TC0000320278&amp;title=Survival%20analysis%20%3A%20a%20self-learning%20text">Kleinbaum and Klein, 2005</a>).</span><a class="headerlink" href="#survival-study-2" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Example of survival function (<a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?PP=true&amp;amp;SS_LibHash=GW2JH3XR2C&amp;amp;SS_source=0&amp;amp;title=Survival+analysis+%3A+a+self-learning+text&amp;amp;l=GW2JH3XR2C&amp;amp;SS_RequestType=1&amp;amp;sid=sersol&amp;amp;ss_jc=TC0000320278&amp;amp;au=&amp;amp;SS_ReferentFormat=UnknownFormat&amp;amp;paramdict=en-US&amp;amp;localeid=1033&amp;amp;SS_jc=TC0000320278&amp;amp;SS_multi=true&amp;amp;SS_V=DP2005-E2ND%20ED.">Kleinbaum and Klein, 2005</a>).</span><a class="headerlink" href="#survival-study-2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Furthermore, as we can see in <a class="reference internal" href="#survival-study-2"><span class="std std-numref">Fig. 14</span></a>, note that any survival function (measured as a probability on the <span class="math notranslate nohighlight">\(y\)</span>-axis with time on the <span class="math notranslate nohighlight">\(x\)</span>-axis) <strong>WILL ALWAYS be monotonically decreasing as time goes by</strong>. This behaviour is expected in any subject since their survival chances would decrease over time.</p>
+<p>Furthermore, as we can see in <a class="reference internal" href="#survival-study-2"><span class="std std-numref">Fig. 14</span></a>, note that any survival function (measured as a probability on the <span class="math notranslate nohighlight">\(y\)</span>-axis with time on the <span class="math notranslate nohighlight">\(x\)</span>-axis) <strong>will always be monotonically decreasing as time goes by</strong>. This behaviour is expected in any subject since their survival chances would decrease over time.</p>
 </section>
 <section id="is-the-survival-function-enough">
 <h4>3.1.2. Is the Survival Function Enough?<a class="headerlink" href="#is-the-survival-function-enough" title="Permalink to this heading">#</a></h4>
@@ -608,32 +636,30 @@ f_Y(t) &amp;= \frac{dF_Y(t)}{dt} \\
 <p>Let us consider a <strong>continuous</strong> random variable</p>
 <div class="math notranslate nohighlight">
 \[Y = \text{Time until an event occurs.}\]</div>
-<p>Their survival and PDF functions are <span class="math notranslate nohighlight">\(S_Y(t)\)</span> and <span class="math notranslate nohighlight">\(f_Y(t)\)</span>. That said, the hazard function <span class="math notranslate nohighlight">\(\lambda(t)\)</span>, the <strong>instantaneous rate of event occurrence per unit of time</strong>, is given by</p>
+<p>Their survival and PDF functions are <span class="math notranslate nohighlight">\(S_Y(t)\)</span> and <span class="math notranslate nohighlight">\(f_Y(t)\)</span>. That said, the hazard function <span class="math notranslate nohighlight">\(\lambda(t)\)</span> (i.e., the <strong>instantaneous rate of event occurrence per unit of time</strong>) is given by</p>
 <div class="math notranslate nohighlight">
 \[
 \lambda(t) = \lim_{\Delta t\rightarrow 0} \frac{P(t\leq Y &lt; t+\Delta t | Y\geq t)}{\Delta t} = \frac{f_Y(t)}{S_Y(t)}.
 \]</div>
 <p>One can interpret <span class="math notranslate nohighlight">\(\lambda(t)\Delta t\)</span> as the approximate probability of the event occurring immediately, given that the event has not occurred up until time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
-<section id="id1">
-<h4>3.2.1. Example<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+</section>
+<section id="example-the-weibull-case">
+<h3>3.3. Example: The Weibull Case<a class="headerlink" href="#example-the-weibull-case" title="Permalink to this heading">#</a></h3>
 <p>Since we know how to calculate the survival function <span class="math notranslate nohighlight">\(S_Y(t)\)</span> from the cumulative distribution <span class="math notranslate nohighlight">\(F_Y(t)\)</span>, we can obtain the survival function for <strong>any positive random variable</strong>.</p>
 <div class="admonition-why-positive admonition">
 <p class="admonition-title">Why positive?</p>
 <p>Because it measures the time until the event happens.</p>
 </div>
 <p>Let us check an example of the Weibull distribution case to model <span class="math notranslate nohighlight">\(S_Y(t)\)</span>.</p>
-</section>
-<section id="the-weibull-case">
-<h4>3.2.2. The Weibull Case<a class="headerlink" href="#the-weibull-case" title="Permalink to this heading">#</a></h4>
-<p>The Weibull distribution is one of the most popular <strong>parametric</strong> modelling choices in Survival Analysis to model <span class="math notranslate nohighlight">\(S_Y(t)\)</span>. Retaking <strong>DSCI 551</strong> concepts, this is a <strong>heavy-tailed continuous distribution</strong>.</p>
+<p>The <a class="reference external" href="https://stats.libretexts.org/Courses/Saint_Mary's_College_Notre_Dame/MATH_345__-_Probability_(Kuter)/4%3A_Continuous_Random_Variables/4.6%3A_Weibull_Distributions#:~:text=When%20%CE%B1%3D1%2C%20the%20Weibull,comparing%20the%20cdf's%20of%20each."><strong>Weibull distribution</strong></a> is one of the most popular <strong>parametric</strong> modelling choices in Survival Analysis to model <span class="math notranslate nohighlight">\(S_Y(t)\)</span>. Retaking <strong>DSCI 551</strong> concepts, this is a <strong>heavy-tailed continuous distribution</strong>.</p>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[Y \sim \text{Weibull}(\alpha, \beta).\]</div>
 <p>Its PDF is given by:</p>
 <div class="math notranslate nohighlight">
 \[
-f_Y(t) = \frac{\alpha}{\beta^\alpha}t^{\alpha - 1}\exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for} \quad t, \alpha, \beta &gt; 0;
+f_Y(t) = \frac{\alpha}{\beta^{\alpha}} t^{\alpha - 1} \exp{\left[ - \left( \frac{t}{\beta} \right)^{\alpha} \right]} \qquad \text{for} \qquad t, \alpha, \beta &gt; 0;
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is called the <strong>shape parameter</strong> and <span class="math notranslate nohighlight">\(\beta\)</span> is the <strong>scale parameter</strong>.</p>
 <p>Note that if <span class="math notranslate nohighlight">\(\alpha = 1\)</span> we get the exponential distribution with parameter <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
@@ -641,13 +667,13 @@ f_Y(t) = \frac{\alpha}{\beta^\alpha}t^{\alpha - 1}\exp\left[-\left(\frac{t}{\bet
 <p class="admonition-title">Important</p>
 <p>Let us recall that a heavy-tailed distribution assigns a larger probability density to extreme values, which aligns with time to events of interest in Survival Analysis.</p>
 </div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Generally speaking, the terms <strong>shape</strong> and <strong>scale</strong> along with <strong>location</strong>, are broadly used in statistical distributions for the following:</p>
 <ul class="simple">
 <li><p><strong>Location:</strong> A parameter of this class shifts the distribution of interest to the left or right of the <span class="math notranslate nohighlight">\(x\)</span>-axis. For instance, in the Normal distribution, the mean <span class="math notranslate nohighlight">\(\mu\)</span> is a location parameter that will shift the peak to that value <span class="math notranslate nohighlight">\(\mu\)</span> on the <span class="math notranslate nohighlight">\(x\)</span>-axis.</p></li>
-<li><p><strong>Scale:</strong> A parameter of this class stretches out (if it is large) of squeezes (if it is small) the distribution of interest. For example, with the Normal distribution, the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> is a scale parameter. Recall that, as we decrease <span class="math notranslate nohighlight">\(\sigma\)</span>, the bell-shape gets narrower and narrower. On the other hand, we see the opposite when we increase <span class="math notranslate nohighlight">\(\sigma\)</span>: the bell-shape gets wider and wider. For the Weibull case, in the plot below, we can see that a smaller value of the scale parameter <span class="math notranslate nohighlight">\(\beta\)</span> squeezes to curve, leading it to be closer to the <span class="math notranslate nohighlight">\(y\)</span>-axis.</p></li>
-<li><p><strong>Shape:</strong> This parameter is more tricky to define since it affects the form of the distribution rather than just stretching out or squeezing. For the Weibull case, in the plot below, <strong>a larger shape parameter makes the function more concave</strong> (check the green curve), whereas <strong>a smaller shape parameter makes the function more convex</strong> (check the purple curve).</p></li>
+<li><p><strong>Scale:</strong> A parameter of this class stretches out (if it is large) of squeezes (if it is small) the distribution of interest. For example, with the Normal distribution, the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> is a scale parameter. Recall that, as we decrease <span class="math notranslate nohighlight">\(\sigma\)</span>, the bell-shape gets narrower and narrower. On the other hand, we see the opposite when we increase <span class="math notranslate nohighlight">\(\sigma\)</span>: the bell-shape gets wider and wider. For the Weibull case, <strong>in the plots below</strong>, we can see that a smaller value of the scale parameter <span class="math notranslate nohighlight">\(\beta\)</span> squeezes to curve, leading it to be closer to the <span class="math notranslate nohighlight">\(y\)</span>-axis.</p></li>
+<li><p><strong>Shape:</strong> This parameter is tricky to define since it affects the form of the distribution rather than just stretching out or squeezing. For the Weibull case, <strong>in the plots below</strong>, <strong>a larger shape parameter makes the function more concave</strong> (check the green curve), whereas <strong>a smaller shape parameter makes the function more convex</strong> (check the purple curve).</p></li>
 </ul>
 </div>
 <p>Weibull’s CDF is given by</p>
@@ -663,55 +689,59 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p>Now let us check how the survival function behaves under different scale and shape parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
 
 <span class="n">weibull_param</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">))</span>
 
-<span class="n">weibull_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">weibull_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tibble</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="p">))</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">merge</span><span class="p">(</span><span class="n">weibull_param</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">surv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">scale</span><span class="p">)</span><span class="o">^</span><span class="n">shape</span><span class="p">))</span>
 
-<span class="n">weibull_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">weibull_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">surv</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">interaction</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Examples of Weibull&#39;s Survival Functions&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Time (Years)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Survival Probability&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.93</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type A&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-35</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.84</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type B&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.47</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type C&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-10</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.37</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type D&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.93</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type A&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-35</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.84</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type B&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.47</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type C&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-10</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.37</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type D&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-50</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;green&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;purple&quot;</span><span class="p">),</span><span class="w"> </span>
 <span class="w">                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;1, 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2, 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;3, 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.5, 5&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Shape and Scale Parameters&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">weibull_plot</span>
+
+<span class="n">weibull_plot</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/b8fcc00fc488bea17e364416e0de42ed23a074000e56ece551149d35142a208d.png" src="../_images/b8fcc00fc488bea17e364416e0de42ed23a074000e56ece551149d35142a208d.png" />
+<a class="reference internal image-reference" href="../_images/0e5b676d10d210c479dfb6a561a997df5c740d967ec6a3d6e493db2f68e5814a.png"><img alt="../_images/0e5b676d10d210c479dfb6a561a997df5c740d967ec6a3d6e493db2f68e5814a.png" src="../_images/0e5b676d10d210c479dfb6a561a997df5c740d967ec6a3d6e493db2f68e5814a.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <div class="exercise admonition" id="lecture5-q2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 19 </span></p>
 <section id="exercise-content">
-<p>Suppose that the previous curves are the survival functions of cancer patients for different types of cancer. Interpret the <em>Type D</em> in comparison to the <em>Type A</em>.</p>
+<p>Suppose that the previous curves are the survival functions of cancer patients for different types of cancer. <strong>Interpret the <em>Type D</em> in comparison to the <em>Type A</em>.</strong> <strong>Select the correct option below.</strong></p>
 <p><strong>A.</strong> <em>Type A</em> is a more agressive type of cancer than <em>Type D</em>.</p>
 <p><strong>B.</strong> Both types of cancer are equally agressive.</p>
 <p><strong>C.</strong> <em>Type D</em> is a more agressive type of cancer than <em>Type A</em>.</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture5-ans2">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q2"> Exercise 19</a></p>
+<section id="solution-content">
+<p>The correct option is <strong>C</strong>.</p>
+<p>The survival function indicates on the <span class="math notranslate nohighlight">\(y\)</span>-axis the proportion of patients still alive at time <span class="math notranslate nohighlight">\(t\)</span> on the <span class="math notranslate nohighlight">\(x\)</span>-axis. Hence, <em>Type D</em> (blue) cancer is very aggressive, as the patients are dying quite quickly, while the <em>Type A</em> (green) cancer is not as aggressive as <em>Type D</em>.</p>
+<p>For example, after two years, a patient’s survival probability is around 14% for <em>Type D</em> (blue) cancer patients, while it is around 75% for <em>Type A</em> (green) cancer patients.</p>
 </section>
 </div>
 <p>Note that we can use <code class="docutils literal notranslate"><span class="pre">pweibull()</span></code> in <code class="docutils literal notranslate"><span class="pre">R</span></code> to get the survival probability of each time <span class="math notranslate nohighlight">\(t\)</span>. For the <em>Type D</em> (blue) cancer at year 2, the probability is obtained as follows:</p>
@@ -731,10 +761,23 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 
 <p class="admonition-title"><span class="caption-number">Exercise 20 </span></p>
 <section id="exercise-content">
-<p>In the hazard function <a class="reference internal" href="#equation-hazard-weibull">(19)</a>, what happens if <span class="math notranslate nohighlight">\(\alpha = 1\)</span>?</p>
+<p>In the hazard function <a class="reference internal" href="#equation-hazard-weibull">(19)</a>, what happens if <span class="math notranslate nohighlight">\(\alpha = 1\)</span>? <strong>Select the correct option below.</strong></p>
 <p><strong>A.</strong> The Weibull’s hazard function increases over time.</p>
 <p><strong>B.</strong> The Weibull’s hazard function is constant (does not depend on the time).</p>
 <p><strong>C.</strong> The Weibull’s hazard function decreases over time.</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture5-ans3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q3"> Exercise 20</a></p>
+<section id="solution-content">
+<p>The correct option is <strong>B</strong>.</p>
+<p>Let us plug in <span class="math notranslate nohighlight">\(\alpha = 1\)</span> in the hazard function <a class="reference internal" href="#equation-hazard-weibull">(19)</a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather*}
+\lambda \left( t \mid \alpha = 1\right) = \frac{1}{\beta} t^{1 - 1} = \frac{1}{\beta}.
+\end{gather*}\]</div>
+<p>We can see that the function becomes a constant <span class="math notranslate nohighlight">\(\frac{1}{\beta}\)</span>, which does not depend on time but on one of the Weibull distributional parameters, <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
 </section>
 </div>
 <p>Now, let us compare Weibull hazard functions with different values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> for each type of cancer. Firstly, in general, we know that the Weibull hazard function is the following:</p>
@@ -775,27 +818,29 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p>Now, let us plot these hazard functions over time <span class="math notranslate nohighlight">\(t\)</span> on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">weibull_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">hazard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="o">^</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">scale</span><span class="o">^</span><span class="n">shape</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">weibull_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">hazard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="o">^</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">scale</span><span class="o">^</span><span class="n">shape</span><span class="p">))</span>
 
-<span class="n">weibull_hazard</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<span class="n">weibull_hazard</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weibull_data</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">hazard</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">interaction</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Examples of Weibull&#39;s Hazard Functions&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Time (Years)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hazard&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;green&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;purple&quot;</span><span class="p">),</span><span class="w"> </span>
 <span class="w">                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;1, 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2, 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;3, 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0.5, 5&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Shape and \nScale \nParameters&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.7</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type A&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type B&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type C&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.1</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type D&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.7</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type A&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type B&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type C&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.1</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Type D&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w"> </span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -803,21 +848,35 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <p>Finally, we can compare both sets of functions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
+
 <span class="nf">plot_grid</span><span class="p">(</span><span class="n">weibull_plot</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">guides</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Shape and \nScale \nParameters&quot;</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">  </span><span class="n">weibull_hazard</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="w">  </span><span class="n">weibull_hazard</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8100c09a6e71ae09b672d8b3960706b0af036ffc7ba1713062e29d3788bcfa10.png" src="../_images/8100c09a6e71ae09b672d8b3960706b0af036ffc7ba1713062e29d3788bcfa10.png" />
+<a class="reference internal image-reference" href="../_images/e5b4844a03afb65992b40b96e99a495a75a03474a3360700c9b69d59c9bdc59f.png"><img alt="../_images/e5b4844a03afb65992b40b96e99a495a75a03474a3360700c9b69d59c9bdc59f.png" src="../_images/e5b4844a03afb65992b40b96e99a495a75a03474a3360700c9b69d59c9bdc59f.png" style="width: 720px; height: 840px;" /></a>
 </div>
 </div>
 <div class="exercise admonition" id="lecture5-q4">
 
 <p class="admonition-title"><span class="caption-number">Exercise 21 </span></p>
 <section id="exercise-content">
-<p>Suppose that these curves are the hazard functions of cancer patients for different types of cancer. Let us compare the <em>blue</em> (<em>Type D</em>) and <em>green</em> (<em>Type A</em>) curves.</p>
+<p>Suppose that the curves above are the hazard functions of cancer patients for different types of cancer. Let us compare the <em>blue</em> (<em>Type D</em>) and <em>green</em> (<em>Type A</em>) curves.</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture5-ans4">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q4"> Exercise 21</a></p>
+<section id="solution-content">
+<p>Recall that <span class="math notranslate nohighlight">\(\lambda(t) \Delta t\)</span> is the approximate probability of the immediate occurrence of the event, <strong>given that it has not occurred until time <span class="math notranslate nohighlight">\(t\)</span></strong>.</p>
+<p>As we can see, a patient with <em>blue</em> (<em>Type D</em>) cancer has a probability of death constant over time. For the <em>green</em> (<em>Type A</em>) cancer, the chance of dying is relatively low in the early stages of cancer, while it grows substantially over time.</p>
+<p>At first, it might be tricky to establish a relationship between the survival and hazard functions. That said, we can provide the following rationale:</p>
+<ul class="simple">
+<li><p>The <em>blue</em> (<em>Type D</em>) cancer has an equal hazard over time (i.e., it does not increase or decrease over time). Note that its hazard equal to <span class="math notranslate nohighlight">\(1\)</span> is not as small as the initial hazard values of other less aggressive types of cancer (such as <em>green</em>, <em>Type A</em>, or <em>red</em>, <em>Type B</em>). Therefore, this not-so-small constant hazard in the <em>blue</em> (<em>Type D</em>) cancer sheds light on its particular aggressiveness over time.</p></li>
+<li><p>The <em>green</em> (<em>Type A</em>) cancer might not be quite aggressive at early stages. Nevertheless, its aggressiveness increases at the last stages of time (we can compare it versus the <em>purple</em> cancer, <em>Type C</em>, in terms of their survival functions). At the last stages of time, this particular aggressiveness of the <em>green</em> (<em>Type A</em>) cancer is reflected in its corresponding increasing hazard function over time.</p></li>
+</ul>
 </section>
 </div>
 <div class="admonition important">
@@ -833,13 +892,12 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 </div>
 </section>
 </section>
-</section>
 <section id="estimating-the-survival-function">
 <h2>4. Estimating the Survival Function<a class="headerlink" href="#estimating-the-survival-function" title="Permalink to this heading">#</a></h2>
-<p>We will not know the probability distribution to be used in our survival and hazard functions in practice. As Data Scientists, it is up to you to make modelling decisions before estimating the corresponding survival parameters of interest (in the case of a parametric approach such as a probability distribution). Moreover, there is also a quite popular non-parametric approach to be covered later on in this lecture.</p>
+<p>We will not know the probability distribution to be used in our survival and hazard functions in practice. As Data Scientists, it is up to you to make modelling decisions before estimating the corresponding survival parameters of interest (<strong>in the case of a parametric approach such as a probability distribution</strong>). Moreover, there is also a quite popular non-parametric approach to be covered later on in this lecture.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Statistically, recall that a parametric model has distributional assumptions on its components. Furthermore, Regression Analysis also includes the corresponding intercept and coefficients in the systematic component.</p>
+<p>Statistically, recall that a parametric model has distributional assumptions on its components. Furthermore, in Regression Analysis, a parametric model also includes the corresponding intercept and coefficients in the systematic component.</p>
 </div>
 <section id="the-ovarian-dataset">
 <h3>4.1. The Ovarian Dataset<a class="headerlink" href="#the-ovarian-dataset" title="Permalink to this heading">#</a></h3>
@@ -850,17 +908,19 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 </div>
 <div class="tip admonition">
 <p class="admonition-title">Definition of Randomized Trial</p>
-<p>In statistical practice, we have a <strong>randomized trial</strong> when we run an experiment in which the subjects are randomized to either one of the <span class="math notranslate nohighlight">\(k\)</span> treatments. The main purpose of these experiments is to infer <strong>causation</strong> on the effect of these treatments on a given response of interest.</p>
+<p>In statistical practice, we have a <strong>randomized trial</strong> when we run an experiment in which the subjects are randomized to either one of the <span class="math notranslate nohighlight">\(m \geq 2\)</span> treatments. The main purpose of these experiments is to infer <strong>causation</strong> on the effect of these treatments on a given response of interest.</p>
 </div>
 <p>We will use the following columns from <code class="docutils literal notranslate"><span class="pre">ovarian</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">futime</span></code>: The <strong>continuous survival or censoring time</strong> in days.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fustat</span></code>: A <strong>binary factor</strong> indicating if the patient died (<code class="docutils literal notranslate"><span class="pre">1</span></code> if true and <code class="docutils literal notranslate"><span class="pre">0</span></code> otherwise).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rx</span></code>: A <strong>binary factor</strong> indicating the treatment group (<code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">2</span></code>). Thus, <span class="math notranslate nohighlight">\(k = 2\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx</span></code>: A <strong>binary factor</strong> indicating the treatment group (<code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">2</span></code>). Thus, <span class="math notranslate nohighlight">\(m = 2\)</span>.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="n">futime</span><span class="p">,</span><span class="w"> </span><span class="n">fustat</span><span class="p">,</span><span class="w"> </span><span class="n">rx</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">futime</span><span class="p">,</span><span class="w"> </span><span class="n">fustat</span><span class="p">,</span><span class="w"> </span><span class="n">rx</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">rx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">rx</span><span class="p">))</span>
 <span class="n">ovarian</span>
 </pre></div>
 </div>
@@ -870,7 +930,7 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <caption>A data.frame: 26 × 3</caption>
 <thead>
 	<tr><th></th><th scope=col>futime</th><th scope=col>fustat</th><th scope=col>rx</th></tr>
-	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th></tr>
 </thead>
 <tbody>
 	<tr><th scope=row>1</th><td> 59</td><td>1</td><td>1</td></tr>
@@ -919,10 +979,10 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">filter</span><span class="p">(</span><span class="n">fustat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
-<span class="w">  </span><span class="n">.</span><span class="p">[[</span><span class="s">&quot;futime&quot;</span><span class="p">]]</span><span class="w"> </span><span class="o">%&gt;%</span>
-<span class="w">  </span><span class="nf">mean</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="n">.</span><span class="p">[[</span><span class="s">&quot;futime&quot;</span><span class="p">]]</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mean</span><span class="p">()</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">round</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -931,8 +991,8 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <div class="output text_html">351</div></div>
 </div>
 <p>Now, let us compute the mean time using <strong>all observations</strong>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
 <p>Nevertheless, note that including those censored observations does <strong>NOT</strong> mean this is the <strong>correct estimation</strong> of the population’s survival time.</p>
 </div>
 <div class="cell docutils container">
@@ -950,7 +1010,7 @@ S_Y(t) = \exp\left[-\left(\frac{t}{\beta}\right)^{\alpha}\right] \quad \text{for
 <li><p><strong>Non-parametric:</strong> <strong>If we do not make any distributional assumption</strong>, the Kaplan-Meier (KM) method can be used to estimate the survival function. This option will implicate the following:</p>
 <ul>
 <li><p><strong>RESTRICTED mean:</strong> it can be estimated as the area under an estimate of the survival function.</p></li>
-<li><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_551_stat-prob-dsci/lectures/continuous-distributions.html"><strong>Quantiles:</strong></a> they can be estimated by inverting an estimate of the survival function.</p></li>
+<li><p><a class="reference external" href="https://ubc-mds.github.io/DSCI_551_stat-prob-dsci/notes/appendix-prob-cheatsheet.html#quantile"><strong>Quantiles:</strong></a> they can be estimated by inverting an estimate of the survival function.</p></li>
 </ul>
 </li>
 </ul>
@@ -986,19 +1046,19 @@ f_Y(t) dt &amp; = dF_Y(t) \\
 &amp;= \int_0^{\infty} - t dS_Y(t) \qquad \text{our above rearrangement} \\
 &amp;= -t S_Y(t)\Big|_0^{\infty} + \int_0^{\infty} S_Y(t) dt \qquad \text{integration by parts} \\
 &amp;= \underbrace{0}_{\lim_{t\to\infty} t S_Y(t) = 0} + \int_0^{\infty} S_Y(t) dt \\
-&amp;= \int_0^{\infty} S_Y(t) dt
+&amp;= \int_0^{\infty} S_Y(t) dt.
 \end{align*}\end{split}\]</div>
 <p>The above integral of <span class="math notranslate nohighlight">\(S_Y(t)\)</span> from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span> represents the area under the survival function which is equal to the expected survival time to event, <span class="math notranslate nohighlight">\(\mathbb{E}(Y)\)</span>.</p>
 <p><strong>Note this proof is out of the scope of this course.</strong></p>
 </div>
 </section>
 <section id="non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier">
-<h3>4.3. Non-Parametric Estimation and Inference of the Survival Function with Kaplan-Meier<a class="headerlink" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier" title="Permalink to this heading">#</a></h3>
+<h3>4.3. Non-parametric Estimation and Inference of the Survival Function with Kaplan-Meier<a class="headerlink" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier" title="Permalink to this heading">#</a></h3>
 <p>Non-parametric estimation is handy when we have a training dataset of survival times, but we have no idea how the survival function looks. Furthermore, we want to err on the side of caution <strong>by no assuming any random variable distribution</strong>.</p>
 <p>KM is a non-parametric method to estimate the survival function. Since it is non-parametric, we do not need to make any distributional assumption on the survival function. This non-parametric estimated survival curve has the form of a <strong>step function</strong> computed with conditional probabilities.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>This method is incredibly popular, and it is one of the most cited papers in Statistics (<strong>over 65,000 citations!</strong>). You can find the original 1958 paper <a class="reference external" href="https://web.stanford.edu/~lutian/coursepdf/KMpaper.pdf">here</a>.</p>
+<p>This method is incredibly popular, and it is one of the most cited papers in Statistics (<strong>over 66,000 citations!</strong>). You can find the original 1958 paper <a class="reference external" href="https://web.stanford.edu/~lutian/coursepdf/KMpaper.pdf">here</a>.</p>
 </div>
 <p>Since the survival function fully characterizes the random variable, if we know the survival function, we can estimate different statistics such as the mean, quantiles, etc.</p>
 <p>Let us estimate the survival function, obtain the mean survival time, and compare it with the two mean estimates we previously obtained: the <strong>mean survival time for those non-censored observations</strong> (<span class="math notranslate nohighlight">\(351\)</span> days) and the <strong>mean time of all observations</strong> (<span class="math notranslate nohighlight">\(600\)</span> days).</p>
@@ -1032,7 +1092,7 @@ f_Y(t) dt &amp; = dF_Y(t) \\
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
 
-<span class="nf">tidy</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="nf">tidy</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1080,7 +1140,7 @@ f_Y(t) dt &amp; = dF_Y(t) \\
 <li><p><code class="docutils literal notranslate"><span class="pre">n.risk</span></code>: Number of subjects at risk at time <span class="math notranslate nohighlight">\(t\)</span> <strong>before we record the number of subjects who experienced the event of interest or were censored</strong>. Mathematically, we call it <span class="math notranslate nohighlight">\(n_t\)</span>. For the ninth row, we have that <span class="math notranslate nohighlight">\(n_t = 18\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">n.event</span></code>: Number of subjects who experienced the event of interest at time <span class="math notranslate nohighlight">\(t\)</span>. Mathematically, we call it <span class="math notranslate nohighlight">\(d_t\)</span>. On the ninth row, we have that <span class="math notranslate nohighlight">\(d_t = 0\)</span> (i.e., nobody died at that time point).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">n.censor</span></code>: Number of <strong>censored subjects</strong> at time <span class="math notranslate nohighlight">\(t\)</span>. Mathematically, we call it <span class="math notranslate nohighlight">\(c_t\)</span>. For the ninth row, we have that <span class="math notranslate nohighlight">\(c_t = 1\)</span> (i.e., we stopped following up one subject who was still alive at that time point).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">estimate</span></code>: The proportion of subjects at time <span class="math notranslate nohighlight">\(t\)</span> still alive in our study. Mathematically, we call it <span class="math notranslate nohighlight">\(\hat{S}(t)\)</span>, <a class="reference external" href="https://ubc-mds.github.io/DSCI_551_stat-prob-dsci/lectures/joint-probability-part-i.html#"><strong>and is based on the conditional probability rule</strong></a>. We compute it as:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">estimate</span></code>: The proportion of subjects at time <span class="math notranslate nohighlight">\(t\)</span> still alive in our study. Mathematically, we call it <span class="math notranslate nohighlight">\(\hat{S}(t),\)</span> <a class="reference external" href="https://ubc-mds.github.io/DSCI_551_stat-prob-dsci/notes/appendix-prob-cheatsheet.html#conditional-probability"><strong>and is based on the conditional probability rule</strong></a>. We compute it as:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
@@ -1105,14 +1165,16 @@ f_Y(t) dt &amp; = dF_Y(t) \\
 <p>To plot <code class="docutils literal notranslate"><span class="pre">fit_km</span></code> we can use <code class="docutils literal notranslate"><span class="pre">autoplot()</span></code> from package <code class="docutils literal notranslate"><span class="pre">ggfortify</span></code> for a <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> style. We can add other layers to the resulting <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> object. Notice the “<strong>notches</strong>” where there is a censored observation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">fit_km_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">autoplot</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
+
+<span class="n">fit_km_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">autoplot</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">    </span><span class="nf">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
 <span class="w">    </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Survival Probability&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">    </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Survival Time (days)&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">    </span><span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">)</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1131,13 +1193,13 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/887b72270146756effa8d8bff7c4ff4e641e3bd50355a182d24c4911e392ef5c.png" src="../_images/887b72270146756effa8d8bff7c4ff4e641e3bd50355a182d24c4911e392ef5c.png" />
+<a class="reference internal image-reference" href="../_images/55a4e47c852071b5b9ea68bf3957f36dd544c1157803dbde232949b47834809c.png"><img alt="../_images/55a4e47c852071b5b9ea68bf3957f36dd544c1157803dbde232949b47834809c.png" src="../_images/55a4e47c852071b5b9ea68bf3957f36dd544c1157803dbde232949b47834809c.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <p>Now that we have our <strong>estimated survival function</strong>, we could calculate the mean survival time and compare it with our previous “raw” mean estimates: the <strong>mean survival time for those non-censored observations</strong> (<span class="math notranslate nohighlight">\(351\)</span> days) and the <strong>mean time of all observations</strong> (<span class="math notranslate nohighlight">\(600\)</span> days).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">glance</span><span class="p">(</span><span class="n">fit_km</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1194,7 +1256,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <p>Let us fit the Log-normal distribution under one survival <strong>null</strong> regression model using dataset <code class="docutils literal notranslate"><span class="pre">ovarian</span></code>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>These parametric models are also generalized linear models (GLMs). There is a link function in the form of a hazard function that relates the distributional parameters with a given set regression parameters and regressors. The estimation of these parameters is done by maximizing a particular likelihood function. This function incorporates the observed information of the censored and uncensored data points and the survival status.</p>
+<p>These parametric models are also generalized linear models (GLMs). There is a link function in the form of a hazard function that relates the distributional parameters with a given set of regression parameters and regressors. The estimation of these parameters is done by maximizing a particular likelihood function (i.e., <strong>censored likelihood function</strong>). This function incorporates the observed information of the censored and uncensored data points and the survival status.</p>
 <p><strong>This lecture will only encompass null models, but <code class="docutils literal notranslate"><span class="pre">survreg()</span></code> can also incorporate regressors on the right-hand side of the <code class="docutils literal notranslate"><span class="pre">formula</span></code> argument.</strong> Moreover, it also provides the corresponding inferential output to assess the statistical significance of these regressors.</p>
 </div>
 <div class="cell docutils container">
@@ -1217,17 +1279,17 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <span class="w">    </span><span class="n">sdlog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model_lognormal</span><span class="o">$</span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="n">lower.tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span>
 <span class="w">  </span><span class="p">))</span>
 
-<span class="n">surv_fitted</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">surv_fitted</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">surv_fitted</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">surv_fitted</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">pivot_longer</span><span class="p">(</span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Log_Normal&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">names_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">values_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Survival&quot;</span><span class="p">)</span>
 
 <span class="n">fit_km_and_param_plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_km_plot</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">Survival</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">surv_fitted</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">Survival</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">surv_fitted</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Survival Probability&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Survival Time (days)&quot;</span><span class="p">)</span>
@@ -1248,7 +1310,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/58b1298eb2d01d50cc16dc68c2c649c6caf1cdbfe8398565e9cda49426a8e36b.png" src="../_images/58b1298eb2d01d50cc16dc68c2c649c6caf1cdbfe8398565e9cda49426a8e36b.png" />
+<a class="reference internal image-reference" href="../_images/d397047266972ee5492e59cfc6cc2dcd3b7fffcb6886e20c15db0b823697b303.png"><img alt="../_images/d397047266972ee5492e59cfc6cc2dcd3b7fffcb6886e20c15db0b823697b303.png" src="../_images/d397047266972ee5492e59cfc6cc2dcd3b7fffcb6886e20c15db0b823697b303.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <p><strong>Alternatively</strong>, to get the in-sample values, we can use the function <code class="docutils literal notranslate"><span class="pre">predict()</span></code> with <code class="docutils literal notranslate"><span class="pre">model_lognormal</span></code> as follows:</p>
@@ -1260,13 +1322,13 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <span class="p">)</span>
 
 <span class="n">fit_km_and_param_plot_alt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_km_plot</span><span class="w">  </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">time_lognormal</span><span class="p">,</span><span class="w"> </span><span class="n">surv</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">est_survival</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">time_lognormal</span><span class="p">,</span><span class="w"> </span><span class="n">surv</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">est_survival</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">xlim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1200</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span>
 
 <span class="nf">suppressWarnings</span><span class="p">(</span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="n">fit_km_and_param_plot_alt</span><span class="p">)))</span>
@@ -1274,7 +1336,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/00f1aa535fb064e59b089ffb453902738baa4b745c66a65799c2c36b055e2e1f.png" src="../_images/00f1aa535fb064e59b089ffb453902738baa4b745c66a65799c2c36b055e2e1f.png" />
+<a class="reference internal image-reference" href="../_images/4fbb24723c0d3e85f0e5e88bc2f7f1fa6539c9b77ea18c0a9fa4e516051307a2.png"><img alt="../_images/4fbb24723c0d3e85f0e5e88bc2f7f1fa6539c9b77ea18c0a9fa4e516051307a2.png" src="../_images/4fbb24723c0d3e85f0e5e88bc2f7f1fa6539c9b77ea18c0a9fa4e516051307a2.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <div class="exercise admonition" id="lecture5-q5">
@@ -1282,6 +1344,13 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <p class="admonition-title"><span class="caption-number">Exercise 22 </span></p>
 <section id="exercise-content">
 <p>What is the advantage or disadvantage of making a distributional assumption?</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture5-ans5">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture5-q5"> Exercise 22</a></p>
+<section id="solution-content">
+<p>If we make a distributional assumption, we are less vulnerable (not immune) to the random fluctuations’ impacts. Our estimate will be smoother and (much!) more stable. However, if our assumption is off, the bias can be considerable.</p>
 </section>
 </div>
 </section>
@@ -1299,9 +1368,10 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <p>Before getting into the general modelling framework of this regression model, performing an EDA to compare the survival times by censoring status and treatment using side-by-side boxplots is necessary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">rx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as_factor</span><span class="p">(</span><span class="n">rx</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">rx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as_factor</span><span class="p">(</span><span class="n">rx</span><span class="p">))</span>
 
-<span class="n">side_by_side_boxplots_ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">side_by_side_boxplots_ovarian</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ovarian</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">censor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">if_else</span><span class="p">(</span><span class="n">fustat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Died&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Ongoing&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">rx</span><span class="p">,</span><span class="w"> </span><span class="n">futime</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">censor</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
@@ -1311,11 +1381,11 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Survival Time (Days)&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">27</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1329,7 +1399,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/28e4d55f57d1582dca667f84e528f294df2d5bc7630efa391c9ab2d56f19eb19.png" src="../_images/28e4d55f57d1582dca667f84e528f294df2d5bc7630efa391c9ab2d56f19eb19.png" />
+<a class="reference internal image-reference" href="../_images/996a0420ac5bccaf9bc2c1a48b75240cbeea04a747d484e636c2252ad7f2b7e5.png"><img alt="../_images/996a0420ac5bccaf9bc2c1a48b75240cbeea04a747d484e636c2252ad7f2b7e5.png" src="../_images/996a0420ac5bccaf9bc2c1a48b75240cbeea04a747d484e636c2252ad7f2b7e5.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 </section>
@@ -1350,7 +1420,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 <li><p>Therefore, given the combinations of both situations, Cox regression is overall defined as semiparametric.</p></li>
 </ul>
 </div>
-<div class="warning admonition">
+<div class="note admonition">
 <p class="admonition-title">Note</p>
 <p>A more complex Cox regression model would also put the regressors in function of time <span class="math notranslate nohighlight">\(t\)</span>. However, this framework is <strong>out of the scope of this lecture</strong>.</p>
 </div>
@@ -1409,7 +1479,7 @@ Adding another scale for <span class=" -Color -Color-Green">y</span>, which will
 H_0: \beta_j &amp;= 0 \\
 H_a: \beta_j &amp;\neq 0.        
 \end{align*}\end{split}\]</div>
-<p>Given a large enough training size <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(z_j\)</span> has an <strong>approximately Standard Normal distribution</strong> under <span class="math notranslate nohighlight">\(H_0\)</span>.</p>
+<p>Given a large enough training size <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(z_j\)</span> has an <strong>approximately Standard Normal distribution</strong> under <span class="math notranslate nohighlight">\(H_0.\)</span></p>
 <p><code class="docutils literal notranslate"><span class="pre">R</span></code> provides the corresponding <strong><span class="math notranslate nohighlight">\(p\)</span>-value</strong> for each <span class="math notranslate nohighlight">\(\beta_j\)</span>. The smaller the <span class="math notranslate nohighlight">\(p\)</span>-value, the stronger the evidence against the null hypothesis <span class="math notranslate nohighlight">\(H_0\)</span>. Hence, a small enough <span class="math notranslate nohighlight">\(p\)</span>-value (less than the significance level <span class="math notranslate nohighlight">\(\alpha\)</span>) indicates that the data provides evidence in favour of <strong>association</strong> (<strong>or causation in the case of an experimental study!</strong>) between the hazard function and the <span class="math notranslate nohighlight">\(j\)</span>th regressor. Furthermore, given a specified level of confidence, we can construct approximate <span class="math notranslate nohighlight">\((1 - \alpha) \times 100\%\)</span> CIs for the corresponding true value of <span class="math notranslate nohighlight">\(\beta_j\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1419,7 +1489,8 @@ H_a: \beta_j &amp;\neq 0.
 <p>Modelling output can be obtained via <code class="docutils literal notranslate"><span class="pre">tidy()</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_ph</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_ph</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1440,14 +1511,15 @@ H_a: \beta_j &amp;\neq 0.
 </section>
 <section id="coefficient-interpretation">
 <h3>5.5. Coefficient Interpretation<a class="headerlink" href="#coefficient-interpretation" title="Permalink to this heading">#</a></h3>
-<p>The hazard function is useful to model due to its flexibility and interpretability. Unfortunately, this example does not contain a continuous regressor to make the corresponding coefficient interpretation (we will address this matter in our warmup exercise in <code class="docutils literal notranslate"><span class="pre">lab3</span></code>). Nonetheless, in general, note the following:</p>
+<p>The hazard function is useful to model due to its flexibility and interpretability. Unfortunately, this example does not contain a continuous regressor to make the corresponding coefficient interpretation (<strong>we will address this matter in our warmup exercise in <code class="docutils literal notranslate"><span class="pre">lab3</span></code></strong>). Nonetheless, in general, note the following:</p>
 <blockquote>
 <div><p>The coefficient <span class="math notranslate nohighlight">\(\beta_j\)</span> on the continuous <span class="math notranslate nohighlight">\(j\)</span>th regressor <span class="math notranslate nohighlight">\(X_{i,j}\)</span> has the following interpretation: <strong>an increase in the regressor by one unit is associated with an increase in hazard (at any time) by <span class="math notranslate nohighlight">\(\exp(\beta_j)\)</span> times (i.e., the effect is multiplicative)</strong>.</p>
 </div></blockquote>
 <p>Now, the interpretation for the regression coefficient in a categorical regressor is <strong>the increase (at any time) by <span class="math notranslate nohighlight">\(\exp(\beta_j)\)</span> times in hazard from the baseline category to another given category</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_ph</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">tidy</span><span class="p">(</span><span class="n">fit_ph</span><span class="p">,</span><span class="w"> </span><span class="n">exponentiate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">conf.int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1465,8 +1537,8 @@ H_a: \beta_j &amp;\neq 0.
 </div></div>
 </div>
 <p>In this example, <strong>if the regression coefficient were significant</strong>, we would interpret the hazard function under treatment <code class="docutils literal notranslate"><span class="pre">2</span></code> to be <span class="math notranslate nohighlight">\(\exp(-0.596) = 0.551\)</span> times as much as the hazard function under treatment <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
 <p><strong>Alternatively</strong>, we would interpret the hazard function under treatment <code class="docutils literal notranslate"><span class="pre">1</span></code> as <span class="math notranslate nohighlight">\(1/0.551 = 1.81\)</span> times as much as the hazard function under treatment <code class="docutils literal notranslate"><span class="pre">2</span></code>. <strong>In plain words, for this alternative interpretation, treatment <code class="docutils literal notranslate"><span class="pre">2</span></code> would increase the survival times compared to treatment <code class="docutils literal notranslate"><span class="pre">1</span></code> if there were a statistically significant difference.</strong></p>
 </div>
 </section>
@@ -1475,7 +1547,7 @@ H_a: \beta_j &amp;\neq 0.
 <p>Before getting into the formulas for prediction via Cox regression, let us introduce another important function.</p>
 <div class="tip admonition">
 <p class="admonition-title">Definition of Cumulative Hazard Function</p>
-<p>The cumulative hazard function <span class="math notranslate nohighlight">\(\Lambda(t)\)</span> depict the accumulated amount of hazard up to time <span class="math notranslate nohighlight">\(t\)</span> as follows:</p>
+<p>The cumulative hazard function <span class="math notranslate nohighlight">\(\Lambda(t)\)</span> depicts the accumulated amount of hazard up to time <span class="math notranslate nohighlight">\(t\)</span> as follows:</p>
 <div class="math notranslate nohighlight">
 \[
 \Lambda(t) = \int_0^{t} \lambda(u)du.
@@ -1496,9 +1568,9 @@ H_a: \beta_j &amp;\neq 0.
 \[\Lambda_0(t) = \int_0^{t} \lambda_0(u)du.\]</div>
 <p>We use the baseline cumulative hazard <span class="math notranslate nohighlight">\(\Lambda_0(t)\)</span> to obtain <span class="math notranslate nohighlight">\(S_0(t)\)</span>.</p>
 <p>Our <code class="docutils literal notranslate"><span class="pre">coxph()</span></code> model object will provide the corresponding estimates <span class="math notranslate nohighlight">\(\hat{\Lambda}_0(t), \hat{\beta}_1, \dots, \hat{\beta}_k\)</span> to obtain the estimated survival functions <span class="math notranslate nohighlight">\(\hat{S}_0(t)\)</span> and <span class="math notranslate nohighlight">\(\hat{S} \left( t | X_1, \dots X_k \right)\)</span>. Then, via <code class="docutils literal notranslate"><span class="pre">survfit()</span></code> along with <code class="docutils literal notranslate"><span class="pre">ggsurvplot()</span></code> from package <code class="docutils literal notranslate"><span class="pre">survminer</span></code>, we can obtain the predicted survival functions for treatments <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code> as follows:</p>
-<div class="warning admonition">
+<div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>Further mathematical details about Cox regression estimation for <span class="math notranslate nohighlight">\(\hat{\Lambda}_0(t), \hat{\beta}_1, \dots, \hat{\beta}_k\)</span> are provided by <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;SS_jc=TC0000487630&amp;title=The%20statistical%20analysis%20of%20failure%20time%20data"><strong>Kalbfleisch and Prentice (2002)</strong></a> in Chapter 4.</p>
+<p>Further mathematical details about Cox regression estimation for <span class="math notranslate nohighlight">\(\hat{\Lambda}_0(t), \hat{\beta}_1, \dots, \hat{\beta}_k\)</span> are provided by <a class="reference external" href="https://gw2jh3xr2c.search.serialssolutions.com/?sid=sersol&amp;amp;SS_jc=TC0000487630&amp;amp;title=The%20statistical%20analysis%20of%20failure%20time%20data"><strong>Kalbfleisch and Prentice (2002)</strong></a> in Chapter 4.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1506,33 +1578,18 @@ H_a: \beta_j &amp;\neq 0.
 
 <span class="n">cox_ph_surv_plots_rx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggsurvplot</span><span class="p">(</span><span class="n">survfit_object</span><span class="p">,</span>
 <span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">rx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">levels</span><span class="p">(</span><span class="n">ovarian</span><span class="o">$</span><span class="n">rx</span><span class="p">)),</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Survival Probability&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Time (days)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">font.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">27</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">27</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">  </span><span class="n">font.tickslab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">27</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;plain&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">31</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Time (days)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">font.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="n">font.tickslab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;plain&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">font.legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
 <span class="w">  </span><span class="n">legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ggtheme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">theme_survminer</span><span class="p">()</span>
 <span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Treatment&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Survival Curves by Ovarian Cancer Treatment&quot;</span><span class="p">)</span><span class="w">  </span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Estimated Survival Curves by Ovarian Cancer Treatment&quot;</span><span class="p">)</span>
+<span class="n">cox_ph_surv_plots_rx</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
-“`gather_()` was deprecated in tidyr 1.2.0.
-<span class=" -Color -Color-Cyan">ℹ</span> Please use `gather()` instead.
-<span class=" -Color -Color-Cyan">ℹ</span> The deprecated feature was likely used in the <span class=" -Color -Color-Blue">survminer</span> package.
-  Please report the issue at <span class=" -Color -Color-Blue">&lt;https://github.com/kassambara/survminer/issues&gt;</span>.”
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">cox_ph_surv_plots_rx</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/862900fdb530137ddeb3989d53b8dc002583f87ecbf714944242fe8b0eb03023.png" src="../_images/862900fdb530137ddeb3989d53b8dc002583f87ecbf714944242fe8b0eb03023.png" />
+<a class="reference internal image-reference" href="../_images/a0d75bed0c69d9527991a63edf6ff5a42ffa70f76fd24dc727b320d57b6ce8e4.png"><img alt="../_images/a0d75bed0c69d9527991a63edf6ff5a42ffa70f76fd24dc727b320d57b6ce8e4.png" src="../_images/a0d75bed0c69d9527991a63edf6ff5a42ffa70f76fd24dc727b320d57b6ce8e4.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <p>Note that even though treatment <code class="docutils literal notranslate"><span class="pre">2</span></code> has an estimated survival function that depicts more chances to survive; once we plot the corresponding 95% CIs by treatment, <strong>they overlap, which indicates there is no statistical difference between both treatments</strong>.</p>
@@ -1574,11 +1631,10 @@ H_a: \beta_j &amp;\neq 0.
 
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="lecture4_linear_mixed_effects_models.html"
@@ -1598,10 +1654,7 @@ H_a: \beta_j &amp;\neq 0.
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1609,6 +1662,7 @@ H_a: \beta_j &amp;\neq 0.
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1626,23 +1680,20 @@ H_a: \beta_j &amp;\neq 0.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#left-censoring">2.3. Left-Censoring</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">3. Key Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-survival-concepts">3. Key Survival Concepts</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-function">3.1. Survival Function</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">3.1.1. Example</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#is-the-survival-function-enough">3.1.2. Is the Survival Function Enough?</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-function">3.2. Hazard Function</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.2.1. Example</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-weibull-case">3.2.2. The Weibull Case</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-function">3.2. Hazard Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-weibull-case">3.3. Example: The Weibull Case</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-survival-function">4. Estimating the Survival Function</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ovarian-dataset">4.1. The Ovarian Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-surv-function">4.2. The <code class="docutils literal notranslate"><span class="pre">Surv</span></code> Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier">4.3. Non-Parametric Estimation and Inference of the Survival Function with Kaplan-Meier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-parametric-estimation-and-inference-of-the-survival-function-with-kaplan-meier">4.3. Non-parametric Estimation and Inference of the Survival Function with Kaplan-Meier</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-estimation-and-inference-of-the-survival-function-with-a-distributional-assumption">4.4. Parametric Estimation and Inference of the Survival Function with a Distributional Assumption</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-survreg-function">The <code class="docutils literal notranslate"><span class="pre">survreg()</span></code> function</a></li>
 </ul>
@@ -1673,16 +1724,17 @@ H_a: \beta_j &amp;\neq 0.
   <div class="footer-item">
     
 <p class="component-author">
-By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+By G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
 </p>
 
   </div>
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2024.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -1706,8 +1758,8 @@ By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

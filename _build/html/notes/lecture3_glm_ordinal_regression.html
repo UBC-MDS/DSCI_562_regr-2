@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression &#8212; DSCI 562 - Regression II</title>
   
@@ -15,32 +15,33 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -49,18 +50,14 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -78,19 +75,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -112,12 +113,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -132,9 +141,13 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="../README.html">
+  
   
   
   
@@ -144,12 +157,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/UBC_MDS_logo.png" class="logo__image only-light" alt="DSCI 562 - Regression II - Home"/>
+    <script>document.write(`<img src="../_static/UBC_MDS_logo.png" class="logo__image only-dark" alt="DSCI 562 - Regression II - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -176,13 +200,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="appendix-binary-log-regression.html">Binary Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-cheatsheet.html">Regression Cheatsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-reg-mindmap.html">Regression Mind Map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="appendix-dist-cheatsheet.html">Distribution Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-binary-multivariate-normal.html">Fundamentals of the Multivariate Normal Distribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix-greek-alphabet.html">Greek Alphabet</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">License and Code of Conduct</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CODE-OF-CONDUCT.html">Code of Conduct</a></li>
 </ul>
 
     </div>
@@ -198,7 +217,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -207,14 +226,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -336,26 +355,28 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
 
+
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -405,7 +426,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lecture-3-generalized-linear-models-ordinal-logistic-regression">
 <h1>Lecture 3 - Generalized Linear Models: Ordinal Logistic Regression<a class="headerlink" href="#lecture-3-generalized-linear-models-ordinal-logistic-regression" title="Permalink to this heading">#</a></h1>
@@ -417,6 +438,9 @@ document.write(`
 <li><p>Explain the concept of proportional odds.</p></li>
 <li><p>Fit and interpret Ordinal Logistic regression.</p></li>
 <li><p>Use the Ordinal Logistic regression for prediction.</p></li>
+<li><p>Explain the concept of non-proportional odds.</p></li>
+<li><p>Assess the assumption of proportional odds via the Brant-Wald test.</p></li>
+<li><p>Contrast the Ordinal Logistic regression models under proportional and non-proportional odds assumptions.</p></li>
 </ul>
 </section>
 <section id="loading-libraries">
@@ -446,10 +470,10 @@ document.write(`
 <li><p><strong>Ordinal.</strong> The categories, in this case, follow a specific order—for example, a Likert scale of survey items: <em>strongly disagree</em>, <em>disagree</em>, <em>neutral</em>, <em>agree</em>, and <em>strongly agree</em>.</p></li>
 </ul>
 <p>The previous Multinomial Logistic model, from <a class="reference internal" href="lecture2_glm_model_selection_multinomial.html"><span class="doc">Lecture 2 - Generalized Linear Models: Model Selection and Multinomial Logistic Regression</span></a>, <strong>is unsuitable for ordinal responses</strong>. For example, suppose one does not consider the order in the response levels when necessary. In that case, <strong>we might risk losing valuable information when making inference or predictions</strong>. This valuable information is in the ordinal scale, which could be set up via cumulative probabilities (recall <strong>DSCI 551</strong> concepts).</p>
-<p>Therefore, the ideal approach is an alternative logistic regression that suits <strong>ordinal</strong> responses. Hence, the existence of the <strong>Ordinal Logistic regression model</strong>. Let us expand the regression mindmap as in <a class="reference internal" href="#reg-mindmap-4"><span class="std std-numref">Fig. 8</span></a> to include this new model. Note there is a key characteristic called <strong>proportional odds</strong> which is reflected on the <strong>data modelling framework</strong>.</p>
+<p>Therefore, the ideal approach is an alternative logistic regression that suits <strong>ordinal</strong> responses. Hence, the existence of the <strong>Ordinal Logistic regression model</strong>. Let us expand the regression mindmap as in <a class="reference internal" href="#reg-mindmap-4"><span class="std std-numref">Fig. 8</span></a> to include this new model. Note there is a key characteristic called <strong>proportional odds</strong>, which is reflected in the <strong>data modelling framework</strong> and to be discussed today.</p>
 <div class="full-width docutils">
 <figure class="align-default" id="reg-mindmap-4">
-<a class="reference internal image-reference" href="../_images/reg-mindmap-4.png"><img alt="../_images/reg-mindmap-4.png" src="../_images/reg-mindmap-4.png" style="height: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/reg-mindmap-4.png"><img alt="../_images/reg-mindmap-4.png" src="../_images/reg-mindmap-4.png" style="height: 900px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 8 </span><span class="caption-text">Expanded regression modelling mind map.</span><a class="headerlink" href="#reg-mindmap-4" title="Permalink to this image">#</a></p>
 </figcaption>
@@ -466,7 +490,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">suppressMessages</span><span class="p">(</span><span class="nf">read_csv</span><span class="p">(</span><span class="s">&quot;../datasets/college_data.csv&quot;</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="s">&quot;../datasets/college_data.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">show_col_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 <span class="n">college_data</span>
 </pre></div>
 </div>
@@ -531,7 +555,7 @@ document.write(`
 </section>
 <section id="exploratory-data-analysis">
 <h2>3. Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this heading">#</a></h2>
-<p>Let us plot the data first. Since <code class="docutils literal notranslate"><span class="pre">decision</span></code> is a <strong>discrete ordinal response</strong>, we have to be careful about the class of plots we are using regarding exploratory data analysis (EDA).</p>
+<p>Let us plot the data first. Since <code class="docutils literal notranslate"><span class="pre">decision</span></code> is a <strong>discrete and ordinal response</strong>, we have to be careful about the class of plots we are using regarding exploratory data analysis (EDA).</p>
 <p>To explore visually the relationship between <code class="docutils literal notranslate"><span class="pre">decision</span></code> and <code class="docutils literal notranslate"><span class="pre">GPA</span></code> , we will use the following side-by-side plots:</p>
 <ul class="simple">
 <li><p><strong>Boxplots.</strong></p></li>
@@ -540,20 +564,20 @@ document.write(`
 <p>The code below creates side-by-side boxplots and violin plots, where <code class="docutils literal notranslate"><span class="pre">GPA</span></code> is on the <span class="math notranslate nohighlight">\(y\)</span>-axis, and all categories of <code class="docutils literal notranslate"><span class="pre">decision</span></code> are on the <span class="math notranslate nohighlight">\(x\)</span>-axis. The side-by-side violin plots show the mean of <code class="docutils literal notranslate"><span class="pre">GPA</span></code> by <code class="docutils literal notranslate"><span class="pre">decision</span></code> category in red points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_side_boxplots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">decision</span><span class="p">,</span><span class="w"> </span><span class="n">GPA</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_boxplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;GPA&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision to Apply to Graduate School&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Side-by-Side Boxplots&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
 
-<span class="n">college_data_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="n">college_data_side_violin</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">college_data</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">decision</span><span class="p">,</span><span class="w"> </span><span class="n">GPA</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_violin</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;GPA&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision to Apply to Graduate School&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
@@ -563,9 +587,9 @@ document.write(`
 <span class="w">    </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="s">&quot;BuPu&quot;</span><span class="p">)</span>
@@ -612,35 +636,43 @@ document.write(`
 <p>Then, we code the corresponding plot:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_stacked_bars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">college_data_prop_summary</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parent_ed</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                                                                   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">college_data_stacked_bars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">college_data_prop_summary</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span>
+<span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parent_ed</span><span class="p">,</span>
+<span class="w">  </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decision</span>
+<span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;identity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.7</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">geom_text</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">prop</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%.0f&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="o">*</span><span class="m">100</span><span class="p">),</span><span class="s">&quot;%&quot;</span><span class="p">),</span><span class="s">&quot;&quot;</span><span class="p">)),</span>
-<span class="w">            </span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">position_stack</span><span class="p">(</span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;firebrick3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">geom_text</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ifelse</span><span class="p">(</span><span class="n">prop</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%.0f&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">100</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">position_stack</span><span class="p">(</span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;firebrick3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Percent&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Parent Education Status&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Stacked Bar Charts&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">        </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
-<span class="w">        </span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
-<span class="w">        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span>
-<span class="w">        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Blues&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Stacked Bar Charts&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
+<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">),</span>
+<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">18</span><span class="p">,</span><span class="w"> </span><span class="n">margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cm&quot;</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">17</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Decision&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_fill_brewer</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Blues&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span>
 
-<span class="nf">plot_grid</span><span class="p">(</span><span class="n">college_data_side_boxplots</span><span class="p">,</span><span class="w"> </span><span class="n">college_data_side_violin</span><span class="p">,</span><span class="w"> </span><span class="n">college_data_stacked_bars</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="nf">plot_grid</span><span class="p">(</span><span class="n">college_data_side_boxplots</span><span class="p">,</span><span class="w"> </span><span class="n">college_data_side_violin</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="n">college_data_stacked_bars</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1ce34eab8b461c6b86b76d6e2d30a9234dba85f3adab1737bad01eda74297e99.png" src="../_images/1ce34eab8b461c6b86b76d6e2d30a9234dba85f3adab1737bad01eda74297e99.png" />
+<a class="reference internal image-reference" href="../_images/9dc38e0c347e253dff4a0c7f017017580ab8c8b0dea5d77a286fdce16252c668.png"><img alt="../_images/9dc38e0c347e253dff4a0c7f017017580ab8c8b0dea5d77a286fdce16252c668.png" src="../_images/9dc38e0c347e253dff4a0c7f017017580ab8c8b0dea5d77a286fdce16252c668.png" style="width: 720px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="../_images/973b095cdeef0927a6f3909f3cfd6a17eee7e57d59756241f25fdfabe08389b2.png"><img alt="../_images/973b095cdeef0927a6f3909f3cfd6a17eee7e57d59756241f25fdfabe08389b2.png" src="../_images/973b095cdeef0927a6f3909f3cfd6a17eee7e57d59756241f25fdfabe08389b2.png" style="width: 720px; height: 420px;" /></a>
 </div>
 </div>
 <div class="exercise admonition" id="lecture3-q1">
@@ -650,6 +682,13 @@ document.write(`
 <p>What can we see <strong>descriptively</strong> from the above plots?</p>
 </section>
 </div>
+<div class="solution admonition" id="lecture3-ans1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q1"> Exercise 9</a></p>
+<section id="solution-content">
+<p>Those students with higher <code class="docutils literal notranslate"><span class="pre">GPA</span></code> tend to be <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school. Interestingly, those students with at least one parent with a graduate degree tend to be <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school.</p>
+</section>
+</div>
 </section>
 <section id="data-modelling-framework">
 <h2>4. Data Modelling Framework<a class="headerlink" href="#data-modelling-framework" title="Permalink to this heading">#</a></h2>
@@ -657,7 +696,7 @@ document.write(`
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Categories <span class="math notranslate nohighlight">\(1, 2, \dots, m\)</span> <strong>implicate an ordinal scale here</strong>, i.e., <span class="math notranslate nohighlight">\(1 &lt; 2 &lt; \dots &lt; m\)</span>.</p>
-<p>Also, note there is more than one class of Ordinal Logistic regression. We will review the <strong>proportional odds</strong> model (a <strong>cumulative logit model</strong>).</p>
+<p>Also, note there is more than one class of Ordinal Logistic regression. We will review the <strong>proportional odds</strong> version, which is also a <strong>cumulative logit model</strong>.</p>
 </div>
 <p>We set up the Ordinal Logistical regression model for this specific dataset with <span class="math notranslate nohighlight">\(m = 3\)</span>. For the <span class="math notranslate nohighlight">\(i\)</span>th observation with the continuous <span class="math notranslate nohighlight">\(X_{i, \texttt{GPA}}\)</span> and the dummy variable</p>
 <div class="math notranslate nohighlight">
@@ -727,7 +766,7 @@ p_{i,j} = P(Y_i = j \mid X_{i,1}, \ldots, X_{i,k}) = P(Y_i \leq j \mid X_{i,1}, 
 <p>which leads to</p>
 <div class="math notranslate nohighlight">
 \[
-P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = p_{i,m},
+P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = p_{i,m}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
@@ -750,9 +789,33 @@ P(Y_i = 1) = p_{i,1} \;\;\;\; P(Y_i = 2) = p_{i,2} \;\; \dots \;\; P(Y_i = m) = 
 <p><strong>D.</strong> Four link functions, four intercepts, and four regression coefficients.</p>
 </section>
 </div>
+<div class="solution admonition" id="lecture3-ans2">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q2"> Exercise 10</a></p>
+<section id="solution-content">
+<p>The categories <span class="math notranslate nohighlight">\(1, 2, 3, 4, 5\)</span> in the <span class="math notranslate nohighlight">\(i\)</span>th response <span class="math notranslate nohighlight">\(Y_i\)</span> implicate an ordinal scale here, i.e., <span class="math notranslate nohighlight">\(1 &lt; 2 &lt; 3 &lt; 4 &lt; 5\)</span>.</p>
+<p>Hence, our Ordinal Logistic regression model will indicate how each one of the <span class="math notranslate nohighlight">\(4\)</span> regressors <span class="math notranslate nohighlight">\(X_{i,1}\)</span>, <span class="math notranslate nohighlight">\(X_{i,2}\)</span>, <span class="math notranslate nohighlight">\(X_{i,3}\)</span>, and <span class="math notranslate nohighlight">\(X_{i,4}\)</span> affects the <strong>cumulative logarithm of the odds</strong> in the ordinal response  for the following <span class="math notranslate nohighlight">\(4\)</span> situations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\text{Level } 4 \text{ or any lesser degree versus level } 5 \\
+\text{Level } 3 \text{ or any lesser degree versus level } 4 \text{ or any higher degree}\\
+\text{Level } 2 \text{ or any lesser degree versus level } 3 \text{ or any higher degree}\\
+\text{Level } 1 \text{ versus level } 2 \text{ or any higher degree}\\
+\end{gather*}\end{split}\]</div>
+<p>Then, our system of modelling equations will be:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather*}
+\eta_i^{(4)} = \log\left[\frac{P(Y_i \leq 4 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i = 5 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(4)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
+\eta_i^{(3)} = \log\left[\frac{P(Y_i \leq 3 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 3 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(3)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
+\eta_i^{(2)} = \log\left[\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 2 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4} \\
+\eta_i^{(1)} = \log\left[\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,4})}{P(Y_i &gt; 1 \mid X_{i,1}, \ldots, X_{i,4})}\right] = \beta_0^{(1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \beta_3 X_{i, 3} - \beta_4 X_{i, 4}.
+\end{gather*}\end{split}\]</div>
+<p>As we can see above; we would need four link functions, four intercepts <span class="math notranslate nohighlight">\(\left( \beta_0^{(4)}, \beta_0^{(3)}, \beta_0^{(2)}, \beta_1^{(1)} \right)\)</span>, and four coefficients <span class="math notranslate nohighlight">\(\left( \beta_1, \beta_2, \beta_3, \beta_4 \right)\)</span>.</p>
+</section>
+</div>
 <section id="a-graphical-intuition-of-the-proportional-odds-assumption">
 <h3>A Graphical Intuition of the Proportional Odds Assumption<a class="headerlink" href="#a-graphical-intuition-of-the-proportional-odds-assumption" title="Permalink to this heading">#</a></h3>
-<p>The challenging <strong>Exercise</strong> 4 in <code class="docutils literal notranslate"><span class="pre">lab2</span></code> is about showing mathematically what the proportional odds assumption stands for in the Ordinal Logistic regression model with <span class="math notranslate nohighlight">\(k\)</span> regressors and a training set size of <span class="math notranslate nohighlight">\(n\)</span>, using a response of <span class="math notranslate nohighlight">\(m\)</span> levels in general. That said, let us show the graphical intuition with an example of an ordinal response of <span class="math notranslate nohighlight">\(5\)</span> levels and a single continuous regressor <span class="math notranslate nohighlight">\(X_{i , 1}\)</span> (<strong>which is unbounded!</strong>).</p>
+<p>The challenging <strong>Exercise 4</strong> in <code class="docutils literal notranslate"><span class="pre">lab2</span></code> is about showing mathematically what the proportional odds assumption stands for in the Ordinal Logistic regression model with <span class="math notranslate nohighlight">\(k\)</span> regressors and a training set size of <span class="math notranslate nohighlight">\(n\)</span>, using a response of <span class="math notranslate nohighlight">\(m\)</span> levels in general. That said, let us show the graphical intuition with an example of an ordinal response of <span class="math notranslate nohighlight">\(5\)</span> levels and a single continuous regressor <span class="math notranslate nohighlight">\(X_{i , 1}\)</span> (<strong>which is unbounded!</strong>).</p>
 <p>The system of cumulative logit equations is the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather*}
@@ -769,7 +832,7 @@ P(Y_i \leq 3 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(3)} - \beta_1 X_{i, 1} \r
 P(Y_i \leq 2 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(2)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(2)} - \beta_1 X_{i, 1}\right)} \\
 P(Y_i \leq 1 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1} \right)}{1 + \exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1}\right)}. \\
 \end{gather*}\end{split}\]</div>
-<p>Note we have four intercepts <span class="math notranslate nohighlight">\((\beta_0^{(1)}, \beta_0^{(2)}, \beta_0^{(3)}, \beta_0^{(4)})\)</span>  and a single coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>. Moreover, assume we estimate these five parameters to be the following:</p>
+<p>Note we have four intercepts <span class="math notranslate nohighlight">\((\beta_0^{(1)}, \beta_0^{(2)}, \beta_0^{(3)}, \beta_0^{(4)})\)</span>  and a single coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>. Moreover, let us assume we estimate these five parameters to be the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather*}
 \hat{\beta}_0^{(1)} = 4\\
@@ -791,7 +854,7 @@ P(Y_i \leq 1 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1} \r
 </section>
 <section id="estimation">
 <h2>5. Estimation<a class="headerlink" href="#estimation" title="Permalink to this heading">#</a></h2>
-<p><strong>All parameters</strong> in the Ordinal Logistic regression model are also unknown. Therefore, model estimates are obtained through <strong>maximum likelihood</strong>, where we also assume a <strong>Multinomial joint probability mass function</strong> of the <span class="math notranslate nohighlight">\(n\)</span> responses <span class="math notranslate nohighlight">\(Y_i\)</span>.</p>
+<p><strong>All parameters</strong> in the Ordinal Logistic regression model are also unknown. Therefore, model estimates are obtained through <strong>maximum likelihood</strong>, where we also assume a <strong>Multinomial joint probability mass function</strong> of the <span class="math notranslate nohighlight">\(n\)</span> responses <span class="math notranslate nohighlight">\(Y_i\)</span>. Moreover, this Multinomial assumption plays around with cumulative probabilities in the joint likelihood function <strong>as discussed in <a class="reference external" href="https://ebookcentral.proquest.com/lib/ubc/detail.action?docID=1168529">Agresti (2013)</a> in Chapter 8 (Section 8.2.2)</strong>.</p>
 <p>To fit the model with the package <code class="docutils literal notranslate"><span class="pre">MASS</span></code>, we use the function <code class="docutils literal notranslate"><span class="pre">polr()</span></code>, which obtains the corresponding estimates. The argument <code class="docutils literal notranslate"><span class="pre">Hess</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> is required to compute the <a class="reference external" href="https://mathworld.wolfram.com/Hessian.html">Hessian matrix</a> of the <strong>log-likelihood function</strong>, which is used to obtain the standard errors of the estimates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -806,10 +869,14 @@ P(Y_i \leq 1 \mid X_{i,1}) = \frac{\exp\left(\beta_0^{(1)} - \beta_1 X_{i, 1} \r
 <p class="admonition-title">Important</p>
 <p>Maximum likelihood estimation in this regression model is quite complex compared to the challenging <strong>Exercise 5</strong> in <code class="docutils literal notranslate"><span class="pre">lab1</span></code> for Binary Logistic regression. Thus, <strong>the proof will be out of the scope of this course.</strong></p>
 </div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>If you would like to check a further rationale on the use of the Hessian matrix to obtain the standard errors of regression estimates, you can find good insights into this matter via the classical linear regression model (i.e., Ordinary Least-squares but in its maximum likelihood estimation flavour) <a class="reference external" href="https://tidystat.com/meaning-of-hessian-matrix-from-optim-in-r/"><strong>in this resource</strong></a>.</p>
+</div>
 </section>
 <section id="inference">
 <h2>6. Inference<a class="headerlink" href="#inference" title="Permalink to this heading">#</a></h2>
-<p><strong>We can determine whether a regressor is statistically associated with the logarithm of the cumulative odds</strong> through hypothesis testing for the parameters <span class="math notranslate nohighlight">\(\beta_j\)</span>. We also use the <strong>Wald statistic</strong> <span class="math notranslate nohighlight">\(z_j:\)</span></p>
+<p><strong>We can determine whether a regressor is statistically associated with the logarithm of the cumulative odds</strong> through hypothesis testing for the parameters <span class="math notranslate nohighlight">\(\beta_j\)</span>. We also use the <strong>Wald statistic</strong> <span class="math notranslate nohighlight">\(z_j\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 z_j = \frac{\hat{\beta}_j}{\mbox{se}(\hat{\beta}_j)}
@@ -835,7 +902,7 @@ H_a: \beta_j \neq 0.
 <span class="w">  </span><span class="n">p.value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">pnorm</span><span class="p">(</span><span class="nf">abs</span><span class="p">(</span><span class="nf">tidy</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">)</span><span class="o">$</span><span class="n">statistic</span><span class="p">),</span>
 <span class="w">    </span><span class="n">lower.tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">2</span>
-<span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">  </span><span class="nf">mutate_if</span><span class="p">(</span><span class="n">is.numeric</span><span class="p">,</span><span class="w"> </span><span class="n">round</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 <span class="n">summary_ordinal_model</span>
 </pre></div>
@@ -1068,7 +1135,7 @@ parent_edYes          GPA
 </table>
 </div></div>
 </div>
-<p>Again, we see the numeric labels (a drawback of using <code class="docutils literal notranslate"><span class="pre">vglm()</span></code>). We interpret these predictions as follows:</p>
+<p>Again, we see the numeric labels <strong>(a drawback of using <code class="docutils literal notranslate"><span class="pre">vglm()</span></code>)</strong>. We interpret these predictions as follows:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\frac{P(Y_i = \texttt{very likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}{P(Y_i \leq \texttt{somewhat likely} \mid X_{i, \texttt{GPA}},X_{i, \texttt{parent_ed}})}\)</span>, i.e., <code class="docutils literal notranslate"><span class="pre">P[Y&gt;=3]</span></code> (label <code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code>): “<strong>a student, with a <code class="docutils literal notranslate"><span class="pre">GPA</span></code> of 3.5 whose parents attended to graduate school, is 3.03 (<span class="math notranslate nohighlight">\(1 / 0.33\)</span>) times <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> or <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> versus <code class="docutils literal notranslate"><span class="pre">very</span> <span class="pre">likely</span></code> to apply to graduate school</strong>.” This prediction goes in line with the predicted probabilities above, given that <code class="docutils literal notranslate"><span class="pre">somewhat</span> <span class="pre">likely</span></code> has a probability of 0.48 and <code class="docutils literal notranslate"><span class="pre">unlikely</span></code> a probability of 0.27.</p></li>
 </ul>
@@ -1084,7 +1151,7 @@ parent_edYes          GPA
 <h2>10. Non-proportional Odds<a class="headerlink" href="#non-proportional-odds" title="Permalink to this heading">#</a></h2>
 <p>Now, we might wonder</p>
 <blockquote>
-<div><p><em>What happens if we do not fulfil the proportional odds assumption in our Ordinal Logistic regression model?</em></p>
+<div><p>What happens if we do not fulfil the proportional odds assumption in our Ordinal Logistic regression model?</p>
 </div></blockquote>
 <section id="the-brant-wald-test">
 <h3>10.1. The Brant-Wald Test<a class="headerlink" href="#the-brant-wald-test" title="Permalink to this heading">#</a></h3>
@@ -1092,7 +1159,7 @@ parent_edYes          GPA
 <p>Once this model has been fitted, <strong>it is possible to assess whether it fulfils this strong assumption statistically</strong>.</p>
 <p>We can do it via the Brant-Wald test:</p>
 <ul class="simple">
-<li><p>This tool performs statistically assesses whether our model globally fulfils this assumption. It has the following hypotheses:</p></li>
+<li><p>This tool statistically assesses whether our model globally fulfils this assumption. It has the following hypotheses:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather*}
@@ -1131,7 +1198,7 @@ H0: Parallel Regression Assumption holds
 <p>The row <code class="docutils literal notranslate"><span class="pre">Omnibus</span></code> represents the global model, while the other two rows correspond to our two regressors: <code class="docutils literal notranslate"><span class="pre">parent_ed</span></code> and <code class="docutils literal notranslate"><span class="pre">GPA</span></code>. Note that with <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>, we are completely fulfilling the proportional odds assumption (the column <code class="docutils literal notranslate"><span class="pre">probability</span></code> delivers the corresponding <span class="math notranslate nohighlight">\(p\)</span>-values).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>The Brant Wald test essentially compares this basic Ordinal Logistic regression model of <span class="math notranslate nohighlight">\(k-1\)</span> cumulative logit functions versus a combination of k − 1 correlated binary logistic regressions.</p>
+<p>The Brant Wald test essentially compares this basic Ordinal Logistic regression model of <span class="math notranslate nohighlight">\(k-1\)</span> cumulative logit functions versus a combination of <span class="math notranslate nohighlight">\(k − 1\)</span> correlated Binary Logistic regressions.</p>
 </div>
 </section>
 <section id="a-non-proportional-odds-model">
@@ -1151,6 +1218,13 @@ H0: Parallel Regression Assumption holds
 <p class="admonition-title"><span class="caption-number">Exercise 11 </span></p>
 <section id="exercise-content">
 <p>Why would we have to be cautious when fitting a non-proportional odds model in the context of a response with a considerable number of ordinal levels and regressors?</p>
+</section>
+</div>
+<div class="solution admonition" id="lecture3-ans3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lecture3-q3"> Exercise 11</a></p>
+<section id="solution-content">
+<p>The Ordinal Logistic regression framework makes complex modelling since we deal with cumulative probabilities by each logit function in the system. On top of that, adding a considerable number of regression parameters to estimate in our optimization procedure via maximum likelihood might make convergence slow when fitting the model.</p>
 </section>
 </div>
 </section>
@@ -1191,11 +1265,10 @@ H0: Parallel Regression Assumption holds
 
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="lecture2_glm_model_selection_multinomial.html"
@@ -1215,10 +1288,7 @@ H0: Parallel Regression Assumption holds
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1226,6 +1296,7 @@ H0: Parallel Regression Assumption holds
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1267,16 +1338,17 @@ H0: Parallel Regression Assumption holds
   <div class="footer-item">
     
 <p class="component-author">
-By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
+By G. Alexi Rodríguez-Arelis, Payman Nickchi, Rodolfo Lourenzutti, and Vincenzo Coia
 </p>
 
   </div>
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2024.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -1300,8 +1372,8 @@ By G. Alexi Rodríguez-Arelis, Rodolfo Lourenzutti, and Vincenzo Coia
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

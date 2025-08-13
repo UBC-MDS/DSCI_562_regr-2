@@ -7,10 +7,11 @@ example_1 <- function() {
     geom_point(aes(x, y)) +
     ggtitle("Example 1") +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27)
-    )
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21)
+    ) +
+    scale_x_continuous(breaks = seq(0, 18, 2), limits = c(0, 18))
   return(plot)
 }
 
@@ -21,10 +22,11 @@ example_2 <- function() {
     geom_point(aes(x, y)) +
     ggtitle("Example 2") +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27)
-    )
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21)
+    ) +
+    scale_x_continuous(breaks = seq(0, 18, 2), limits = c(0, 18))
   return(plot)
 }
 
@@ -35,10 +37,11 @@ example_3 <- function() {
     geom_point(aes(x, y)) +
     ggtitle("Example 3") +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27)
-    )
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21)
+    ) +
+    scale_x_continuous(breaks = seq(0, 18, 2), limits = c(0, 18))
   return(plot)
 }
 
@@ -75,12 +78,12 @@ example_deterministic_relation <- function() {
   plot <- data %>% ggplot() +
     geom_line(aes(x, y)) +
     ggtitle("Deterministic Relation of Y = 2X") +
-    xlab("X") +
-    ylab("Y") +
+    xlab("x") +
+    ylab("y") +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27)
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21)
     )
   return(plot)
 }
@@ -107,19 +110,19 @@ example_stochastic_relation <- function() {
     geom_segment(aes(x = 3, y = 6, xend = 3, yend = 7.6), color = "red", linetype = "dotted") +
     coord_flip() +
     scale_y_continuous(
-      name = "X",
+      name = "x",
       breaks = c(2, 4, 6),
       labels = c("1", "2", "3")
     ) +
     scale_x_continuous(
-      name = "Y",
+      name = "y",
       breaks = c(1, 2, 3),
       labels = c("2", "4", "6")
     ) +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27)
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21)
     )
   return(plot)
 }
@@ -155,9 +158,9 @@ qqplot_dev_residuals <- function(data, title) {
     labs(x = "Theoretical Quantiles", y = "Sample Quantiles") +
     ggtitle(title) +
     theme(
-      plot.title = element_text(size = 30, face = "bold"),
-      axis.text = element_text(size = 21),
-      axis.title = element_text(size = 27),
+      plot.title = element_text(size = 24, face = "bold"),
+      axis.text = element_text(size = 17),
+      axis.title = element_text(size = 21),
       legend.text = element_text(size = 21),
       legend.title = element_text(size = 21, face = "bold")
     )))
@@ -295,12 +298,17 @@ knn_plot <- function(w, k) {
   p <-
     knn_tibble(w, k) %>%
     ggplot() +
-    geom_point(aes(week, fat, color = neighbor), size = 4) +
+    geom_point(aes(week, fat, color = neighbor), size = 3) +
     # labs(y = "Fat Content (%)") +
-    # ggtitle("Fat content of cow milk") +
+    ggtitle(paste("k = ", k)) +
     geom_vline(xintercept = w, alpha = 0.35) +
-    annotate("point", x = w, y = avg, shape = 23, fill = "black", size = 4.5) +
-    theme(plot.title = element_text(size = 24), axis.text = element_text(size = 18), axis.title = element_text(size = 24))
+    annotate("point", x = w, y = avg, shape = 18, fill = "black", size = 4.5) +
+  theme(
+    plot.title = element_text(size = 19, face = "bold"),
+    axis.text = element_text(size = 17),
+    axis.title = element_text(size = 18),
+    legend.text = element_text(size = 18, margin = margin(r = 1, unit = "cm")), 
+    legend.title = element_text(size = 18, face = "bold"))
 
   return(p)
 }

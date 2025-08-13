@@ -3,7 +3,7 @@ root: README
 parts:
   - caption: Lectures
     chapters:
-    - file: lecture-learning-objectives
+    - file: lecture-learning-objectives.md
     - file: notes/lecture1-glm-link-functions-and-count-regression
     - file: notes/lecture2_glm_model_selection_multinomial
     - file: notes/lecture3_glm_ordinal_regression
@@ -17,9 +17,5 @@ parts:
     - file: notes/appendix-binary-log-regression
     - file: notes/appendix-reg-cheatsheet
     - file: notes/appendix-reg-mindmap
-    - file: notes/appendix-dist-cheatsheet
+    - file: notes/appendix-binary-multivariate-normal
     - file: notes/appendix-greek-alphabet
-  - caption: License and Code of Conduct
-    chapters:
-    - file: LICENSE
-    - file: CODE-OF-CONDUCT
