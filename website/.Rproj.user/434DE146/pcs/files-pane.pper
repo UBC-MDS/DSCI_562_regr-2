@@ -1,0 +1,13 @@
+{
+    "sortOrder": [
+        {
+            "columnIndex": 4,
+            "ascending": false
+        },
+        {
+            "columnIndex": 2,
+            "ascending": true
+        }
+    ],
+    "path": "~/Desktop/MDS/public-materials/DSCI_562_regr-2/website/slides/Lecture8"
+}

@@ -1,0 +1,4 @@
+"0",".= "" # BEGIN TEST CONFIG"
+"0","failure_message: Check the formula and data arguments in the fitting function for poisson_model"
+"0",""" # END TEST CONFIG"
+"0","testthat::expect_equal(digest::digest(round(sum(poisson_model$coefficients), 3)), ""d9b7ab7124cddb9f47b3658911c079b6"")"

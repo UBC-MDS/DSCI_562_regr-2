@@ -1,0 +1,2089 @@
+---
+title: "DSCI 562 Lab 2"
+subtitle: Ordinal Logistic and Mixed-Effects Regression Models
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+\newpage
+
+<!--
+# ASSIGNMENT CONFIG
+environment: environment.yml
+overwrite_requirements: true
+generate:
+  show_stdout: true
+  show_hidden: true
+export_cell: false
+files:
+  - data
+-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+
+# Lab Overview
+
+Your tasks in this lab will continue exploring generalized linear models (GLMs) via an Ordinal Logistic regression model. Then, you will proceed with Linear Mixed-Effects modelling targeting a continuous response via experimental data. Note that most of the inquiries in this lab will continue to be inferential. Finally, there is an analytical and challenging exercise on the rationale behind the proportional odds in the Ordinal Logistic regression model.
+
+# Lab Mechanics
+
+rubric={mechanics:5}
+
+Check off that you have read and followed each of these instructions:
+
+- [ ] All files necessary to run your work must be pushed to your `GitHub.ubc.ca` repository for this lab.
+- [ ] Paste the URL to your GitHub repo here: **INSERT YOUR GITHUB REPO URL HERE**
+- [ ] You need to have **a minimum of 3 commit messages** associated with your `GitHub.ubc.ca` repository for this lab.
+- [ ] **You must also submit `.Rmd` file and the rendered `.pdf` in this lab to Gradescope.** You are responsible for ensuring all the figures, texts, and equations in the `.pdf` file are appropriately rendered.
+- [ ] To ensure you do not break the autograder remove all code for installing packages (i.e., DO NOT have `install.packages(...)` or `devtools::install_github(...)` in your homework!
+- [ ] Follow the [**MDS general lab instructions**](https://ubc-mds.github.io/resources_pages/general_lab_instructions/).
+
+> **Important:** For the assignments, you are permitted to use LLMs only to gather information, review concepts, or brainstorm. You **must cite** these tools if you use them for the assignment. It is not permitted to write any given assignment by copying and pasting AI-generated responses.
+
+# Code Quality
+
+rubric={quality:3}
+
+The code that you write for this assignment will be given one overall grade for code quality. Check our [**code quality rubric**](https://github.com/UBC-MDS/public/blob/master/rubric/rubric_quality.md) as a guide to what we are looking for. Also, for this course (and other MDS courses that use `R`), we are trying to follow the `tidyverse` code style. There is a guide you can refer too: <http://style.tidyverse.org/>
+
+Each code question will also be assessed for code accuracy (i.e., does it do what it is supposed to do?).
+
+# Writing
+
+rubric={writing:3}
+
+To get the marks for this writing component, you should:
+
+-   Use proper English, spelling, and grammar throughout your submission (the non-coding parts).
+-   Be succinct. **This means being specific about what you want to communicate, without being superfluous.**
+
+Check our [**writing rubric**](https://github.com/UBC-MDS/public/blob/master/rubric/rubric_writing.md) as a guide to what we are looking for.
+
+# A Note on Challenging Questions
+
+Each lab will have a few challenging questions. **These are usually low-risk questions and will contribute to a 5% out of the total lab grade of 100%**. The main purpose here is to challenge yourself or dig deeper in a particular area. When you start working on labs, attempt all other questions before moving to these questions. If you are running out of time, please skip these questions.
+
+We will be more strict with the marking of these questions. If you want to get full points in these questions, your answers need to
+
+- be thorough, thoughtful, and well-written (if necessary),
+- provide convincing justification and appropriate evidence for the claims you make, and
+- impress the reader of your lab with your understanding of the material, your analytical and critical reasoning skills, and your ability to think on your own.
+
+# Lab Grade Computation
+
+Once lab grades are published on Gradescope, you will see your **raw lab mark** $m$. This **raw lab mark** $m$ is the grand total of your granted marks throughout the whole lab assignment. Now, if we add up **all the marks (non-challenging and challenging)** in the handout corresponding to all `rubric={...}`, this sum is what we call the maximum raw lab mark $m_{100}$ to get 100% as a percentage lab grade. On the other hand, if we add up **the non-challenging marks** in the handout found in `rubric={...}`, this sum is what we call the raw lab mark $m_{95}$ to get a 95% as a percentage lab grade.
+
+By the end of the block, **once all lab marking is finished on Gradescope**, your raw lab grades will be transferred to **Canvas**. Then, in your [**Canvas gradebook**](https://canvas.ubc.ca/courses/154241/grades), you will see these raw lab grades (`raw lab1`, `raw lab2`, `raw lab3`, and `raw lab4`). Finally, for each of the four labs, you will also see your final lab grades (`lab1`, `lab1`, `lab3`, and `lab4`). Let $g$ be the final lab grade of a specific lab **as a percentage**; it will be computed as follows:
+
+- If $m > m_{95}$, then $g = 95 + \left( \frac{m - m_{95}}{m_{100} - m_{95}} \times 5 \right)$.
+- If $m \leq m_{95}$, then $g = \left( \frac{m}{m_{95}} \right) \times 95$.
+
+# A Note on Warmup Exercises
+
+Each lab session will begin with a warmup exercise, which will be indicated when introduced in the handout. We will solve this exercise altogether during the first 20 minutes of the lab session. 
+
+> **Note this warmup part will not count toward the lab grade of 100%.**
+
+# Setup
+
+If you fail to load any packages, you can install them and try loading the library again.
+
+```{r load libraries, message=FALSE, warning=FALSE}
+library(carData)
+library(tidyverse)
+library(broom)
+library(scales)
+library(MASS)
+library(lme4)
+library(lmerTest)
+```
+
+\newpage
+
+# (Warmup) Exercise 1: The World Values Surveys
+
+One of the advantages of using models such as Ordinal Logistic regression is their suitability to address Social Sciences-related data where encountering discrete and ordinal variables is quite common (e.g., Likert scales!). That said, let us dig into the World Values Surveys (`WVS`) dataset from package `carData`. According to the corresponding documentation, this is the description of the data frame `WVS`:
+
+> *Data from the World Values Surveys 1995-1997 for Australia, Norway, Sweden, and the United States.*
+
+```{r}
+data(WVS)
+head(WVS)
+tail(WVS)
+```
+
+## Main Statistical Inquiries
+
+Suppose we are Data Scientists interested in untangling the differences in people's views concerning their government's efforts to fight poverty in Australia, Norway, Sweden, and USA. Hence, **statistically speaking**, we are interested in determining the following:
+
+- Is age of a person a significant factor in these views? Can we quantify this association? If so, by how much?
+- Is the country a significant factor in these views? Can we quantify this association? If so, by how much?
+
+## Q1.1. Data Collection and Wrangling
+
+We have a **training set size $n = 5381$** subjects. Run the following chunk of code before proceeding:
+
+```{r}
+training_WVS <- WVS
+nrow(WVS)
+```
+
+We will specifically work on the following columns:
+
+- `poverty`: The answer to the question: "*do you think that what the government is doing for people in poverty in this country is about the right amount, too much, or too little?*"
+- `age`: Subject's age in years.
+- `country`: Subject's country (`Australia`, `Norway`, `Sweden`, or `USA`).
+
+Hence, select the columns of interest in `training_WVS`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-1-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+training_WVS <- training_WVS |>
+  dplyr::select(poverty, age, country)
+# END SOLUTION
+
+head(training_WVS)
+tail(training_WVS)
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.2. Exploratory Data Analysis
+
+Based on our main statistical inquiries, let us answer the following:
+
+**Q1.2.1.** What is our response of interest? 
+
+**Q1.2.2.** What is the response's nature?
+
+**Q1.2.3.** What are our explanatory variables of interest? 
+
+**Q1.2.4.** What is the nature of the explanatory variables?
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> **Q1.2.1.** *Our response of interest is `poverty`.*
+
+> **Q1.2.2.** *It has an ordinal nature: `Too Little < About Right < Too much`.*
+
+> **Q1.2.3.** *Our explanatory variables of interest are `age` and `country`.*
+
+> **Q1.2.4.** *`age` is a continuous explanatory variable, whereas `country` is a nominal explanatory variable with four levels (`Australia`, `Norway`, `Sweden` or `USA`).*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, let us code suitable plots comparing `age` on the $y$-axis by each level in `poverty` on the $x$-axis, which has to be facetted by `country`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-viz
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=7}
+# BEGIN SOLUTION
+age_boxplots <- WVS |>
+  ggplot(aes(poverty, age)) +
+  geom_boxplot(aes(fill = poverty)) +
+  scale_fill_brewer(palette = "BuPu") +
+  labs(y = "Age(Years)", x = "Government Efforts") +
+  facet_wrap(. ~ country) +
+  ggtitle("Views on Government Efforts to Fight Poverty by Age and Country") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10, face = "bold"),
+    strip.text = element_text(size = 10),
+    legend.position = "none"
+  )
+age_boxplots
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.2.5.** What do you observe about the relationship of `age` and `country` on `poverty`?
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *`USA` has an increasing median `age` pattern: the older the subject, the more they think the government is doing `Too Much`. Same situation in `Australia`! On the other hand, this median pattern does not occur in the nordic countries.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, let us explore the relationship between `poverty` and `country` via **stacked bar charts**.
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-viz-2
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+# BEGIN SOLUTION
+WVS_prop_summary <- as.data.frame(xtabs(
+  ~ country +
+    poverty,
+  WVS
+) / rowSums(xtabs(
+  ~ country + poverty,
+  WVS
+)), responseName = "prop")
+
+WVS_prop_summary
+
+WVS_stacked_bars <- ggplot(WVS_prop_summary, aes(x = country, y = prop, fill = poverty)) +
+  geom_bar(
+    stat = "identity", width = 0.7, colour = "black",
+    position = position_fill(reverse = TRUE)
+  ) +
+  geom_text(
+    aes(label = ifelse(prop >= 0.05,
+      paste0(sprintf("%.0f", prop * 100), "%"), ""
+    )),
+    position = position_fill(reverse = TRUE, vjust = 0.5), colour = "firebrick4",
+    fontface = "bold", size = 3.5
+  ) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(y = "Percentage", x = "Country", fill = "") +
+  ggtitle("Views on Government Efforts to Fight Poverty by Country") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text.x = element_text(size = 10, angle = 0),
+    axis.text.y = element_text(size = 10, angle = 0),
+    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 10, margin = margin(r = 1, unit = "cm")),
+    legend.title = element_text(size = 10, face = "bold")
+  ) +
+  guides(fill = guide_legend(title = "View", reverse = TRUE)) +
+  scale_fill_brewer(palette = "Blues")
+    
+WVS_stacked_bars
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.2.6.** What do you observe about the relationship of `country` on `poverty`?
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-reasoning-3
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *It is surprising that sampled Americans have a considerable share corresponding to the view the government is doing `Too much` to fight poverty, followed by Australians. This does not happen in Nordic countries.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.3. Data Modelling Framework
+
+**Q1.3.1.** Having defined the response and explanatory variables in this case, what is the right modelling framework?
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-1-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *A GLM such as Ordinal Logistic regression.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.3.2.** Let us suppose that a given **discrete ordinal response** `poverty` $Y_i$ (for $i = 1, \dots, n$) has categories `Too Little`, `About Right`, and `Too Much` in a training set of size $n$.
+
+> **Heads-up**: Categories `Too Little`, `About Right`, and `Too Much` implicate an ordinal scale, i.e., `Too Little` $<$ `About Right` $<$ `Too much`
+
+Moreover, $X_{i, \texttt{age}}$ is a continuous regressor along with the following dummy variables:
+
+$$
+X_{i, \texttt{Norway}} =
+\begin{cases}
+1 \; \; \; \; \text{if the subject is from Norway},\\
+0 \; \; \; \; \mbox{otherwise}.
+\end{cases}
+$$
+
+$$
+X_{i, \texttt{Sweden}} =
+\begin{cases}
+1 \; \; \; \; \text{if the subject is from Sweden},\\
+0 \; \; \; \; \mbox{otherwise}.
+\end{cases}
+$$
+
+$$
+X_{i, \texttt{USA}} =
+\begin{cases}
+1 \; \; \; \; \text{if the subject is from USA},\\
+0 \; \; \; \; \mbox{otherwise}.
+\end{cases}
+$$
+
+> **Heads-up:** Note that `Australia` will be the baseline for the variable `country`.
+
+Now, **briefly in plain words**, describe the **two odds** of our chosen modelling framework for the response of interest.
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> \begin{gather*}
+\text{Level } \texttt{About Right}  \text{ or any lesser degree versus level } \texttt{Too Much} \\
+\text{Level } \texttt{Too Little} \text{ versus level } \texttt{About Right} \text{ or any higher degree}
+\end{gather*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.3.3.** **Mathematically**, what is the system of modelling equations?
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We have the following system of $2$ equations:*
+
+> \begin{align*}
+\eta_i^{(\texttt{About Right})} &= \log\left[\frac{P(Y_i \leq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i = \texttt{Too Much} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}\right] \\ &= \beta_0^{(\texttt{About Right})} - \beta_1 X_{i, \texttt{age}} - \beta_2 X_{i, \texttt{Norway}} - \beta_3 X_{i, \texttt{Sweden}} - \beta_4 X_{i, \texttt{USA}}
+\end{align*}
+
+> \begin{align*}
+\eta_i^{(\texttt{Too Little})} &= \log\left[\frac{P(Y_i = \texttt{Too Little} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}}}{P(Y_i \geq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}\right] \\ &= \beta_0^{(\texttt{Too Little})} - \beta_1 X_{i, \texttt{age}} - \beta_2 X_{i, \texttt{Norway}} - \beta_3 X_{i, \texttt{Sweden}} - \beta_4 X_{i, \texttt{USA}}.
+\end{align*}
+
+> *Then, we can reexpress the previous equations as:*
+
+> \begin{align*}
+\frac{P(Y_i = \texttt{Too Much} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i \leq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{About Right})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big)
+\end{align*}
+
+> \begin{align*}
+\frac{P(Y_i \geq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i = \texttt{Too Little} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{Too Little})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big).
+\end{align*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.4. Estimation
+
+Using the corresponding fitting function and `training_WVS`, estimate the corresponding regression model of `poverty` versus `age` and `country`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-4-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+poverty_model <- NULL
+
+# BEGIN SOLUTION
+poverty_model <- polr(poverty ~ age + country,
+  data = WVS, Hess = TRUE
+)
+# END SOLUTION
+
+poverty_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.5. Inference
+
+Using your fitted model, are the explanatory variables `age` and `country` statistically associated to the response `poverty`? Below, provide the corresponding code to fit your regression model.
+
+<!--
+# BEGIN QUESTION
+name: Q1-5-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+summary_poverty_model <- NULL
+
+# BEGIN SOLUTION
+summary_poverty_model <- cbind(tidy(poverty_model),
+  p.value = pnorm(abs(tidy(poverty_model)$statistic),
+    lower.tail = FALSE
+  ) * 2
+) |>
+  mutate_if(is.numeric, round, 3)
+# END SOLUTION
+
+summary_poverty_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, state your inferential conclusion with a significance level $\alpha = 0.05$.
+
+<!--
+# BEGIN QUESTION
+name: Q1-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Our sample gives us evidence to conclude that `age` and `country` (when comparing `Norway`, `Sweden`, and `USA` **versus** `Australia`) are statistically significant since the corresponding $p\text{-values} < .001$.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.6. Coefficient Interpretation
+
+**Q1.6.1.** Obtain the estimates **on the scale of the cumulative odds** via `poverty_model`. Moreover, obtain the corresponding 95% confidence intervals.
+
+<!--
+# BEGIN QUESTION
+name: Q1-6-1-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+exp_estimates <- NULL
+
+# BEGIN SOLUTION
+exp_estimates <- tidy(poverty_model,
+  exponentiate = TRUE,
+  conf.int = TRUE, conf.level = 0.95
+) |>
+  mutate_if(is.numeric, round, 2)
+# END SOLUTION
+
+exp_estimates
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.6.2.** Using the cumulative odds associated to the system of equations in **Q1.3.3.**, provide the interpretation for `age` **by each cumulative odd**.
+
+<!--
+# BEGIN QUESTION
+name: Q1-6-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Let us start with the first cumulative odd:*
+\begin{align*}
+\frac{P(Y_i = \texttt{Too Much} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i \leq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{About Right})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big).
+\end{align*}
+> *The interpretation of $\hat{\beta}_1$ (recall we use the estimate in our interpretations) is the following: for each 1 year increase in `age`, while holding `country` constant, the odds of believing that the government is doing `Too Much` for people in poverty versus `About Right` (or any lesser degree) increase by $(1.01 - 1) \times 100\% = 1\%$.*
+
+> *Now, for the second cumulative odd:*
+\begin{align*}
+\frac{P(Y_i \geq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i = \texttt{Too Little} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{Too Little})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big).
+\end{align*}
+> *The interpretation of $\hat{\beta}_1$ is the following: for each 1 year increase in `age`, while holding `country` constant, the odds of believing that the government is doing `About Right` (or any higher degree) for people in poverty versus `Too Little` increase by $(1.01 - 1) \times 100\% = 1\%$.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.6.3.** Using the cumulative odds associated to the system of equations in **Q1.3.3.**, provide the interpretation for `country` (versus the baseline) **by each cumulative odd**.
+
+<!--
+# BEGIN QUESTION
+name: Q1-6-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Let us start with the first cumulative odd:*
+\begin{align*}
+\frac{P(Y_i = \texttt{Too Much} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i \leq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{About Right})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big).
+\end{align*}
+> *The interpretations are the following:*
+
+> - *$\hat{\beta}_2$: when compared to an Australian, while holding `age` constant, the odds of a Norwegian believing that the government is doing `Too Much` for people in poverty versus `About Right` (or any lesser degree) decrease by $(1 - 0.76) \times 100\% = 24\%$.*
+> - *$\hat{\beta}_3$: when compared to an Australian, while holding `age` constant, the odds of a Swedish believing that the government is doing `Too Much` for people in poverty versus `About Right` (or any lesser degree) decrease by $(1 - 0.59) \times 100\% = 41\%$.*
+> - *$\hat{\beta}_4$: when compared to an Australian, while holding `age` constant, an American is $1.90$ times more likely to believe that the government is doing `Too Much` for people in poverty versus `About Right` (or any lesser degree).*
+
+> *Now, for the second cumulative odd:*
+\begin{align*}
+\frac{P(Y_i \geq \texttt{About Right} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})}{P(Y_i = \texttt{Too Little} \mid X_{i, \texttt{age}},X_{i, \texttt{Norway}},X_{i, \texttt{Sweden}},X_{i, \texttt{USA}})} &= \exp\big(-\beta_0^{(\texttt{Too Little})}\big) \exp\big(\beta_1 X_{i, \texttt{Age}}\big) \\
+& \qquad \exp\big(\beta_2 X_{i, \texttt{Norway}}\big) \exp\big(\beta_3 X_{i, \texttt{Sweden}}\big) \exp\big(\beta_4 X_{i, \texttt{USA}}\big).
+\end{align*}
+> *The interpretations are the following:*
+
+> - *$\hat{\beta}_2$: when compared to an Australian, while holding `age` constant, the odds of a Norwegian believing that the government is doing `About Right` (or any higher degree) for people in poverty versus `Too Little` decrease by $(1 - 0.76) \times 100\% = 24\%$.*
+> - *$\hat{\beta}_3$: when compared to an Australian, while holding `age` constant, the odds of a Swedish believing that the government is doing `About Right` (or any higher degree) for people in poverty versus `Too Little` decrease by $(1 - 0.59) \times 100\% = 41\%$.*
+> - *$\hat{\beta}_4$: when compared to an Australian, while holding `age` constant, an American is $1.90$ times more likely to believe that the government is doing `About Right` (or any higher degree) for people in poverty versus `Too Little`.*
+
+> **Note:** *Interpretations for each `country` by cumulative odds cutoff seem tricky if we only stick to the text. Our stacked bar charts from **Q1.2** provide handy support when communicating these results.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.7. Prediction
+
+**Going beyond our main statistical inquiries**, use this model to predict the `poverty` view probabilities for an American subject who is 60 years old. Moreover, provide a complete description of this prediction in plain words.
+
+<!--
+# BEGIN QUESTION
+name: Q1-7-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *An American subject, who is 60 years old, is more probable to think that the government is doing just about right (or more!) for people in poverty (i.e., $0.42 + 0.27 = 0.69$).*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q1-7-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+round(predict(poverty_model, tibble(age = 60, country = "USA"), type = "probs"), 2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+How about the Swedish counterpart? Provide the corresponding full description and the necessary code to support this answer.
+
+<!--
+# BEGIN QUESTION
+name: Q1-7-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Compared to an American who is 60 years old, a Swedish subject (with the same age) is less probable to think that the government is doing just about right (or more!) for people in poverty (i.e., $0.31 + 0.10 = 0.41$).*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q1-7-accuracy-2
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+round(predict(poverty_model, tibble(age = 60, country = "Sweden"), type = "probs"), 2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 2: The Happiness Data
+
+For this exercise, we will use the `happiness` data collected by the [**GSS at NORC**](http://gss.norc.org/Get-The-Data). The website states the following:
+
+> *The GSS has been a reliable source of data to help researchers, students, and journalists monitor and explain trends in American behaviors, demographics, and opinions. You'll find the complete GSS data set on this site, and can access the GSS Data Explorer to explore, analyze, extract, and share custom sets of GSS data.*
+
+Run the following chunk of code before proceeding:
+
+```{r}
+# Loading our training data.
+happiness_training <- read_csv("data/happiness_survey.csv") |>
+  dplyr::select(happiness, hours, marital)
+head(happiness_training)
+tail(happiness_training)
+```
+
+## Main Statistical Inquiries
+
+Suppose the survey data in `happiness_training` is a representative sample from the American adult population. Hence, **statistically speaking**, we are interested in assessing the following via this sample:
+
+- Are the number of weekly worked hours a significant factor in the subject's happiness? Can we quantify this association? If so, by how much?
+- Is the marital status a significant factor in the subject's happiness?? Can we quantify this association? If so, by how much?
+
+## Q2.1. Data Collection and Wrangling
+
+rubric={autograde:4}
+
+Run the following chunk of code before proceeding:
+
+```{r}
+nrow(happiness_training)
+str(happiness_training)
+```
+
+We know that our sample size is $n = 1643$ subjects. Moreover, `happiness_training` has the following variables:
+
+- `happiness`: how the surveyed subject feels overall (`Not too happy`, `Pretty happy`, and `Very happy`).
+- `hours`: the number of weekly hours worked by the surveyed subject.
+- `marital`: the marital status of the subject (`Divorced`, `Married`, `Never married`, `Separated`, and `Widowed`).
+
+> **Hint:** It will be useful to check the meaning of the adverbs "*pretty*" and "*very*" in English so we can verify that "*pretty*" < "*very*".
+
+Ensure that columns `happiness` and `marital` have the **correct data types**. Moreover, set `Never Married` as the **baseline** `marital` level. Finally, run the below test to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q2-1-autograder
+manual: false
+points:
+  - 1
+  - 1
+  - 1
+  - 1
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+happiness_training$happiness <- as.ordered(happiness_training$happiness)
+levels(happiness_training$happiness)
+
+happiness_training$marital <- as.factor(happiness_training$marital)
+happiness_training$marital <- fct_relevel(
+  happiness_training$marital,
+  c("Never married", "Divorced", "Married", "Separated", "Widowed")
+)
+levels(happiness_training$marital)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: happiness does not have the right data type.
+" # END TEST CONFIG
+testthat::expect_true(is.ordered(happiness_training$happiness))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: marital does not have the right data type.
+" # END TEST CONFIG
+testthat::expect_true(is.factor(happiness_training$marital))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Levels in marital should not be ordered.
+" # END TEST CONFIG
+testthat::expect_false(is.ordered(happiness_training$marital))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The baseline level in marital is incorrect.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(levels(happiness_training$marital)[1]), "b9419bd9578ef25529e2102ea1ca5de2")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q2.2. Exploratory Data Analysis
+
+rubric={accuracy:1,viz:6,reasoning:4}
+
+Based on our main statistical inquiries, let us answer the following:
+
+**Q2.2.1.** What is our response of interest? 
+
+**Q2.2.2.** What is the response's nature?
+
+**Q2.2.3.** What are our explanatory variables of interest? 
+
+**Q2.2.4.** What is the nature of the explanatory variables?
+
+<!--
+# BEGIN QUESTION
+name: Q2-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> **Q2.2.1.** *Our response of interest is `happiness`.*
+
+> **Q2.2.2.** *It has an ordinal nature: `Not too happy < Pretty happy < Very happy`.*
+
+> **Q2.2.3.** *Our explanatory variables of interest are `hours` and `marital`.*
+
+> **Q2.2.4.** *`hours` can be taken as a continuous explanatory variable, whereas `marital` is a nominal explanatory variable with 5 levels (`Never married`, `Divorced`, `Married`, `Separated` or `Widowed`).*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, make two suitable plots: one for `happiness` versus `hours` and another for `happiness` versus `marital` status. Comment on you findings **in two to three sentences**.
+
+<!--
+# BEGIN QUESTION
+name: Q2-2-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The differences are not graphically pronounced with the medians of all response levels in terms of the side-by-side boxplots of `happiness` versus `hours`. On the other hand, the stacked bar charts show a much higher percentage of `Very Happy` as `Married` subjects.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q2-2-viz
+manual: true
+-->
+  
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+# BEGIN SOLUTION
+happiness_side_boxplots <- happiness_training |>
+  ggplot(aes(happiness, hours)) +
+  geom_boxplot(aes(fill = happiness)) +
+  labs(y = "Weekly Working Hours", x = "Happiness Scale") +
+  ggtitle("Side-by-Side Boxplots") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    legend.position = "none"
+  ) +
+  scale_fill_brewer(palette="BuPu")
+
+happiness_prop_summary <- as.data.frame(xtabs(
+  ~ marital +
+    happiness,
+  happiness_training
+) / rowSums(xtabs(
+  ~ marital + happiness,
+  happiness_training
+)), responseName = "prop")
+
+happiness_stacked_bars <- ggplot(happiness_prop_summary, aes(
+  x = marital,
+  y = prop, fill = happiness
+)) +
+  geom_bar(stat = "identity", width = 0.7, colour = "black") +
+  geom_text(aes(label = ifelse(prop >= 0.01,
+    paste0(sprintf("%.0f", prop * 100), "%"), ""
+  )),
+  position = position_stack(vjust = 0.5), fontface = "bold", size = 3.3
+  ) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(y = "Percentage", x = "Marital Status", fill = "") +
+  ggtitle("Stacked Bar Charts") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text.x = element_text(size = 10, angle = 0),
+    axis.text.y = element_text(size = 10, angle = 0),
+    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 10, margin = margin(r = 1, unit = "cm")),
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.position = "bottom"
+  ) +
+  guides(fill = guide_legend(title = "Happiness Scale")) +
+  scale_fill_brewer(palette = "BuPu")
+
+happiness_side_boxplots
+happiness_stacked_bars
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q2.3. Data Modelling Framework
+
+rubric={reasoning:2}
+
+Given the response's nature of this case, **briefly in plain words**, describe the **two odds** that we will attempt to model.
+
+<!--
+# BEGIN QUESTION
+name: Q2-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> - *The odds that the subject feels `Very happy` versus `Pretty happy` or `Not too happy`.*
+> - *The odds that the subject feels `Very happy` or `Pretty happy` versus `Not too happy`.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, write out the sample's regression equations for these **two logit functions** under **the proper regression model**. Let $Y_i$ be the happiness level for the $i$th subject. Furthermore, let $X_{i, \texttt{hours}}$ be the number of weekly hours worked by the $i$th subject. Finally, use the following dummy variables:
+
+$$
+X_{i, \texttt{Divorced}} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th subject is divorced},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+$$
+X_{i, \texttt{Married}} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th subject is married},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+$$
+X_{i, \texttt{Separated}} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th subject is separated},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+$$
+X_{i, \texttt{Widowed}} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th subject is widowed},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+> **Note:** You do not need to use LaTeX to show your work. That said, you could only embed pictures of your written solution into the `.pdf`. Nevertheless, it is advisable to use LaTeX so you can practice equation writing in reproducible documents. 
+
+<!--
+# BEGIN QUESTION
+name: Q2-3-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We have the following system of $2$ equations:*
+
+> \begin{align*}
+\eta_i^{(\texttt{Pretty happy})} &= \log \left[ \frac{P \left( Y_i \leq \texttt{Pretty happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}} \right)}{P \left( Y_i = \texttt{Very happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}} \right)} \right] \\
+&= \beta_0^{(\texttt{Pretty happy})} - \beta_1 X_{i, \texttt{hours}} - \beta_2 X_{i, \texttt{Divorced}} - \beta_3 X_{i, \texttt{Married}} - \beta_4 X_{i, \texttt{Separated}} - \beta_5 X_{i, \texttt{Widowed}}.
+\end{align*}
+
+> \begin{align*}
+\eta_i^{(\texttt{Not too happy})} &= \log \left[ \frac{P \left( Y_i = \texttt{Not too happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}} \right)}{P \left( Y_i \geq \texttt{Pretty happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}} \right)} \right] \\
+&= \beta_0^{(\texttt{Not too happy})} - \beta_1 X_{i, \texttt{hours}} - \beta_2 X_{i, \texttt{Divorced}} - \beta_3 X_{i, \texttt{Married}} - \beta_4 X_{i, \texttt{Separated}} - \beta_5 X_{i, \texttt{Widowed}}.
+\end{align*}
+
+> *This system is equivalent to:*
+
+> \begin{gather*}
+\frac{P(Y_i = \texttt{Very happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}})}{P(Y_i \leq \texttt{Pretty happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}})} = \\ \exp\big(-\beta_0^{(\texttt{Pretty happy})}\big) \exp\big(\beta_1 X_{i, \texttt{hours}}\big) \exp\big(\beta_2 X_{i, \texttt{Divorced}}\big) \exp\big(\beta_3 X_{i, \texttt{Married}}\big) \exp\big(\beta_4 X_{i, \texttt{Separated}}\big) \exp\big(\beta_5 X_{i, \texttt{Widowed}}\big)
+\end{gather*}
+
+> \begin{gather*}
+\frac{P(Y_i \geq \texttt{Pretty happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}})}{P(Y_i = \texttt{Not too happy} \mid X_{i, \texttt{hours}}, X_{i, \texttt{Divorced}}, X_{i, \texttt{Married}}, X_{i, \texttt{Separated}}, X_{i, \texttt{Widowed}})} = \\ \exp\big(-\beta_0^{(\texttt{Not too happy})}\big) \exp \big(\beta_1 X_{i, \texttt{hours}}\big) \exp\big(\beta_2 X_{i, \texttt{Divorced}}\big) \exp\big(\beta_3 X_{i, \texttt{Married}}\big) \exp\big(\beta_4 X_{i, \texttt{Separated}}\big) \exp\big(\beta_5 X_{i, \texttt{Widowed}}\big).
+\end{gather*}
+
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q2.4. Estimation
+
+rubric={autograde:3}
+
+Estimate the corresponding regression model under the assumption of proportional odds for your chosen response and regressors. Call it `happiness_fitting`. Then, run the below test to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q2-4-autograder
+manual: false
+points:
+  - 0
+  - 1.5
+  - 1.5
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r tags=c()}
+happiness_fitting <- NULL
+
+# BEGIN SOLUTION
+happiness_fitting <- polr(happiness ~ marital + hours,
+  data = happiness_training, Hess = TRUE
+) 
+# END SOLUTION
+
+happiness_fitting
+```
+
+<!-- # END SOLUTION -->
+  
+<!-- # BEGIN TESTS -->
+  
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Your model should be assigned to happiness_fitting
+" # END TEST CONFIG
+testthat::expect_true(exists("happiness_fitting"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used for happiness_fitting
+" # END TEST CONFIG
+testthat::expect_true("polr" %in% class(happiness_fitting))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for happiness_fitting
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(happiness_fitting$coefficients, 2)), "cfaeea8418af00e11bfe21fcaef0a610")
+```
+
+<!-- # END TESTS -->
+  
+<!-- # END QUESTION -->
+
+## Q2.5. Inference
+
+rubric={accuracy:2,reasoning:3}
+
+Using $\alpha = 0.05$, are the working `hours` statistically associated with `happiness`? How about the regression coefficients of `marital` status? Does this align with your previous graphical evidence? 
+
+**Answer in two to three sentences** and provide the necessary code to support your conclusions.
+
+<!--
+# BEGIN QUESTION
+name: Q2-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Our surveyed sample of subjects does not provide enough statistical evidence to state an association between the number of working `hours` and `happiness`. Regarding the `marital` status, the only level statistically associated with `happiness` is `Married` to the baseline `Never married`. These statistical results align with the visual evidence found in our plots.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q2-5-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+summary_happiness_fitting <- cbind(tidy(happiness_fitting),
+  p.value = pnorm(abs(tidy(happiness_fitting)$statistic),
+    lower.tail = FALSE
+  ) * 2
+) |>
+  mutate_if(is.numeric, round, 2)
+summary_happiness_fitting
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q2.6. Coefficient Interpretation
+
+rubric={accuracy:1,reasoning:2}
+
+Following up with **Q2.5**, interpret the regression coefficients that are statistically significant **in terms of all the cumulative odds involved in the ordinal model**. Provide the necessary code to support your interpretations.
+
+<!--
+# BEGIN QUESTION
+name: Q2-6-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> - *For the cumulative odds that the subject feels `Very happy` versus `Pretty happy` or `Not too happy`: for those who are `Married` when compared to those who have never been married, the cumulative odds that the subject feels `Very happy` versus `Pretty happy` or `Not too happy` increase by 2.56 times while holding `hours` constant.*
+> - *For the cumulative odds that the subject feels `Very happy` or `Pretty happy` versus `Not too happy`: for those who are `Married` when compared to those who have never been married, the cumulative odds that the subject feels `Pretty happy` or `Very happy` versus `Not too happy` increase by 2.56 times while holding `hours` constant.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q2-6-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tibble(summary_happiness_fitting[2, 1:2],
+  exp.estimate = round(exp(summary_happiness_fitting[2, 2]), 2)
+)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q2.7. Why Not Ordinary Least-squares?
+
+rubric={autograde:3}
+
+Suppose a colleague suggests to fit an ordinary least-squares (OLS) model assuming that the `happiness` levels are numeric scores:
+
+- `Not too happy` as score `1`.
+- `Pretty happy` as score `2`.
+- `Very happy` as score `3`.
+
+Hence, estimate this OLS model and call it `OLS_fitting`. Then, run the below test to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q2-7-autograder
+manual: false
+points:
+  - 0
+  - 1.5
+  - 1.5
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r tags=c()}
+OLS_fitting <- NULL
+
+# BEGIN SOLUTION
+mod_happiness_training <- happiness_training |>
+  mutate(happiness = as.integer(happiness))
+
+OLS_fitting <- lm(happiness ~ marital + hours, data = mod_happiness_training)
+# END SOLUTION
+
+summary(OLS_fitting)
+```
+
+<!-- # END SOLUTION -->
+  
+<!-- # BEGIN TESTS -->
+  
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The model should be assigned to OLS_fitting
+" # END TEST CONFIG
+testthat::expect_true(exists("OLS_fitting"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used.
+" # END TEST CONFIG
+testthat::expect_true("lm" %in% class(OLS_fitting))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(OLS_fitting$coefficients), 2)), "5c50f29bb63b66e2463924e8cd92d4d4")
+```
+
+<!-- # END TESTS -->
+  
+<!-- # END QUESTION -->
+
+## Q2.8. Inference with Ordinary Least-squares
+
+rubric={accuracy:1,reasoning:2}
+
+Using $\alpha = 0.05$, what do you see in terms of statistical significance now now for the OLS model? **Answer in one or two sentences** and provide the necessary code to support your interpretations. 
+
+Furthermore, state two negative consequences of using a OLS regression model with this data.
+
+<!--
+# BEGIN QUESTION
+name: Q2-8-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The only significant slope is `maritalMarried`. Moreover, there are two negative consequences with this model:*
+
+> 1.  *The jump from `Not too happy` to `Pretty happy` is assumed to be the same as the jump from `Pretty happy` to `Very happy`. This is probably unrealistic, so "happiness units" might be unequal. In other words, for an individual, the difference between feeling `Not too happy` and `Pretty happy` might be quite steep compared to feeling `Pretty happy` versus `Very happy` in this context.*
+> 2.  *We have encountered the restricted range problem again. The OLS regression model can evaluate outside of the $[1, 3]$ range of the response.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q2-8-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(OLS_fitting) |>
+  mutate_if(is.numeric, round, 2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 3: The Experimental Sleep Data
+
+For this exercise, we will use the experimental `sleep_data`. This dataset has the following variables:
+
+- `time_to_sleep`: the time it takes the `volunteer` to fall asleep in minutes, a continuous response.
+- `method`: the lighting method used to make the `volunteer` fall asleep, a binary factor with levels `control` and `glasses` (the treatment of interest: blue-light-blocking glasses, BBGs).
+- `volunteer`: a nominal factor indicating to what subject each observation belongs (16 subjects from `A` to `P`).
+- `age`: a factor indicating what `age` group the `volunteer` belongs (subjects `A` to `H` are considered `Adult` and `I` to `P` are considered `G7`).
+
+> **Heads-up:** Note that the data **has subsets of observations by `volunteer`**.
+
+Run the following chunk of code before proceeding:
+
+```{r}
+sleep_data <- read_csv("data/sleep_data.csv")
+head(sleep_data)
+```
+
+## Main Statistical Inquiries
+
+Via this experiment, we aim **to determine the effect of BBGs on the time it takes the average person to fall asleep** (under a scenario where they spend 2+ hours in front of a blue-light emitting device before bed). We will assume that the sample of subjects is representative of the population of interest
+
+## Q3.1. Data Wrangling
+
+rubric={autograde:3}
+
+Ensure that the factor-type columns `method`, `volunteer`, and `age` have the correct data types. Moreover, ensure `control`, `A`, and `Adult` are the baseline levels for `method`, `volunteer`, and `age` respectively. Then, run the below test to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q3-1-autograder
+manual: false
+points:
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r tags=c()}
+# BEGIN SOLUTION
+sleep_data$method <- as.factor(sleep_data$method)
+levels(sleep_data$method)
+
+sleep_data$volunteer <- as.factor(sleep_data$volunteer)
+levels(sleep_data$volunteer)
+
+sleep_data$age <- as.factor(sleep_data$age)
+levels(sleep_data$age)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The data type is wrong in the column method.
+" # END TEST CONFIG
+testthat::expect_true("factor" %in% class(sleep_data$method))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: method has the wrong baseline.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(levels(sleep_data$method)), "7e2f4fdb9999b61e00c381559d7573f3")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The data type is wrong in the column volunteer.
+" # END TEST CONFIG
+testthat::expect_true("factor" %in% class(sleep_data$volunteer))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: volunteer has the wrong baseline.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(levels(sleep_data$volunteer)), "a26082c08a3b427709ddc8b24e7002b3")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The data type is wrong in the column age.
+" # END TEST CONFIG
+testthat::expect_true("factor" %in% class(sleep_data$age))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: age has the wrong baseline.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(levels(sleep_data$age)), "8496b5121db67fb02677492971bb3d5e")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q3.2. Exploratory Data Analysis
+
+rubric={viz:6}
+
+Make a plot so you can see the effects altogether using `geom_jitter()` with `method` on the $x$-axis and `time_to_sleep` on the $y$-axis. Facet the data by `volunteer`. Moreover include `geom_smooth()` in each panel with `method = "lm"`. Colour the smoother and points by `age` and include proper axis labels, legend, and title.
+
+<!--
+# BEGIN QUESTION
+name: Q3-2-viz
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=5.5}
+# BEGIN SOLUTION
+sleep_plots <- sleep_data |>
+  mutate(method = if_else(method == "control", 0, 1)) |>
+  ggplot(aes(method, time_to_sleep, colour = age)) +
+  geom_jitter(width = 0.1) +
+  facet_wrap(~volunteer, scales = "free_y") +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_bw() +
+  ylab("Time to Fall Asleep (min)") +
+  xlab("Method") +
+  scale_x_continuous(
+    breaks = 0:1,
+    labels = c("control", "glasses")
+  ) +
+  labs(color = "Age") +
+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(size = 8, angle = 0),
+    axis.text.y = element_text(size = 8, angle = 0),
+    axis.title = element_text(size = 8),
+    legend.text = element_text(size = 8, margin = margin(r = 1, unit = "cm")),
+    legend.title = element_text(size = 8, face = "bold"),
+    strip.text = element_text(size = 9)
+  )
+sleep_plots
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.3. Ordinary Least-squares: Estimation
+
+rubric={autograde:2}
+
+Estimate an **additive OLS regression** (called `OLS_fixed_model`) that determines the effect of the `method` on the average person's `time_to_sleep`. **Do NOT use `age` as a regressor**, only `method` and `volunteer`.  Then, run the below test to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q3-3-autograder
+manual: false
+points:
+  - 0
+  - 1
+  - 1
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r tags=c()}
+OLS_fixed_model <- NULL
+
+# BEGIN SOLUTION
+OLS_fixed_model <- lm(time_to_sleep ~ method + volunteer, data = sleep_data)
+# END SOLUTION
+
+OLS_fixed_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The model should be assigned to OLS_fixed_model
+" # END TEST CONFIG
+testthat::expect_true(exists("OLS_fixed_model"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used.
+" # END TEST CONFIG
+testthat::expect_true("lm" %in% class(OLS_fixed_model))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(OLS_fixed_model$coefficients), 2)), "5f61e357775f836245719443d4e89b9b")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q3.4. Ordinary Least-squares: Inference and Coefficient Interpretation
+
+rubric={accuracy:1,reasoning:4}
+
+What is the effect of BBGs (`glasses`)? Is it statistically significant with $\alpha = 0.05$? 
+
+**Answer in one or two sentences** and provide the necessary code to support your conclusions.
+
+<!--
+# BEGIN QUESTION
+name: Q3-4-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The output from `tidy()` indicates that we have evidence to state that the `method` is statistically associated to `time_to_sleep`, with a* $p-\text{value} < \alpha$. Moreover, the effect of BBGs when compared to `control` reduces the `time_to_sleep` in 4.9 min.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-4-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(OLS_fixed_model) |>
+  mutate_if(is.numeric, round, 2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+How would we modify this OLS regression model to allow for the fact that BBGs have a unique effect on each `volunteer`? Why would we not want to do this? **Answer in two or three sentences.**
+
+> **Heads-up:** Do not code anything, just use plain words for the two questions above.
+
+<!--
+# BEGIN QUESTION
+name: Q3-4-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We could add an interaction term between `volunteer` and `method` to the `OLS_fixed_model`. We would not want to do this because we are not interested in the effect of BBGs on each `volunteer`. Overall via this experiment, we are just interested in the average effect on the population, which is what the `methodglasses` coefficient aims to provide.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.5. Mixed-Effects: Data Modelling Framework
+
+rubric={reasoning:4}
+
+Let us modify our `OLS_fixed_model` so that it becomes a linear mixed-effects (LME) model, ensuring that there is a **mixed intercept by `volunteer`**. Furthermore, consider a **mixed effect for `method`**.
+
+Let $\texttt{time\_to\_sleep}_{i,j}$ be $i$th response for the $j$th `volunteer` with $6$ observations each; where $i = 1, \dots, 6$ and $j = 1, \dots, 16$, and
+
+$$
+\texttt{method}_{i,j} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the method is BBG},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$ 
+
+**Write the sample's mixed-effects model equation.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+\begin{align*}
+\texttt{time\_to\_sleep}_{i,j}
+&= \overbrace{\beta_{0,j}}^{\text{Mixed Effect}} + \overbrace{\beta_{1,j}}^{\text{Mixed Effect}} \times \texttt{method}_{i,j} + \varepsilon_{i,j} \\
+&=  (\beta_0 + b_{0,j}) + (\beta_1 + b_{1,j}) \times \texttt{method}_{i,j}  + \varepsilon_{i,j} \\
+& \qquad \qquad  \qquad \qquad \qquad \qquad \text{for} \; i = 1, \ldots, 6 \; \; \text{and} \; \; j = 1, \ldots, 16;
+\end{align*}
+
+> *where* $\beta_0$ and $b_{0,j}$ are the fixed and random intercepts respectively, along with $\beta_1$ and $b_{1,j}$ as the fixed and random effects for `method` respectively. The error term $\varepsilon_{i,j}$ has the usual OLS assumptions.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Based on the study's objective, what is **the parameter(s) of interest** to be estimated? **Answer in one brief sentence.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-5-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The parameter of interest to be estimated is the fixed effect* $\beta_1$.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+What distribution are we assuming the random effects have (if any is made)? **Answer in one brief sentence.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-5-reasoning-3
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We are assuming* $(b_{0,j}, b_{1,j})^{T} \sim \mathcal{N}_2(\mathbf{0}, \mathbf{D})$, where $\mathbf{D}$ is a generic covariance matrix.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.6. Mixed-Effects: Estimation
+
+rubric={accuracy:2}
+
+Estimate the LME model specified in **Q3.5** using `lmer()` and call it `LME_model`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-6-accuracy
+manual: true
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r}
+LME_model <- NULL
+
+# BEGIN SOLUTION
+LME_model <- lmer(time_to_sleep ~ method + (method | volunteer), data = sleep_data)
+# END SOLUTION
+
+LME_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.7. Mixed-Effects: Inference
+
+rubric={accuracy:1,reasoning:3}
+
+Is the effect of BBG statistically significant with $\alpha = 0.05$? **Answer in one or two sentences** and provide the necessary code to support your conclusions.
+
+<!--
+# BEGIN QUESTION
+name: Q3-7-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The output from `summary()` indicates that we have evidence to state that the `method` is statistically associated to `time_to_sleep`, with a* $p-\text{value} < \alpha$.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-7-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+summary(LME_model)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+The code below obtains the 95% confidence intervals for `methodglasses` using `OLS_fixed_model` and `LME_model`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-7-CI
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# Uncomment the code below before proceeding.
+
+# confint(OLS_fixed_model)["methodglasses", ]
+# suppressWarnings(suppressMessages(confint(LME_model)["methodglasses", ]))
+
+# BEGIN SOLUTION
+confint(OLS_fixed_model)["methodglasses", ]
+suppressWarnings(suppressMessages(confint(LME_model)["methodglasses", ]))
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Which confidence interval is wider? Which would you expect to be wider, and why? **Answer in two or three sentences.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-7-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The confidence interval is wider for the `LME_model`. This is expected because the reported standard error of the slope `methodglasses` in the `OLS_fixed_model` is artificially small since it does not consider the correlation in the data.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.8. Mixed-Effects: Second Estimation
+
+rubric={accuracy:1}
+
+Modify the previous LME model to determine whether BBGs have **a different fixed effect on the `age` groups `Adult` versus `G7` (in the form of a FIXED interaction effect)** and call it `LME_model_2`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-8-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+LME_model_2 <- NULL
+
+# BEGIN SOLUTION
+LME_model_2 <- lmer(time_to_sleep ~ method * age + (method | volunteer),
+  data = sleep_data
+)
+# END SOLUTION
+
+LME_model_2
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.9. Mixed-Effects: Second Inference
+
+rubric={accuracy:1,reasoning:2}
+
+Using $\alpha = 0.05$, is the fixed interaction in `LME_model_2` statistically significant? **Answer in one brief sentence** and provide the necessary code to support your conclusion.
+
+<!--
+# BEGIN QUESTION
+name: Q3-9-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Using* $\alpha = 0.05$, we have statistical evidence to state that this interaction is significant.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-9-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+summary(LME_model_2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q3.10. Generalized Linear Mixed-Effects Model: Estimation
+
+rubric={accuracy:1}
+
+LME models can be extended to generalized linear models (GLMs) as well. We can assume the response `time_to_sleep` follows a Normal (i.e., `Gaussian`) distribution. We will use a `log` `link` that restricts the response range to non-negative values.
+
+> **Heads-up:** As a side note (**not to be implemented in this lab**) a Gamma distribution might be more appropriate, i.e., a flexible $2$-parameter distribution over positive values. Nonetheless, it would take more effort to get to converge to optimum values.
+
+Estimate an appropriate generalized linear mixed-effects model to determine the effect of BBGs on `time_to_sleep` using `glmer()`. Use a mixed intercept by `volunteer` with a mixed effect for `method` (**do not use `age`**). Call the object `GLME_model`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-10-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+GLME_model <- NULL
+
+# BEGIN SOLUTION 
+GLME_model <- glmer(time_to_sleep ~ method + (method | volunteer),
+  data = sleep_data,
+  family = gaussian(link = "log")
+)
+# END SOLUTION
+
+GLME_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q3.11. Generalized Linear Mixed-Effects Model: Coefficient Interpretation
+
+rubric={accuracy:2,reasoning:2}
+
+Using `GLME_model`, is the effect of BBG statistically significant with $\alpha = 0.05$? **Answer in one brief sentence** and provide the necessary code to support your conclusion.
+
+<!--
+# BEGIN QUESTION
+name: Q3-11-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The output from `summary()` indicates that we have evidence to state that the `method` is statistically associated to `time_to_sleep`, with a* $p-\text{value} < \alpha$.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-11-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION 
+summary(GLME_model)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Interpret the fixed effect of BBGs on `time_to_sleep` **in one brief sentence**. Provide the necessary code to support your interpretation
+
+> **Heads-up:** Given that we are transforming the response to fit the model, make your interpretation on the original scale of `time_to_sleep`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-11-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Those who wear BBGs will have an average `time_to_sleep` that is 0.79 times their regular average `time_to_sleep`. It is perhaps easiest when interpreted this way: wearing BBGs results in a 21% reduction ($1 - e^{-0.24} = 1 - 0.79 = 0.21$) in average `time_to_sleep`*.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-11-accuracy-2
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+round(exp(fixef(GLME_model)[2]), 2)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.12. Mixed-Effects: Predictions
+
+rubric={accuracy:2}
+
+Use the `LME_model` to predict the following:
+
+1. `volunteer` `A` wears BBGs before going to sleep. What is the expected `time_to_sleep`? Assign the prediction to the vector `pred_A_LME_model`.
+2. A new person decides to wear BBGs before bed. What is the expected `time_to_sleep`? Assign the prediction to the vector `pred_new_LME_model`.
+
+<!--
+# BEGIN QUESTION
+name: Q3-12-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+pred_A_LME_model <- NULL
+pred_new_LME_model <- NULL
+
+# BEGIN SOLUTION
+pred_A_LME_model <- predict(LME_model,
+  newdata = tibble(volunteer = "A", method = "glasses")
+)
+pred_new_LME_model <- predict(LME_model,
+  newdata = tibble(volunteer = "new person", method = "glasses"),
+  allow.new.levels = TRUE
+)
+# END SOLUTION
+
+pred_A_LME_model
+pred_new_LME_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# (Challenging) Exercise 4: Proportional Odds in Ordinal Logistic Regression
+
+rubric={reasoning:5}
+
+Let us suppose that a given **discrete ordinal response **$Y_i$ (for $i = 1, \dots, n$) has categories $1, 2, \dots, m$ in a training set of size $n$.
+
+> **Heads-up:** The categories $1, 2, \dots, m$ **implicate an ordinal scale here**, i.e., $1 < 2 < \dots < m$.
+
+Before going into the model's mathematical notation for this challenging exercise, recall that Ordinal Logistic regression will indicate how each one of the $k$ regressors $X_{i,1}, \dots, X_{i,k}$ affects the cumulative logarithm of the odds in the ordinal response  for the following $m - 1$ situations:
+
+\begin{gather*}
+\text{Level } m - 1 \text{ or any lesser degree versus level } m\\
+\text{Level } m - 2 \text{ or any lesser degree versus level } m - 1 \text{ or any higher degree}\\
+\vdots \\
+\text{Level } 2 \text{ or any lesser degree versus level } 3 \text{ or any higher degree}\\
+\text{Level } 1 \text{ versus level } 2 \text{ or any higher degree}\\
+\end{gather*}
+
+These $m - 1$ situations can be translated into cumulative probabilities using the logarithms of the odds on the left-hand side ($m - 1$ link functions) subject to the linear combination of the $k$ regressors $X_{i,j}$ (for $j = 1, \dots, k$):
+
+\begin{gather*}
+\eta_i^{(m - 1)} = \log\left[\frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(m - 1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\eta_i^{(m - 2)} = \log\left[\frac{P(Y_i \leq m - 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > m - 2 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(m - 2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \\
+\vdots \\
+\eta_i^{(2)} = \log\left[\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 2 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}
+\end{gather*}
+\begin{equation}
+\label{eq:ordinal_system}
+\eta_i^{(1)} = \log\left[\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}.
+\end{equation}
+
+Note that the system above has $m - 1$ intercepts but **only $k$ regression coefficients**. In general, the previous $m - 1$ equations can be generalized for levels $j = m - 1, \dots, 1$ as follows:
+
+\begin{equation}
+\label{eq:general_ordinal}
+\eta_i^{(j)} = \log\left[\frac{P(Y_i \leq j \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > j \mid X_{i,1}, \ldots, X_{i,k})}\right] = \beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}
+\end{equation}
+\begin{gather*}
+\; \; \; \; \; \; \; \; \Rightarrow \; P(Y_i \leq j \mid X_{i,1}, \ldots, X_{i,k}) = \frac{\exp\left(\beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}\right)}{1 + \exp\left(\beta_0^{(j)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k}\right)}.
+\end{gather*}
+
+Given all this information, **show how the proportional odds come into play in this regression model**.
+
+> **Note:** You do not need to use LaTeX to show your work. That said, you could only embed pictures of your written solution into the `.pdf`. Nevertheless, it is advisable to use LaTeX so you can practice equation writing in reproducible documents. 
+
+> **Hint:** The equation system (\ref{eq:ordinal_system}) has a common set of parameters and variables. How can you relate these $m - 1$ equations in a single mathematical expression?
+
+<!--
+# BEGIN QUESTION
+name: Q4-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Note that the system (\ref{eq:ordinal_system}) can be rearranged as follows using exponentiation:*
+
+> \begin{gather*}
+\frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(m - 1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\frac{P(Y_i \leq m - 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > m - 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(m - 2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\vdots \\
+\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(2)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(1)} - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right).
+\end{gather*}
+
+> *Then, we apply the exponent laws:*
+
+> \begin{gather*}
+\frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(m - 1)} \right) \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\frac{P(Y_i \leq m - 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > m - 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(m - 2)} \right) \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\vdots \\
+\frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(2)} \right) \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( \beta_0^{(1)} \right) \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right).
+\end{gather*}
+
+> *The right-hand side can be isolated as follows:*
+
+> \begin{gather*}
+\exp \left( - \beta_0^{(m - 1)} \right) \frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\exp \left( - \beta_0^{(m - 2)} \right) \frac{P(Y_i \leq m - 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > m - 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\vdots \\
+\exp \left( - \beta_0^{(2)} \right) \frac{P(Y_i \leq 2 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 2 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right) \\
+\exp \left( - \beta_0^{(1)} \right) \frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})} = \exp \left( - \beta_1 X_{i, 1} - \beta_2 X_{i, 2} - \ldots - \beta_k X_{i, k} \right).
+\end{gather*}
+
+> *This rearranged system can be summarized as:*
+
+> \begin{gather*}
+\exp{\left(-\beta_0^{(m - 1)}\right)} \frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})} = \dots = \exp{\left(-\beta_0^{(1)}\right)} \frac{\Pr(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{\Pr(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})}.
+\end{gather*}
+
+> *Finally, these are the proportional odds:*
+
+> \begin{gather*}
+\frac{P(Y_i \leq m - 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i = m \mid X_{i,1}, \ldots, X_{i,k})} \propto \dots \propto \frac{P(Y_i = 1 \mid X_{i,1}, \ldots, X_{i,k})}{P(Y_i > 1 \mid X_{i,1}, \ldots, X_{i,k})} \\ 
+\qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \square
+\end{gather*}
+
+> *Note the symbol $\propto$ indicates "proportional to."*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Submission
+
+Congratulations! You are done the lab. Do not forget to:
+
+- Knit the assignment to generate the `.pdf` file and push everything to your Github repo.
+- Double check all the figures, texts, equations are rendered properly in the `.pdf` file
+- Submit the `.Rmd` and the `.pdf` files to Gradescope.

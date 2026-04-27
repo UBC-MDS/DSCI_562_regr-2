@@ -1,0 +1,4 @@
+"0",".= "" # BEGIN TEST CONFIG"
+"0","failure_message: The correct fitting function is not being used for nb_model"
+"0",""" # END TEST CONFIG"
+"0","testthat::expect_true(""negbin"" %in% class(nb_model))"

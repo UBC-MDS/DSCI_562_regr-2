@@ -1,0 +1,11 @@
+"0","
+
+
+source(""scripts/support_functions.R"")
+
+set.seed(123)
+sample_heights <- draw_sample(1000)     # Custom function
+sample_mean <- round(mean(sample_heights), 2)
+sample_mean"
+"2","/bin/sh: webr: command not found
+"

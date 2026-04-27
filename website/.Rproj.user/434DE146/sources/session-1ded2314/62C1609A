@@ -1,0 +1,27 @@
+{
+    "id": "62C1609A",
+    "path": "~/Desktop/MDS/public-materials/DSCI_562_regr-2/website/slides/Lecture7/lecture7_quantile_regression.qmd",
+    "project_path": "slides/Lecture7/lecture7_quantile_regression.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1766995639776.0,
+    "source_on_save": false,
+    "relative_order": 14,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "cursorPosition": "23,18",
+        "scrollLine": "12"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1767160148,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1767160148463,
+    "read_only": false,
+    "read_only_alternatives": []
+}

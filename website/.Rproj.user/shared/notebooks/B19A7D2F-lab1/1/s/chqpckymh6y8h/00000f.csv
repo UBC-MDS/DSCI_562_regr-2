@@ -1,0 +1,4 @@
+"0",".= "" # BEGIN TEST CONFIG"
+"0","failure_message: Check the formula and data arguments in the fitting function for multinomial_model"
+"0",""" # END TEST CONFIG"
+"0","testthat::expect_equal(digest::digest(round(multinomial_model$AIC, 3)), ""cd60cd92f77796426bcfafdd2245a6d3"")"

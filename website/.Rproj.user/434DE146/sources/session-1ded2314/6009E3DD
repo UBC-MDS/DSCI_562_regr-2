@@ -1,0 +1,27 @@
+{
+    "id": "6009E3DD",
+    "path": "~/Desktop/MDS/public-materials/DSCI_562_regr-2/website/notes/lecture4_linear_mixed_effects_models.qmd",
+    "project_path": "notes/lecture4_linear_mixed_effects_models.qmd",
+    "type": "quarto_markdown",
+    "hash": "3068095862",
+    "contents": "",
+    "dirty": false,
+    "created": 1766540019618.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "200,0",
+        "scrollLine": "194",
+        "docOutlineVisible": "1"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1777255302,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1777255302638,
+    "read_only": false,
+    "read_only_alternatives": []
+}

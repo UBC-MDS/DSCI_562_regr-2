@@ -1,0 +1,5 @@
+"0","# Run this cell before proceeding."
+"0","data(hsb)"
+"0","training_hsb <- hsb |>"
+"0","  dplyr::select(prog, schtyp, math, socst)"
+"0","head(training_hsb)"

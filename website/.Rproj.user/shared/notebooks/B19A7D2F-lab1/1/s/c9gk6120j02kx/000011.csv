@@ -1,0 +1,4 @@
+"0",".= "" # BEGIN TEST CONFIG"
+"0","failure_message: The baseline reponse level is incorrect."
+"0",""" # END TEST CONFIG"
+"0","testthat::expect_equal(digest::digest(levels(training_hsb$prog)[1]), ""cb3e33280c4541f45725124c86a408dd"")"

@@ -1,0 +1,24 @@
+---
+title: "Lecture 4: Linear Mixed-effects Models"
+format: 
+  live-html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+webr:
+  packages:
+    - tidyverse
+    - AER
+---
+
+```{webr}
+#| autorun: true
+#| warning: false
+library(tidyverse)
+library(AER)
+
+data("Grunfeld", package = "AER")
+Grunfeld <- Grunfeld |>
+  rename(investment = invest, market_value = value)
+head(Grunfeld)
+```

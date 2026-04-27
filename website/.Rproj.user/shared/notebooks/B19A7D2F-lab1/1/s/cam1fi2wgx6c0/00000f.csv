@@ -1,0 +1,4 @@
+"0",".= "" # BEGIN TEST CONFIG"
+"0","failure_message: Your model should be assigned to multinomial_model"
+"0",""" # END TEST CONFIG"
+"0","testthat::expect_true(exists(""multinomial_model""))"

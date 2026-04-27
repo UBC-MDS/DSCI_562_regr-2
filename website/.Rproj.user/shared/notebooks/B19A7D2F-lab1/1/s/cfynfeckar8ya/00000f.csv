@@ -1,0 +1,3 @@
+"0","# BEGIN SOLUTION"
+"0","tidy(poisson_model, conf.int = TRUE, conf.level = 0.95, exponentiate = TRUE) |>"
+"0","  mutate_if(is.numeric, round, 3)"

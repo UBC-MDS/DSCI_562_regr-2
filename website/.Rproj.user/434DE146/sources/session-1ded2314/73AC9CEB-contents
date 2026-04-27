@@ -1,0 +1,2225 @@
+---
+title: "DSCI 562 Lab 1"
+subtitle: Introduction to Generalized Linear Models
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+<!--
+# ASSIGNMENT CONFIG
+environment: environment.yml
+overwrite_requirements: true
+generate: true
+export_cell: false
+-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+
+# Lab Overview
+
+Your tasks in this lab will primarily focus on exploring generalized linear models (GLMs) via Binary Logistic regression (specifically, likelihood-based model selection). Then, you will proceed with count and Multinomial Logistic regression models by following the Data Science-based steps discussed in `lecture1`. At the end of this lab, there is an analytical exercise on maximum likelihood-based estimation for Binary Logistic regression, which only consists of challenging and not-for-marks questions.
+
+# Lab Mechanics
+
+`rubric={mechanics:5}`
+
+Check off that you have read and followed each of these instructions:
+
+- [ ] All files necessary to run your work must be pushed to your `GitHub.ubc.ca` repository for this lab.
+- [ ] Paste the URL to your GitHub repo here: **INSERT YOUR GITHUB REPO URL HERE**
+- [ ] You need to have **a minimum of 3 commit messages** associated with your `GitHub.ubc.ca` repository for this lab.
+- [ ] **You must also submit `.Rmd` file and the rendered `pdf` in this lab to Gradescope.** You are responsible for ensuring all the figures, texts, and equations in the `.pdf` file are appropriately rendered.
+- [ ] To ensure you do not break the autograder remove all code for installing packages (i.e., DO NOT have `install.packages(...)` or `devtools::install_github(...)` in your homework!
+- [ ] Follow the [**MDS general lab instructions**](https://ubc-mds.github.io/resources_pages/general_lab_instructions/).
+
+All standard rubrics in this lab follow the MDS rubrics that can be found [**here**](https://github.com/UBC-MDS/public/tree/master/rubric).
+
+# Use of Generative AI (GenAI)
+
+GenAI tools (e.g., ChatGPT) can be useful when used responsibly. In this course, you may use these tools to gather information, review concepts, or brainstorm. If you use GenAI in any graded work, you must clearly cite it (including what tool you used and how you used it). What is **not** permitted is submitting work that is primarily written by a GenAI tool; for example, copying and pasting AI-generated responses into an assignment. For details and expectations, please review the [**MDS policies**](https://ubc-mds.github.io/policies/).
+
+# Code Quality
+
+rubric={quality:3}
+
+The code that you write for this assignment will be given one overall grade for code quality. Check our [**code quality rubric**](https://github.com/UBC-MDS/public/blob/master/rubric/rubric_quality.md) as a guide to what we are looking for. Also, for this course (and other MDS courses that use `R`), we are trying to follow the `tidyverse` code style. There is a guide you can refer too: <http://style.tidyverse.org/>
+
+Each code question will also be assessed for code accuracy (i.e., does it do what it is supposed to do?).
+
+# Writing
+
+rubric={writing:3}
+
+To get the marks for this writing component, you should:
+
+-   Use proper English, spelling, and grammar throughout your submission (the non-coding parts).
+-   Be succinct. **This means being specific about what you want to communicate, without being superfluous.**
+
+Check our [**writing rubric**](https://github.com/UBC-MDS/public/blob/master/rubric/rubric_writing.md) as a guide to what we are looking for.
+
+# A Note on Challenging Questions
+
+Each lab will have a few challenging questions. **These are usually low-risk questions and will contribute to a 5% out of the total lab grade of 100%**. The main purpose here is to challenge yourself or dig deeper in a particular area. When you start working on labs, attempt all other questions before moving to these questions. If you are running out of time, please skip these questions.
+
+We will be more strict with the marking of these questions. If you want to get full points in these questions, your answers need to
+
+- be thorough, thoughtful, and well-written (if necessary),
+- provide convincing justification and appropriate evidence for the claims you make, and
+- impress the reader of your lab with your understanding of the material, your analytical and critical reasoning skills, and your ability to think on your own.
+
+# Lab Grade Computation
+
+Once lab grades are published on Gradescope, you will see your **raw lab mark** $m$. This **raw lab mark** $m$ is the grand total of your granted marks throughout the whole lab assignment. Now, if we add up **all the marks (non-challenging and challenging)** in the handout corresponding to all `rubric={...}`, this sum is what we call the maximum raw lab mark $m_{100}$ to get 100% as a percentage lab grade. On the other hand, if we add up **the non-challenging marks** in the handout found in `rubric={...}`, this sum is what we call the raw lab mark $m_{95}$ to get a 95% as a percentage lab grade.
+
+By the end of the block, **once all lab marking is finished on Gradescope**, your raw lab grades will be transferred to **Canvas**. Then, in your [**Canvas gradebook**](https://canvas.ubc.ca/courses/175442/grades), you will see these raw lab grades (`raw lab1`, `raw lab2`, `raw lab3`, and `raw lab4`). Finally, for each of the four labs, you will also see your final lab grades (`lab1`, `lab1`, `lab3`, and `lab4`). Let $g$ be the final lab grade of a specific lab **as a percentage**; it will be computed as follows:
+
+- If $m > m_{95}$, then $g = 95 + \left( \frac{m - m_{95}}{m_{100} - m_{95}} \times 5 \right)$.
+- If $m \leq m_{95}$, then $g = \left( \frac{m}{m_{95}} \right) \times 95$.
+
+# A Note on Warmup Exercises
+
+Each lab session will begin with a warmup exercise, which will be indicated when introduced in the handout. We will solve this exercise altogether during the first 10 minutes of the lab session.
+
+> **Note this warmup part will not count toward the lab grade of 100%.**
+
+# Limited Support for Jupyter Notebook Issues
+
+Because this is **Block 4** of the program, many of you have already explored different lab workflows across different courses (e.g., different IDEs, notebook setups, or computing environments). That variety is totally expected in the program. However, for this course specifically, all labs in this course must be submitted as **`R` Markdown** (i.e., `.Rmd`). For that reason, the expected and strongly recommended workflow is via **RStudio**. While you are welcome to use other tools for your own exploration, instructional support will be prioritized for the RStudio + `R` Markdown workflow, since that is the environment we design, test, and grade against.
+
+## Why We Set this Expectation
+
+RStudio provides the most reliable and consistent setup for:
+
+-	**Rendering** to the required output (i.e., `.pdf`) with the correct formatting, figures, and tables.
+- **Reproducible execution** (clear control of working directory, chunk options, caching, and session info).
+-	**Debugging** within the same environment used to author and knit the lab submission
+
+In contrast, Jupyter-based workflows can introduce tool-specific issues that are difficult to diagnose quickly and fairly across different systems and configurations, such as:
+
+-	Kernel problems (wrong kernel, kernel crashes, frozen execution).
+- Environment and package/version conflicts (e.g., mismatched `R` versions, missing system dependencies, conflicting libraries).
+-	Working directory or file path confusion (relative paths that work in one environment but not another).
+- Problems converting notebooks to the required submission format (formatting changes, missing outputs, broken figure/table rendering).
+-	“*It runs in the notebook but won’t knit*” issues due to different execution order, hidden state, or chunk handling differences.
+
+Because this course actively explores a range of `R` libraries and workflows, our troubleshooting support will prioritize course content and `R`/`R` Markdown/RStudio issues (e.g., package usage, modelling code, rendering/knitting problems in RStudio). As a result, we cannot guarantee timely support for Jupyter Notebook–specific setup issues (e.g., kernels, notebook configuration, environment conflicts), especially close to deadlines.
+
+## Late Submissions and Tool-related Issues
+
+If you choose to work in Jupyter Notebook (or any other environment different from RStudio), you assume the risk of tool-specific delays. **Late lab submissions due to Jupyter Notebook issues will receive the standard lateness penalty according to the [MDS policies](https://ubc-mds.github.io/policies/)**, the same as any other reason not covered by an UBC's academic concession process.
+
+## Practical Recommendations
+
+To avoid preventable problems, you should:
+
+- **Write** and knit your labs in RStudio.
+- **Do knit regulary** (not just right before the deadline).
+-	Keep your files organized and use **relative paths** within your lab folder.
+- Save your rendered output and ensure it matches the submission requirements.
+
+You will always be supported on the course content and the expected workflow. This policy is here to keep the submission process reliable, fair, and consistent for everyone.
+
+# No Disclosure of Lab and Quiz Grade Summaries
+
+In this course, the teaching team **will not disclose** lab and quiz grade summaries, including (but not limited to) class averages, medians, quartiles, score ranges, histograms/distributions, percentiles, or rank-order information. This is a deliberate instructional choice made under academic freedom, which gives instructors the discretion (and responsibility) to adopt assessment practices that best support a constructive learning environment. Our focus is on each student’s individual performance, growth, and learning, rather than encouraging comparisons across the cohort.
+
+What you will receive instead:
+
+-	Your **individual lab or quiz score** (and feedback when applicable).
+-	Lab solution keys right after the deadlines and solutions, when released at the **Computer-Based Testing Facility (CBTF)**, during the respective quiz review window.
+-	Support understanding mistakes via a previously booked appointment at our offices.
+-	A clear process for regrade requests according to the [**MDS policies**](https://ubc-mds.github.io/policies/).
+
+> **Note:** This policy is not negotiable and applies consistently to all labs and quizzes and all students.
+
+# Setup
+
+If you fail to load any packages, you can install them and try loading the library again.
+
+```{r load libraries, message=FALSE, warning=FALSE}
+library(carData)
+library(ISLR2)
+library(tidyverse)
+library(broom)
+library(see)
+library(faraway)
+library(cowplot)
+library(AER)
+library(MASS)
+library(scales)
+library(nnet)
+```
+
+\newpage
+
+# (Warmup) Exercise 1: The Titanic Dataset
+
+Before digging into your lab tasks, let us start with a review of `lecture8` from **DSCI 561** on Binary Logistic regression. This warmup exercise will help us refresh our learning from the previous block on this regression model while implementing the Data Science-based steps from this course's `lecture1`.
+
+That said, let us get on the historical data side and this GLM to address inferential inquiries. Specifically, we will use the Titanic dataset available via the package `{carData}`. According to the corresponding documentation, this is the description of the data frame `TitanicSurvival`:
+
+> *Information on the survival status, sex, age, and passenger class of 1309 passengers in the Titanic disaster of 1912.*
+
+```{r}
+data(TitanicSurvival)
+# We dropped those rows with missing age
+# (we have not gotten into missing data imputation yet in this course!).
+TitanicSurvival <- TitanicSurvival |>
+  drop_na(age)
+head(TitanicSurvival)
+tail(TitanicSurvival)
+```
+
+> **Note:** `passengerClass` is a factor-type **ordinal variable** (i.e., there is a hierarchy associated to its corresponding levels as shown below) which would require proper use of **contrasts** in Regression Analysis if we use it as a regressor. We will address this topic until **DSCI 554**; thus we will not use it in the meantime.
+
+```{r}
+levels(TitanicSurvival$passengerClass)
+```
+
+## Main Statistical Inquiries
+
+Suppose you are a Ship Historian turned into a Data Scientist. Hence, **statistically speaking**, you are interested in determining the following:
+
+- Was `sex` a significant factor in surviving the ship sinking? Can we quantify this association? If so, by how much?
+- Was `age` a significant factor in surviving the ship sinking? Can we quantify this association? If so, by how much?
+
+> **Heads-up:** Note these are inferential inquiries, not predictive.
+
+## Q1.1. Data Collection and Wrangling
+
+Given the previous inquiries, we will specifically work on the following columns:
+
+- `survived`: Whether the passenger survived (`yes`) or not (`no`).
+- `sex`: The sex of the passenger: `female` or `male`.
+- `age`: The age of the passenger in years.
+
+> **Heads-up:** Note this is a dataset from 1912. Hence, the variable `sex` (i.e., gender in the context of this case) was recorded as binary.
+
+Thus, let us select the columns of interest:
+
+<!--
+# BEGIN QUESTION
+name: Q1-1-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+TitanicSurvival <- TitanicSurvival |>
+  dplyr::select(survived, sex, age)
+head(TitanicSurvival)
+tail(TitanicSurvival)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.2. Exploratory Data Analysis
+
+Throughout our inferential courses in MDS, we will emphasize the importance of conducting a proper **exploratory data analysis (EDA)**. Based on our main statistical inquiries, let us answer the following:
+
+**Q1.2.1.** What is our response of interest? 
+
+**Q1.2.2.** What is the response's nature?
+
+**Q1.2.3.** What are our explanatory variables of interest? 
+
+**Q1.2.4.** What is the nature of the explanatory variables?
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> **Q1.2.1.** *Our response of interest is `survived`.*
+
+> **Q1.2.2.** *The response's nature is **binary**.*
+
+> **Q1.2.3.** *Our explanatory variables of interest are `sex` and `age`.*
+
+> **Q1.2.4.** *`sex` is binary and `age` is numeric (it could be considered continuous in the context of this modelling case).*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, let us code suitable plots comparing `age` on the $y$-axis by each level in `survived` on the $x$-axis, which has to be facetted by `sex`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-viz
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+# BEGIN SOLUTION
+survived_boxplots<- TitanicSurvival |>
+  ggplot(aes(survived, age)) +
+  geom_boxplot(aes(fill = survived)) +
+  scale_fill_brewer(palette="BuPu") +
+  labs(y = "Age (Years)", x = "Survival Status") +
+  facet_wrap(. ~ sex) +
+  ggtitle("Side-by-Side Boxplots") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10, face = "bold"),
+    strip.text = element_text(size = 10),
+    legend.position = "none"
+  )
+survived_boxplots
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.2.5.** What do you observe about the relationship of `age` and `sex` on `survived`?
+
+<!--
+# BEGIN QUESTION
+name: Q1-2-reasoning-2
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *According to what we see on the side-by-side boxplots, being older seems to be associated with **slightly** higher survivorship for females.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.3. Data Modelling Framework
+
+Before proceeding with the proper data modelling framework, suppose we err on the naive side and treat the categories of `survived` as probabilities (i.e., we transformed `no` as `0` and `yes` as `1`).
+
+Run the cell below before proceeding.
+
+```{r}
+TitanicSurvival <- TitanicSurvival |>
+  mutate(survived = if_else(survived == "yes", 1, 0))
+head(TitanicSurvival)
+```
+
+Use `geom_point()` to plot these "*survivorship probabilities*" from `survived` on the $y$-axis versus `age` on the $x$-axis, along with an **Ordinary Least-squares (OLS) regression model** estimated line on top with `geom_smooth()`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-viz
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+Titanic_scatterplot <- NULL
+
+# BEGIN SOLUTION
+Titanic_scatterplot <- TitanicSurvival |>
+  ggplot() +
+  geom_point(aes(age, survived)) + 
+  geom_smooth(aes(age, survived), method = "lm", formula = y ~ x, se = FALSE) +
+  labs(y = "Prob. of Survivorship", x = "Age (Years)") +
+  ggtitle("OLS Fitted Regression Line") +
+  theme(
+    plot.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10, face = "bold"),
+    strip.text = element_text(size = 10),
+  )
+# END SOLUTION
+
+Titanic_scatterplot
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.3.1.** Based on the results in `Titanic_scatterplot`, **would this be a good model to use? Why or why not?**
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-1-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Using this model would not make any sense. Those `0`s and `1`s only refer to values of an indicator variable for a Bernoulli trial in terms of failure and success, respectively.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Given the previous question, let us set up a more adequate data modelling framework. Firstly, for $i = 1, \dots, n$, let us mathematically define the response of interest in our training set of size $n$:
+
+$$
+Y_i =
+\begin{cases}
+1 \; \; \; \; \text{if the passenger survived},\\
+0 \; \; \; \; \mbox{otherwise.}
+\end{cases}
+$$
+
+Furthermore, this $i$th response is assumed as:
+
+$$Y_i \sim \text{Bernoulli}(p_i),$$
+
+where $p_i$ is the survival probability of the $i$th passenger.
+
+**Q1.3.2.** Having defined the response (and its distributional assumption) and the explanatory variables in this case, **what is the right modelling framework?**
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *A GLM such as Binary Logistic regression.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Because OLS regression of `survived` versus `age` might be problematic, let us try the proposed model from **Q1.3.2**. Firstly, show its corresponding fitted values of this proposed model on `Titanic_scatterplot`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-viz-2
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+# BEGIN SOLUTION
+Titanic_scatterplot <- Titanic_scatterplot +
+  geom_smooth(aes(age, survived),
+    method = "glm",
+    method.args = c(family = binomial), formula = "y ~ x", se = FALSE, color = "red"
+  ) +
+  ggtitle("Fitted Regression Lines (OLS in blue and Binary Logistic in red)")
+# END SOLUTION
+
+Titanic_scatterplot
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.3.3.** Graphically, **what differences do you see in between the OLS and your proposed regression model?**
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Even though the resemblance between both fitted functions might graphically mislead us, the Binary Logistic regression's sigmoid function does not have a response range problem (as in OLS regression) since the predicted probabilities are not larger than 1.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+**Q1.3.4.** Having defined a more appropriate model in **Q1.3.2.**, let us expand our set of regressors to more than the observed `age`, $X_{i, \texttt{age}}$. Hence, we will include `sex` as follows:
+
+$$
+X_{i, \texttt{sex}} =
+\begin{cases}
+1 \; \; \; \; \text{if the passenger is female},\\
+0 \; \; \; \; \mbox{otherwise.}
+\end{cases}
+$$
+
+> **Heads-up:** Note that the category `male` is the baseline level under this framework for $X_{i, \texttt{sex}}$.
+
+**Q1.3.5.** Now that we already defined the response of interest, our regressors, and a more adequate model. What is the training sample's modelling equation? What is its main characteristic on the left-hand side?
+
+<!--
+# BEGIN QUESTION
+name: Q1-3-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *For $i = 1, \dots, n$, the training sample's modelling equation for this the Binary Logistic regression model is:*
+> $$\log\left(\frac{p_i}{1 - p_i}\right) = \beta_0 + \beta_1 X_{i, \texttt{age}} + \beta_2 X_{i, \texttt{sex}}.$$
+
+> *The main characteristic of this modelling equation on the left-side is the GLM's link function: the log of odds of survival $p_i$ versus non-survival $1 - p_i$.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.4. Estimation
+
+It is time to estimate the aforementioned model via the training set `TitanicSurvival` of `survived` versus `age` and `sex`.
+
+> **Heads-up:** Make sure that `male` is the baseline level in the regressor `sex`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-4-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+titanic_model <- NULL
+
+# BEGIN SOLUTION
+TitanicSurvival$sex <- fct_relevel(
+  TitanicSurvival$sex,
+  c("male", "female")
+)
+levels(TitanicSurvival$sex) # Making sure male is the baseline level on the left-hand side
+
+titanic_model <- glm(
+  formula = as.factor(survived) ~ age + sex,
+  data = TitanicSurvival, family = binomial
+)
+# END SOLUTION
+
+titanic_model
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.5. Inference
+
+Once we have fitted our regression model, it is time to assess whether `age` and `sex` are statistically significant factors in surviving the ship sinking (the first main inquiry!). Thus, we need to carry out the corresponding hypothesis tests using the output from `titanic_model`.
+
+<!--
+# BEGIN QUESTION
+name: Q1-5-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+tidy(titanic_model, conf.int = TRUE, conf.level = 0.95, exponentiate = TRUE) |> 
+  mutate_if(is.numeric, round, 3)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Now, state your conclusion with a significance level $\alpha = 0.05$.
+
+<!--
+# BEGIN QUESTION
+name: Q1-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Our sample gives us evidence to conclude that only `sex` is statistically associated to the response `survived` since the corresponding $p\text{-value} < .001$.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q1.6. Coefficient Interpretation
+
+Via your model fitted and stored in `titanic_model`, interpret the estimated coefficients associated to those significant explanatory variables (i.e., the second main inquiry). **Use an adequate scale.**
+
+<!--
+# BEGIN QUESTION
+name: Q1-6-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We have that:*
+$$
+X_{i, \texttt{sex}} =
+\begin{cases}
+1 \; \; \; \; \text{if the passenger is female},\\
+0 \; \; \; \; \mbox{otherwise},
+\end{cases}
+$$
+> *and*
+\begin{gather*}
+\log\left(\frac{\hat{p}_i}{1 - \hat{p}_i}\right) = \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} + \hat{\beta}_2 X_{i, \texttt{sex}} \\
+\frac{\hat{p}_i}{1 - \hat{p}_i} = \exp \left( \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} + \hat{\beta}_2 X_{i, \texttt{sex}} \right) \\
+\frac{\hat{p}_i}{1 - \hat{p}_i} = \exp \left( \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} \right) \exp \left( \hat{\beta}_2 X_{i, \texttt{sex}} \right) \\
+\frac{\hat{p}_i}{1 - \hat{p}_i} = \exp \left( \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} \right) \exp \big( \underbrace{2.461}_{\hat{\beta}_2} X_{i, \texttt{sex}} \big) \\
+\frac{\hat{p}_i}{1 - \hat{p}_i} = \exp \left( \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} \right) \exp \big[ 2.461 (1) \big] \qquad \text{passenger is female} \\
+\frac{\hat{p}_i}{1 - \hat{p}_i} = \exp \left( \hat{\beta}_0 + \hat{\beta}_1 X_{i, \texttt{age}} \right) (11.717).
+\end{gather*}
+> *The interpretation for `sex` is: "a woman was 11.713 times more likely to survive than not to when compared to a man while keeping everything else constant."*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 2: The Orange Juice Problem Continues
+
+Let us continue with the orange juice problem from **DSCI 561**'s `lab4`. Nevertheless, we will skip all the stages you executed back then (except for the *data modelling framework* and *estimation*) and dig into *model selection*. Recall the description of the data set `OJ` from package `{ISLR2}` (James et al., 2022):
+
+> *"The data contains 1070 purchases where the customer either purchased Citrus Hill or Minute Maid Orange Juice. A number of characteristics of the customer and product are recorded."*
+
+Function `str()` allows us to take a quick look at the nature of this dataset's variables:
+
+```{r}
+str(OJ)
+```
+
+Note our variables of interest will be the following:
+
+- `Purchase:` The response of interest indicating whether the customer purchased Minute Maid (`MM`) or Citrus Hill (`CH`).
+- `PriceDiff`: A continuous explanatory variable (or feature), the difference in juice price between both brands at purchase (`SalePriceMM - SalePriceCH`).
+- `STORE`: A label indicating at what possible store a given juice was purchased. It is originally a numeric-type column (`0`, `1`, `2`, `3`, or `4`), but we will convert it to a **nominal factor** (i.e., the order of the levels does not matter) with the below code.
+- `PctDiscCH`: Percentage discount for `CH` (it is on a proportion scale).
+- `PctDiscMM`: Percentage discount for `MM` (it is on a proportion scale).
+- `LoyalCH`: Customer brand loyalty for `CH` (an index between 0 and 1, where 0 indicates no brand loyalty and 1 complete brand loyalty).
+
+```{r}
+# Run this code before proceeding.
+# It selects the columns of interest. Then, it makes STORE a factor-type variable.
+training_OJ <- OJ |>
+  dplyr::select(Purchase, PriceDiff, STORE, PctDiscCH, PctDiscMM, LoyalCH) |>
+  mutate(STORE = as.factor(STORE)) 
+```
+
+## Main Statistical Inquiries
+
+Suppose you are part of the Data Science team from **Citrus Hill**. Via the dataset `training_OJ` and the previous variables, you are interested in fitting a model that best fits this training data so you can use the corresponding modelling estimates to predict the probability of any given future customer purchasing Citrus Hill. Note you will not have any further testing data in this situation.
+
+Specifically, your response of interest is the following:
+
+$$
+Y_i =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th customer purchased Citrus Hill},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+## Q2.1. Data Modelling Framework
+  
+rubric={reasoning:11}
+
+Given the above response definition, let us set up an adequate data modelling framework. Firstly, for $i = 1, \dots, n$, let us mathematically define the response of interest in our training set of size $n$. We will assume the $i$th response as:
+  
+$$Y_i \sim \text{Bernoulli}(p_i),$$
+  
+where $p_i$ is the Citrus Hill purchasing probability of the $i$th customer.
+
+Now, suppose your team has proposed the following five candidate models:
+  
+- **Model 1.** A given regression model with `PriceDiff` as a **standalone** regressor.
+- **Model 2.** A given regression model with `PriceDiff` and `STORE` as **standalone** regressors.
+- **Model 3.** A given regression model with `PriceDiff`, `STORE`, and `PctDiscCH` as **standalone** regressors.
+- **Model 4.** A given regression model with `PriceDiff`, `STORE`, `PctDiscCH`, and `PctDiscMM` as **standalone** regressors.
+- **Model 5.** A given regression model with `PriceDiff`, `STORE`, `PctDiscCH`, `PctDiscMM`, and `LoyalCH` as **standalone** regressors.
+
+> **Heads-up:** The term **standalone** refers to regressors that are not interacting with another one in the right-hand side of the modelling equation.
+
+Now, answer the following:
+  
+a. Having defined the response (and its distributional assumption) and regressors in each candidate model, what is a suitable regression model?
+b. What is the training sample's modelling equation for each of the five candidate models? To earn full marks on this question, define the necessary mathematical notation this exercise has not defined beforehand.
+
+> **Note:** You do not need to use LaTeX to show your work when necessary. That said, you could only embed pictures of your written solution into the `.pdf`. Nevertheless, it is advisable to use LaTeX so you can practice equation writing in reproducible documents. 
+
+<!--
+# BEGIN QUESTION
+name: Q2-1-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> a. *Since we have Bernoulli trials in this problem, the suitable modelling choice would be a GLM such as Binary Logistic regression.*
+> b. *Each candidate model will need a link function $\mbox{logit}(p_i)$ on the left-hand side with its corresponding set of regressors on the right-hand side.*
+
+>> *For **Model 1**, let $X_{\texttt{PriceDiff}_i}$ be the observed price difference between both brands for the $i$th customer, thus:*
+
+$$
+\textbf{Model 1:} \quad \mbox{logit}(p_i) = \log\left(\frac{p_i}{1 - p_i}\right) = \beta_0 + \beta_1 X_{\texttt{PriceDiff}_i}.
+$$
+
+>> *Now, besides $X_{\texttt{PriceDiff}_i}$, **Model 2** will include the store (a nominal factor) as a regressor. This addition will require the use of indicator variables. Assuming `STORE 0` is the baseline (for $j = 1, 2, 3, 4$), the following indicator variables will be included:*
+
+$$
+X_{{\texttt{Store}_j}_i} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th customer purchased the orange juice at \texttt{STORE j}},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+>> *This arrangement yields the following sample's modelling equation:*
+  
+$$
+  \textbf{Model 2:} \quad \mbox{logit}(p_i) = \log\left(\frac{p_i}{1 - p_i}\right) = \beta_0 + \beta_1 X_{\texttt{PriceDiff}_i} + \beta_2 X_{{\texttt{Store}_1}_i} + \beta_3 X_{{\texttt{Store}_2}_i} + \beta_4 X_{{\texttt{Store}_3}_i} + \beta_5 X_{{\texttt{Store}_4}_i}.
+$$
+  
+>> *For **Model 3**, we add $X_{\texttt{PctDiscCH}_i}$ as the $i$th percentage discount for `CH`:*
+  
+\begin{align*}
+\textbf{Model 3} \quad \mbox{logit}(p_i) = \log\left(\frac{p_i}{1 - p_i}\right) &= \beta_0 + \beta_1 X_{\texttt{PriceDiff}_i} + \beta_2 X_{{\texttt{STORE}_1}_i} + \beta_3 X_{{\texttt{STORE}_2}_i} + \beta_4 X_{{\texttt{STORE}_3}_i} + \beta_5 X_{{\texttt{STORE}_4}_i} + \\
+& \qquad \beta_6 X_{\texttt{PctDiscCH}_i}.
+\end{align*}
+
+>> *In terms of **Model 4**, we add $X_{\texttt{PctDiscMM}_i}$ as the $i$th percentage discount for `MM`:*
+  
+\begin{align*}
+\textbf{Model 4} \quad \mbox{logit}(p_i) = \log\left(\frac{p_i}{1 - p_i}\right) &= \beta_0 + \beta_1 X_{\texttt{PriceDiff}_i} + \beta_2 X_{{\texttt{STORE}_1}_i} + \beta_3 X_{{\texttt{STORE}_2}_i} + \beta_4 X_{{\texttt{STORE}_3}_i} + \beta_5 X_{{\texttt{STORE}_4}_i} + \\
+& \qquad \beta_6 X_{\texttt{PctDiscCH}_i} + \beta_7 X_{\texttt{PctDiscMM}_i}.
+\end{align*}
+
+>> *Finally, **Model 5**, will include $X_{\texttt{LoyalCH}_i}$ as the $i$th customer brand loyalty for `CH`:*
+  
+\begin{align*}
+\textbf{Model 5} \quad \mbox{logit}(p_i) = \log\left(\frac{p_i}{1 - p_i}\right) &= \beta_0 + \beta_1 X_{\texttt{PriceDiff}_i} + \beta_2 X_{{\texttt{STORE}_1}_i} + \beta_3 X_{{\texttt{STORE}_2}_i} + \beta_4 X_{{\texttt{STORE}_3}_i} + \beta_5 X_{{\texttt{STORE}_4}_i} + \\
+& \qquad \beta_6 X_{\texttt{PctDiscCH}_i} + \beta_7 X_{\texttt{PctDiscMM}_i} + \beta_8 X_{\texttt{LoyalCH}_i}.
+\end{align*}.
+
+>> *Note $\beta_0, \beta_1, ..., \beta_8$ are the corresponding regression terms to be estimated.*
+  
+<!-- # END SOLUTION -->
+  
+<!-- # END QUESTION -->
+
+## Q2.2. Estimation
+
+rubric={autograde:5}
+
+Following your answer in **Q2.1.**, estimate your five regression models and call them `CH_model_1`, ..., `CH_model_5` using `training_OJ`. Then, run the test below to validate your answers.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q2-2-autograder
+manual: false
+points:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+CH_model_1 <- NULL
+CH_model_2 <- NULL
+CH_model_3 <- NULL
+CH_model_4 <- NULL
+CH_model_5 <- NULL
+
+# BEGIN SOLUTION
+training_OJ$Purchase <- fct_relevel(
+  training_OJ$Purchase,
+  c("MM", "CH")
+)
+
+CH_model_1 <- glm(formula = Purchase ~ PriceDiff,
+  family = binomial,
+  data = training_OJ
+)
+
+CH_model_2 <- glm(formula = Purchase ~ PriceDiff + STORE,
+  family = binomial,
+  data = training_OJ
+)
+
+CH_model_3 <- glm(formula = Purchase ~ PriceDiff + STORE + PctDiscCH,
+  family = binomial,
+  data = training_OJ
+)
+
+CH_model_4 <- glm(formula = Purchase ~ PriceDiff + STORE + PctDiscCH + PctDiscMM,
+  family = binomial,
+  data = training_OJ
+)
+
+CH_model_5 <- glm(
+  formula = Purchase ~ PriceDiff + STORE + PctDiscCH +
+    PctDiscMM + LoyalCH,
+  family = binomial,
+  data = training_OJ
+)
+# END SOLUTION
+
+CH_model_1
+CH_model_2
+CH_model_3
+CH_model_4
+CH_model_5
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Model 1 should be assigned to CH_model_1
+" # END TEST CONFIG
+testthat::expect_true(exists("CH_model_1"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Model 2 should be assigned to CH_model_2
+" # END TEST CONFIG
+testthat::expect_true(exists("CH_model_2"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Model 3 should be assigned to CH_model_3
+" # END TEST CONFIG
+testthat::expect_true(exists("CH_model_3"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Model 4 should be assigned to CH_model_4
+" # END TEST CONFIG
+testthat::expect_true(exists("CH_model_4"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Model 5 should be assigned to CH_model_5
+" # END TEST CONFIG
+testthat::expect_true(exists("CH_model_5"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for Model 1.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(CH_model_1$coefficients), 3)), "820d42c5a9e2c3b24e96af122a100dc8")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for Model 2.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(CH_model_2$coefficients), 3)), "b0bc225a087d079af073c0e9dad02cd7")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for Model 3.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(CH_model_3$coefficients), 3)), "a875abce42575244eb6b04cb622ec13d")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for Model 4.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(CH_model_4$coefficients), 3)), "1b5a5f981c4b2425da64a08d446e9918")
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for Model 5.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(CH_model_5$coefficients), 3)), "cf4cf9cef4b49e8a987de7ff9589e6d8")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q2.3. Model Selection
+
+rubric={accuracy:5,reasoning:5}
+
+From each model description in **Q2.1**, note that the first four models are nested in **Model 5**. To address our main statistical inquiries, perform the corresponding model selection. **Note there is more than one method to solve these inquiries, but you are only required to use one.** **If necessary**, state your hypotheses and use a significance level $\alpha = 0.05$. 
+
+> **Heads-up:** In the case of hypothesis testing, since the five models are nested, you do not need to perform all pairwise comparisons. You can start with **Model 5** versus **Model 4**, then **Model 4** versus **Model 3**, etc. Then, you can discard those losing models and do some final pairwise comparisons with the winning ones.
+
+**Provide the necessary code to support your conclusion.**
+
+<!--
+# BEGIN QUESTION
+name: Q2-3-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+# Using Analysis of Deviance
+anova(CH_model_5, CH_model_4, test = "Chi") # CH_model_5 wins.
+anova(CH_model_4, CH_model_3, test = "Chi") # CH_model_4 wins.
+anova(CH_model_3, CH_model_2, test = "Chi") # CH_model_2 wins.
+anova(CH_model_2, CH_model_1, test = "Chi") # CH_model_2 wins.
+# We can discard CH_model_3 and CH_model_1. Now, let us make some final pairwise 
+# comparisons with CH_model_5, CH_model_4, and CH_model_2.
+anova(CH_model_5, CH_model_4, test = "Chi") # We already know that CH_model_5 wins.
+anova(CH_model_4, CH_model_2, test = "Chi") # CH_model_4 wins.
+anova(CH_model_5, CH_model_2, test = "Chi") # CH_model_5 wins.
+# Therefore, the winning model is CH_model_5.
+
+#Using AIC or BIC
+glance(CH_model_1)
+glance(CH_model_2)
+glance(CH_model_3)
+glance(CH_model_4)
+glance(CH_model_5) # It has the smallest AIC and BIC. Then, this model wins.
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q2-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We could use either one of these three methods:*
+
+> 1. *Analysis of Deviance. This method will require to set up the following hypotheses (assuming **Model A** is nested in **Model B**):*
+
+\begin{gather*}
+H_0: \textbf{Model A} \text{ fits the data better than } \textbf{Model B} \\
+H_a: \textbf{Model B} \text{ fits the data better than } \textbf{Model A.} \\
+\end{gather*}
+
+>> *Using `anova()`, we identify `CH_model_5` as the best model among the five candidates.*
+
+> 2. *By using the Akaike Information Criterion ($\text{AIC}$), `CH_model_5` ($\text{AIC} = 842.0083$) is the best model among the five candidates.*
+
+> 3. *By using the Bayesian Information Criterion ($\text{BIC}$), `CH_model_5` ($\text{BIC} = 886.7871$) is the best model among the five candidates.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 3: Doctor Visits in Australia
+
+The `dvisits` dataset (from package `{faraway}`) contains data from the **Australian Health Survey of 1977-78** and consists of 5190 single elderly adults. 
+
+## Main Statistical Inquiries
+
+We will model the relationship between the count of consultations with a doctor or specialist in the past two weeks (`doctorco`) to the regressor `age` in years along with the factor-type `sex` (**encoded in this dataset** as binary with levels `1` for female and `0` for male as baseline) and the individual's `income` in thousands of Australian dollars.
+
+> **Heads-up:** Note this is a survey from the 1970s. Thus, the variable `sex` (i.e., gender in the context of this case) was recorded as binary.
+
+Moreover, suppose we want to assess which regressors (from the ones above) are **statistically associated** to the corresponding response (and by how much!):
+
+**Run the below code before proceeding.**
+
+```{r}
+training_dvisits <- dvisits |>
+  dplyr::select(doctorco, age, sex, income) |>
+  mutate(
+    sex = as.factor(sex), # Converting sex as factor-type.
+    age = age * 100 # The original dataset divided the age by 100.
+  )
+
+str(training_dvisits) # Checking variable types in training set.
+```
+
+## Q3.1. Exploratory Data Analysis
+
+rubric={reasoning:2}
+
+Using `training_dvisits`, let us create a proper visualization to summarize the relationship between the count of consultations with a doctor or specialist in the past two weeks to `age` and `income` (**separately!**).
+
+<!--
+# BEGIN QUESTION
+name: Q3-1-viz
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r fig.width=7, fig.height=4}
+# Uncomment and run this cell before proceeding.
+
+# dvisits_scatterplots <- ggplot(training_dvisits, aes(y = doctorco)) +
+#   ylab("Count of Consultations") +
+#   theme(
+#     plot.title = element_text(size = 9, face = "bold"),
+#     axis.text = element_text(size = 8),
+#     axis.title = element_text(size = 8)
+#   )
+# 
+# plot_grid(
+#   dvisits_scatterplots + geom_point(aes(age), alpha = 0.1) +
+#     xlab("Age (years)") +
+#     ggtitle("Count of Consultations Versus Age"),
+#   dvisits_scatterplots + geom_point(aes(income), alpha = 0.1) +
+#     xlab("Annual Income (thousands of AUD)") +
+#     ggtitle("Count of Consultations Versus Annual Income"),
+#   ncol = 2
+# )
+
+# BEGIN SOLUTION
+dvisits_scatterplots <- ggplot(training_dvisits, aes(y = doctorco)) +
+  ylab("Count of Consultations") +
+  theme(
+    plot.title = element_text(size = 9, face = "bold"),
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
+  )
+
+plot_grid(
+  dvisits_scatterplots + geom_point(aes(age), alpha = 0.1) +
+    xlab("Age (years)") +
+    ggtitle("Count of Consultations Versus Age"),
+  dvisits_scatterplots + geom_point(aes(income), alpha = 0.1) +
+    xlab("Annual Income (thousands of AUD)") +
+    ggtitle("Count of Consultations Versus Annual Income"),
+  ncol = 2
+)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+Comment on these relationships **in one or two sentences**.
+
+<!--
+# BEGIN QUESTION
+name: Q3-1-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Given the nature of the response, it is hard to assess any relationship to the two regressors. We would need to use some further statistical modelling to confirm any class of relationship.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.2. Why Not Ordinary Least-squares?
+
+rubric={reasoning:2}
+
+In what way(s) would OLS regression be inappropriate for this data, if at all? **Answer in one or two sentences.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Aside from the true conditional mean of `doctorco` probably not being linear as a function of `age` and `income`, it is also possible for the model function to dip below zero within the predictor space giving nonsense values.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.3. Estimating a Poisson Regression Model
+
+rubric={autograde:3}
+
+Using `doctorco` as response along with `age`, `income`, and `sex` as standalone regressors via `training_dvisits`; fit a Poisson regression model with a log-link function and call it `poisson_model`. Then, run the test below to validate your answers.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q3-3-autograder
+manual: false
+points:
+  - 0
+  - 1.5
+  - 1.5
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+poisson_model <- NULL
+
+# BEGIN SOLUTION
+poisson_model <- glm(formula = doctorco ~ age + income + sex,
+  data = training_dvisits, family = poisson
+)
+# END SOLUTION
+
+summary(poisson_model)
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Your model should be assigned to poisson_model
+" # END TEST CONFIG
+testthat::expect_true(exists("poisson_model"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used for poisson_model
+" # END TEST CONFIG
+testthat::expect_true("glm" %in% class(poisson_model))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for poisson_model
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(poisson_model$coefficients), 3)), "d9b7ab7124cddb9f47b3658911c079b6")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q3.4. Inference
+
+rubric={accuracy:1,reasoning:2}
+
+Using `poisson_model`, are all regression coefficients statistically associated to `doctorco`? State your conclusions with a significance level $\alpha = 0.05$. **Provide the necessary code to support your conclusions.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-4-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Our sample gives us evidence to conclude that all regression coefficients are statistically associated to the count response `doctorco` since the corresponding $p\text{-values} < .001$.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-4-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(poisson_model)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.5. Coefficient Interpretation
+
+rubric={accuracy:2,reasoning:3}
+
+Using `poisson_model`, interpret those statistically significant estimated coefficients in terms of the **original scale** of the response `doctorco`. **Provide the necessary code to support these interpretations. Moreover, obtain the corresponding 95% confidence intervals.**
+
+> **Heads-up:** Use **three** decimal places for your interpretations.
+
+<!--
+# BEGIN QUESTION
+name: Q3-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> - *When `age` increases by one year, the mean count of consultations with a doctor or specialist in the past two weeks increases by a factor of 1.012 while holding everything else constant. Alternatively; for each increase of one year in `age`, the mean count of consultations with a doctor or specialist in the past two weeks increases by $(1.012 - 1) \times 100\% = 1.2\%$  while holding everything else constant.*
+> - *When the annual `income` increases by one-thousand Australian dollars, the mean count of consultations with a doctor or specialist in the past two weeks decreases by $(1 - 0.758) \times 100\% = 24.2\%$ while holding everything else constant.*
+> - *The mean count of consultations with a doctor or specialist in the past two weeks increases by 1.241 times in females, when compared to males, while holding everything else constant.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-5-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(poisson_model, conf.int = TRUE, conf.level = 0.95, exponentiate = TRUE) |>
+  mutate_if(is.numeric, round, 3)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.6. Overdispersion
+
+rubric={accuracy:1,reasoning:1}
+
+Test for overdispersion in your `poisson_model` using a significance level of $\alpha = 0.05$. **Provide the necessary code to support your statistical conclusions in one or two sentences.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-6-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Since the $p\text{-value} < .001$, we have evidence to suggest that there is overdispersion.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-6-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+
+dispersiontest(poisson_model)
+
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q3.7. Estimating a Negative Binomial Regression Model
+
+rubric={autograde:3}
+
+Because there is overdispersion, we might want to improve our distributional assumption as a Negative Binomial whose variance is freed up from the mean (recall the Poisson variance is equal to its mean). Note that the Poisson distribution is a particular case of Negative Binomial.
+
+Fit a Negative Binomial regression model on the same data `training_dvisits` with the same standalone regressors and response, and call it `nb_model`. Then, run the test below to validate your answers.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q3-7-autograder
+manual: false
+points:
+  - 0
+  - 1.5
+  - 1.5
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+nb_model <- NULL
+
+# BEGIN SOLUTION
+nb_model <- glm.nb(formula = doctorco ~ age + income + sex,
+  data = training_dvisits)
+# END SOLUTION
+
+summary(nb_model)
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Your model should be assigned to nb_model
+" # END TEST CONFIG
+testthat::expect_true(exists("nb_model"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used for nb_model
+" # END TEST CONFIG
+testthat::expect_true("negbin" %in% class(nb_model))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for nb_model
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(sum(nb_model$coefficients), 3)), "378b889ef3979349e6eca41aba354a05")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q3.8. Inferential Comparison
+
+rubric={accuracy:1,reasoning:4}
+
+Compare the estimates and their standard errors between the `poisson_model` and the `nb_model`. What is the impact on these standard errors when we free up the variance with the `nb_model`? Describe it **in plain words in two or three paragraphs**. **Provide the necessary code to support your conclusions.**
+
+<!--
+# BEGIN QUESTION
+name: Q3-8-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *There are quite small differences in the parameter estimates using the Negative Binomial assumption compared to the Poisson assumption.*
+
+> *Comparing the `poisson_model` to the `nb_model` that includes the dispersion parameter, we have the same model function. Nevertheless, the dispersion parameter is built into the standard errors that are specifically larger for the Negative Binomial case. This dispersion gives us a more realistic picture of the model's uncertainty.*
+
+> *As a final comment, if we use a Poisson regression model in cases where there is, in fact, overdispersion (as shown in the respective dispersion test), then we would be using underestimated standard errors in our hypothesis testings (instead of more realistic and larger ones coming from the Negative Binomial model). This might put us at the stake of committing Type I errors in inferential inquiries if we use a Poisson regression instead of a Negative Binomial one.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q3-8-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+
+tidy(poisson_model)
+tidy(nb_model)
+
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 4: The High School and Beyond Data
+
+We will work with the American [*High School and Beyond Dataset (HS&B)*](https://nces.ed.gov/surveys/hsb/) from the package `{faraway}`. The dataset `hsb` is an American representative and longitudinal study of 10th and 12th grades with $n = 200$ students. 
+
+The package's description is the following
+
+> *"Data was collected as a subset of the 'High School and Beyond' study conducted by the National Education Longitudinal Studies (NELS) program of the National Center for Education Statistics (NCES)."*
+
+Consider the following variables:
+
+-   `prog`: a nominal response (levels **do not** follow any specific order) of the high school program **chosen by the student**.
+    -   `general`, a general high school program.
+    -   `academic`, an academic preparatory program designed to prepare students for university-level courses.
+    -   `vocation`, a vocational/technical program.
+-   `schtyp`: school type, a binary regressor with levels `public` and `private`.
+-   `math`: score from a math test, a continuous regressor.
+-   `socst`: score from a social studies test, a continuous regressor.
+
+```{r}
+# Run this cell before proceeding.
+data(hsb)
+training_hsb <- hsb |>
+  dplyr::select(prog, schtyp, math, socst)
+head(training_hsb)
+tail(training_hsb)
+```
+
+## Main Statistical Inquiries
+
+Suppose you are a Data Scientist investigating what factors determine a student's choice of a school program with respect to the vocational/technical type. Hence, **statistically speaking**, you are interested in the following:
+
+- Is school type a significant factor in this regard? If so, by how much?
+- Is the math test score a significant factor in this regard? If so, by how much?
+- Is the social studies test score a significant factor in this regard? If so, by how much?
+
+> **Heads-up:** Note these are inferential inquiries. Thus, we can use our sample of $n = 200$ students to make inference on the American population of 10th and 12th grades.
+
+## Q4.1. Data Collection and Wrangling
+
+rubric={autograde:1}
+
+We need to do some quick data wrangling on the levels of the response of interest `prog`, according to the previous main statistical inquiries. Thus, in `training_hsb`, rearrange these levels so this factor-type response will be suitable for the model fitting function we discussed in `lecture2`.
+
+**Provide the necessary code to support your answer.** Then, run the test below to validate your answer.
+
+> **Heads-up:** The auto-grading test is visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q4-1-autograder
+manual: false
+points:
+  - 1
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r tags=c()}
+# BEGIN SOLUTION
+# Note academic would be the baseline level for multinom()
+levels(training_hsb$prog) 
+
+# Hence, let us set general as the baseline
+training_hsb$prog <- fct_relevel(
+  training_hsb$prog,
+  c("vocation", "general", "academic")
+)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # BEGIN TESTS -->
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The baseline reponse level is incorrect.
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(levels(training_hsb$prog)[1]), "cb3e33280c4541f45725124c86a408dd")
+```
+
+<!-- # END TESTS -->
+
+<!-- # END QUESTION -->
+
+## Q4.2. Exploratory Data Analysis
+
+rubric={reasoning:2}
+
+Let us code three **suitable** side-by-side plots: `prog` versus `schtyp`, `prog` versus `math`, and `prog` versus `socst`.
+
+<!--
+# BEGIN QUESTION
+name: Q4-2-viz
+manual: true
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r fig.width=7, fig.height=4}
+# Uncomment and run this cell before proceeding.
+
+# hsb_side_boxplots_math <- training_hsb |>
+#   ggplot(aes(prog, math)) +
+#   geom_boxplot(aes(fill = prog)) +
+#   labs(y = "Math Score", x = "Type of High School Program") +
+#   ggtitle("Side-by-Side Boxplots") +
+#   theme(
+#     plot.title = element_text(size = 12, face = "bold"),
+#     axis.text = element_text(size = 10),
+#     axis.title = element_text(size = 10),
+#     legend.position = "none"
+#   ) +
+#   scale_x_discrete(labels = c(
+#     "Vocational/Technical", "General",
+#     "Academic"
+#   )) +
+#   scale_fill_brewer(palette = "BuPu")
+# 
+# hsb_side_boxplots_socst <- training_hsb |>
+#   ggplot(aes(prog, socst)) +
+#   geom_boxplot(aes(fill = prog)) +
+#   labs(y = "Social Studies Score", x = "Type of High School Program") +
+#   ggtitle("Side-by-Side Boxplots") +
+#   theme(
+#     plot.title = element_text(size = 12, face = "bold"),
+#     axis.text = element_text(size = 10),
+#     axis.title = element_text(size = 10),
+#     legend.position = "none"
+#   ) +
+#   scale_x_discrete(labels = c(
+#     "Vocational/Technical", "General",
+#     "Academic"
+#   )) +
+#   scale_fill_brewer(palette = "BuPu")
+# 
+# hsb_prop_summary <- as.data.frame(xtabs(
+#   ~ schtyp +
+#     prog,
+#   training_hsb
+# ) / rowSums(xtabs(
+#   ~ schtyp + prog,
+#   training_hsb
+# )), responseName = "prop")
+# 
+# hsb_stacked_bars <- ggplot(hsb_prop_summary, aes(
+#   x = schtyp,
+#   y = prop, fill = prog
+# )) +
+#   geom_bar(stat = "identity", width = 0.7, colour = "black") +
+#   geom_text(
+#     aes(label = ifelse(prop >= 0.01,
+#       paste0(sprintf("%.0f", prop * 100), "%"), ""
+#     )),
+#     position = position_stack(vjust = 0.5), fontface = "bold", size = 3.5
+#   ) +
+#   scale_y_continuous(labels = percent_format()) +
+#   labs(y = "Percent", x = "School Type", fill = "") +
+#   ggtitle("Stacked Bar Charts") +
+#   theme(
+#     plot.title = element_text(size = 10, face = "bold"),
+#     axis.text.x = element_text(size = 8, angle = 0),
+#     axis.text.y = element_text(size = 8, angle = 0),
+#     axis.title = element_text(size = 8),
+#     legend.text = element_text(size = 8, margin = margin(r = 0.5, unit = "cm")),
+#     legend.title = element_text(size = 8, face = "bold"),
+#     legend.position = "bottom"
+#   ) +
+#   scale_x_discrete(labels = c("Private", "Public")) +
+#   scale_fill_discrete(
+#     name = "Type of High School Program",
+#     labels = c("Vocational/Technical", "General", "Academic Preparatory")
+#   ) +
+#   scale_fill_brewer(palette = "BuPu")
+# 
+# hsb_side_boxplots_math
+# hsb_side_boxplots_socst
+# hsb_stacked_bars
+
+# BEGIN SOLUTION
+hsb_side_boxplots_math <- training_hsb |>
+  ggplot(aes(prog, math)) +
+  geom_boxplot(aes(fill = prog)) +
+  labs(y = "Math Score", x = "Type of High School Program") +
+  ggtitle("Side-by-Side Boxplots") +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    legend.position = "none"
+  ) +
+  scale_x_discrete(labels = c(
+    "Vocational/Technical", "General",
+    "Academic"
+  )) +
+  scale_fill_brewer(palette = "BuPu")
+
+hsb_side_boxplots_socst <- training_hsb |>
+  ggplot(aes(prog, socst)) +
+  geom_boxplot(aes(fill = prog)) +
+  labs(y = "Social Studies Score", x = "Type of High School Program") +
+  ggtitle("Side-by-Side Boxplots") +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    legend.position = "none"
+  ) +
+  scale_x_discrete(labels = c(
+    "Vocational/Technical", "General",
+    "Academic"
+  )) +
+  scale_fill_brewer(palette = "BuPu")
+
+hsb_prop_summary <- as.data.frame(xtabs(
+  ~ schtyp +
+    prog,
+  training_hsb
+) / rowSums(xtabs(
+  ~ schtyp + prog,
+  training_hsb
+)), responseName = "prop")
+
+hsb_stacked_bars <- ggplot(hsb_prop_summary, aes(
+  x = schtyp,
+  y = prop, fill = prog
+)) +
+  geom_bar(stat = "identity", width = 0.7, colour = "black") +
+  geom_text(
+    aes(label = ifelse(prop >= 0.01,
+      paste0(sprintf("%.0f", prop * 100), "%"), ""
+    )),
+    position = position_stack(vjust = 0.5), fontface = "bold", size = 3.5
+  ) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(y = "Percent", x = "School Type", fill = "") +
+  ggtitle("Stacked Bar Charts") +
+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(size = 8, angle = 0),
+    axis.text.y = element_text(size = 8, angle = 0),
+    axis.title = element_text(size = 8),
+    legend.text = element_text(size = 8, margin = margin(r = 0.5, unit = "cm")),
+    legend.title = element_text(size = 8, face = "bold"),
+    legend.position = "bottom"
+  ) +
+  scale_x_discrete(labels = c("Private", "Public")) +
+  scale_fill_discrete(
+    name = "Type of High School Program",
+    labels = c("Vocational/Technical", "General", "Academic Preparatory")
+  ) +
+  scale_fill_brewer(palette = "BuPu")
+
+hsb_side_boxplots_math
+hsb_side_boxplots_socst
+hsb_stacked_bars
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+  
+<!-- # END QUESTION -->
+
+**Comment on the above exploratory insights in two to three sentences.**
+  
+<!--
+# BEGIN QUESTION
+name: Q4-2-reasoning
+manual: true
+-->
+  
+**ANSWER:**
+  
+<!-- # BEGIN SOLUTION -->
+  
+  > *The side-by-side boxplots for the math and social studies scores show noticeable graphical differences in the medians between the `Academic Preparatory` versus the `General` and `Vocacional/Technical` programs. In general, `Academic Preparatory` shows higher scores than the other two programs. We can also see that `Private` schools have a larger share of students in `Academic Preparatory` than `Public` schools.*
+  
+<!-- # END SOLUTION -->
+  
+<!-- # END QUESTION -->
+
+
+## Q4.3. Data Modelling Framework
+
+rubric={reasoning:4}
+
+**Using LaTeX**, let us write out the sample's regression equations for the **two logit functions** of a Multinomial Logistic regression model. Use the levels of the response (**replace all `NULL`**), i.e., `Gen` for `General`, `Acad` for `Academic Preparatory`, and `Voc` for `Vocational/Technical`.
+
+Let $Y_i$ be the high school program type (`prog`) of the $i$th student subject to the continuous regressors $X_{i, \texttt{math}}$ and $X_{i, \texttt{socst}}$ for the scores `math` and `socst` respectively, and the categorical
+
+$$
+X_{i, \texttt{schtyp}} =
+\begin{cases}
+1 \; \; \; \; \mbox{if the $i$th student is in a public school},\\
+0 \; \; \; \;   \mbox{otherwise.}
+\end{cases}
+$$
+
+> **Hint:** Use your answer in **Q4.1** and the main statistical inquiries to build these mathematical expressions.
+
+$$ \log\left[\frac{P(Y_i = \texttt{NULL} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}{P(Y_i = \texttt{NULL} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}\right] = \beta_0^{(\texttt{NULL},\texttt{NULL})} + \beta_1^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{schtyp}} + \beta_2^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{math}} + \beta_3^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{socst}}$$
+
+$$ \log\left[\frac{P(Y_i = \texttt{NULL} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}{P(Y_i = \texttt{NULL} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}\right] = \beta_0^{(\texttt{NULL},\texttt{NULL})} + \beta_1^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{schtyp}} + \beta_2^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{math}} + \beta_3^{(\texttt{NULL},\texttt{NULL})} X_{i, \texttt{socst}}$$
+
+<!--
+# BEGIN QUESTION
+name: Q-4-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+$$ \log\left[\frac{P(Y_i = \texttt{Gen} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}{P(Y_i = \texttt{Voc} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}\right] = \beta_0^{(\texttt{Gen},\texttt{Voc})} + \beta_1^{(\texttt{Gen},\texttt{Voc})} X_{i, \texttt{schtyp}} + \beta_2^{(\texttt{Gen},\texttt{Voc})} X_{i, \texttt{math}} + \beta_3^{(\texttt{Gen},\texttt{Voc})} X_{i, \texttt{socst}}$$
+
+$$ \log\left[\frac{P(Y_i = \texttt{Acad} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}{P(Y_i = \texttt{Voc} \mid X_{i, \texttt{schtyp}}, X_{i, \texttt{math}}, X_{i, \texttt{socst}})}\right] = \beta_0^{(\texttt{Acad},\texttt{Voc})} + \beta_1^{(\texttt{Acad},\texttt{Voc})} X_{i, \texttt{schtyp}} + \beta_2^{(\texttt{Acad},\texttt{Voc})} X_{i, \texttt{math}} + \beta_3^{(\texttt{Acad},\texttt{Voc})} X_{i, \texttt{socst}}$$
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q4.4. Estimation
+  
+rubric={autograde:3}
+
+Estimate a Multinomial Logistic regression model of `prog` versus the standalone `schtyp`, `math`, and `socst` via `training_hsb`. Assign your fitted model to the variable `multinomial_model`. Then, run the test below to validate your answer.
+
+> **Heads-up:** All auto-grading functions are visible in this question.
+
+<!--
+# BEGIN QUESTION
+name: Q4-4-autograder
+manual: false
+points:
+  - 0
+  - 1.5
+  - 1.5
+-->
+  
+<!-- # BEGIN SOLUTION -->
+  
+```{r tags=c()}
+multinomial_model <- NULL
+
+# BEGIN SOLUTION
+multinomial_model <- multinom(
+  formula = prog ~ schtyp + math + socst,
+  data = training_hsb
+)
+# END SOLUTION
+
+multinomial_model
+```
+
+<!-- # END SOLUTION -->
+  
+<!-- # BEGIN TESTS -->
+  
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Your model should be assigned to multinomial_model
+" # END TEST CONFIG
+testthat::expect_true(exists("multinomial_model"))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: The correct fitting function is not being used for multinomial_model
+" # END TEST CONFIG
+testthat::expect_true("multinom" %in% class(multinomial_model))
+```
+
+```{r include=FALSE}
+.= " # BEGIN TEST CONFIG
+failure_message: Check the formula and data arguments in the fitting function for multinomial_model
+" # END TEST CONFIG
+testthat::expect_equal(digest::digest(round(multinomial_model$AIC, 3)), "cd60cd92f77796426bcfafdd2245a6d3")
+```
+
+<!-- # END TESTS -->
+  
+<!-- # END QUESTION -->
+
+## Q4.5. Inference
+
+rubric={accuracy:1,reasoning:3}
+
+Using `multinomial_model` and the two equations in **Q4.3**, what regression coefficients are statistically significant with $\alpha = 0.05$? **Provide the necessary code to support these conclusions.**
+
+<!--
+# BEGIN QUESTION
+name: Q4-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Using $\alpha = 0.05$, the regression coefficients $\beta_1^{(\texttt{Acad},\texttt{Voc})}$, $\beta_2^{(\texttt{Acad},\texttt{Voc})}$, and $\beta_3^{(\texttt{Acad},\texttt{Voc})}$ are statistically significant.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q4-5-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(multinomial_model) |> 
+  mutate_if(is.numeric, round, 3)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## Q4.6. Coefficient Interpretation
+
+rubric={accuracy:2,reasoning:3}
+
+Following up with **Q4.5**, interpret the estimated regression coefficients that are statistically significant **in terms of the respective odds involved**. **Provide the necessary code to support these conclusions. Moreover, obtain the corresponding 95% confidence intervals.**
+
+> **Heads-up:** Use **three** decimal places for your interpretations.
+
+<!--
+# BEGIN QUESTION
+name: Q4-6-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> - `academic` and `schtyppublic`: *Compared to a student who is in a `Public` school, a student who is in a `Private` school is* $\frac{1}{0.171} = 5.848$ times more likely to be in the `Academic Preparatory` program rather than in the `Vocational/Technical` program; while holding the other explanatory variables constant.
+> - `academic` and `math`: *For each one-point increase in the math score, a student is 1.116 times more likely to be in `Academic Preparatory` program rather than in the `Vocational/Technical` program, while holding the other explanatory variables constant.*
+> - `academic` and `socst`: *For each one-point increase in the social studies score, a student is 1.081 times more likely to be in `Academic Preparatory` program rather than in the `Vocational/Technical` program, while holding the other explanatory variables constant.*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+<!--
+# BEGIN QUESTION
+name: Q4-6-accuracy
+manual: true
+-->
+
+<!-- # BEGIN SOLUTION -->
+
+```{r}
+# BEGIN SOLUTION
+tidy(multinomial_model, conf.int = TRUE, conf.level = 0.95, exponentiate = TRUE) |>
+  mutate_if(is.numeric, round, 3)
+# END SOLUTION
+```
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Exercise 5: Maximum Likelihood Estimation in Binary Logistic Regression
+
+In [**DSCI 551's `lecture7`**](https://pages.github.ubc.ca/mds-2025-26/DSCI_551_stat-prob-dsci_students/notes/07_lecture-maximum-likelihood-estimation.html), you explored univariate maximum likelihood estimation (MLE). Now, let us expand this approach to a GLM.
+
+Let us suppose we aim to estimate the **regression coefficients** (also called **weights** in Machine Learning) in a **Binary Logistic regression model**. Then, under this framework, MLE becomes crucial to estimate these coefficients and is the basis of the so-called `glm()` function. That said, when we have more than one regression term to estimate, MLE becomes **multivariate**.
+
+Therefore, this exercise will introduce you to the foundations of multivariate MLE for regression terms in a specific GLM (such as the Binary Logistic regression) using analytical steps along with the principle of the link function.
+
+> **Note:** You do not need to use LaTeX to show your work when necessary. That said, you could only embed pictures of your written solution into the `.pdf`. Nevertheless, it is advisable to use LaTeX so you can practice equation writing in reproducible documents. 
+
+## (Challenging) Q5.1. Response's Distributional Assumption
+
+rubric={reasoning:1}
+
+Suppose you have a **training dataset** of size $n$ with the $i$th response $Y_i$ subject to $k$ regressors $X_{i, 1}, \dots, X_{i, k}$ ($i = 1, \dots, n$). **Under this framework, the regressors can take a continuous or discrete nature.**
+
+Now, let us begin with **step 1**: *choosing the right response distribution*. In Binary Logistic regression, the response takes on the following values:
+
+$$
+Y_i =
+\begin{cases}
+1 \; \; \; \; \text{if there is a success},\\
+0 \; \; \; \; \mbox{otherwise}.
+\end{cases}
+$$
+
+The **most basic** Binary Logistic regression model assumes that the $n$ $Y_i$s are **independent only** (not identically distributed!). Given this assumption, what theoretical distribution can we assume for $Y_i$ to perform MLE? Why are you choosing this distribution along with its parameter(s)? **Answer in two or three sentences.**
+
+<!--
+# BEGIN QUESTION
+name: Q5-1-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The $n$ responses $Y_i$ can be assumed as Bernoulli trials given their binary nature. Nevertheless, since they are only independent, each one will have its probability of success $p_i \in [0, 1]$. Therefore:*
+
+$$Y_i \sim \text{Bernoulli}(p_i).$$
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.2. Joint Probability Mass Function
+
+rubric={reasoning:1}
+
+Using your answer from **Q5.1**, execute **step 2**: *obtaining the joint probability mass function (PMF)*. You will need the corresponding PMFs of the $n$ discrete $Y_i$s. [**DSCI 551's distribution cheatsheet**](https://pages.github.ubc.ca/mds-2025-26/DSCI_551_stat-prob-dsci_students/notes/appendix-dist-cheatsheet.html) would be useful here.
+
+Recall that the notation on the right-hand side for random variables changes to lower cases since we depict $n$ **observed values**.
+
+<!--
+# BEGIN QUESTION
+name: Q5-2-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+$$P_{Y_1, \dots, Y_n} \left(Y_1 = y_1, \dots, Y_n = y_n \mid p_1, \dots, p_n \right) = \prod_{i = 1}^n p_i^{y_i} (1 - p_i)^{1 - y_i}.$$
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.3. Likelihood Function
+
+rubric={reasoning:1}
+
+Using your answer from **Q5.2**, execute **step 3**: *obtaining the likelihood function*.
+
+$$l(p_1, \dots, p_n \mid y_1, \dots , y_{n}).$$ 
+
+**Briefly**, justify your answer.
+
+> **Hint:** [**This section**](https://pages.github.ubc.ca/mds-2025-26/DSCI_551_stat-prob-dsci_students/notes/07_lecture-maximum-likelihood-estimation.html#but-what-is-the-likelihood-function) from DSCI 551's `lecture7` might be helpful.
+
+<!--
+# BEGIN QUESTION
+name: Q5-3-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The likelihood is mathematically equivalent to the joint PMF. Nevertheless, the likelihood is in function of the parameters $p_1, \dots, p_n$ given the observed training values $y_1, \dots , y_{n}$:*
+
+$$
+l(p_1, \dots, p_n \mid y_1, \dots , y_{n}) = \prod_{i = 1}^n p_i^{y_i} (1 - p_i)^{1 - y_i}.
+$$
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.4. Link Function
+
+rubric={reasoning:1}
+
+Let $\beta_0$ be the regression intercept along with the $k$ regression coefficients $\beta_1, \dots, \beta_k$ corresponding to the $k$ regressors (also known as features) $X_{i, 1}, \dots, X_{i, k}$. Unlike OLS, we cannot directly relate the $i$th response $Y_i$ with $\beta_0, \beta_1, \dots, \beta_k$ and the $k$ regressors.
+
+Let $p_i$ be the probability of success in $Y_i$. We know that Binary Logistic regression will need to use a **link function** $h(p_i)$ with the above regression terms. Specifically, we do it via the natural logarithm (i.e., on the base $e$) of the odds $\frac{p_i}{1 - p_i}$:
+
+$$h(p_i) = \mbox{logit}(p_i) = \log \left( \frac{p_i}{1 - p_i} \right) = \beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}.$$
+
+Hence, using this equation
+
+\begin{equation}
+\label{eq:log_odds}
+\log \left( \frac{p_i}{1 - p_i} \right) = \beta_0 + \sum_{j = 1}^k \beta_j X_{i, j},
+\end{equation}
+
+show that $h(p_i)$ is mononotic; i.e.,
+
+\begin{equation}
+\label{eq:Q1_4_function}
+p_i = \frac{1}{1 + \exp \left( -\beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right)}.
+\end{equation}
+
+<!--
+# BEGIN QUESTION
+name: Q5-4-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+\begin{gather*}
+\log \left( \frac{p_i}{1 - p_i} \right) = \beta_0 + \sum_{j = 1}^k \beta_j X_{i, j} \\
+\frac{p_i}{1 - p_i} = \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j X_{i, j} \right) \\
+\frac{p_i}{1 - p_i} = \frac{1}{\exp \left( - \beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right)} \\
+p_i \exp \left( - \beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right) = 1 - p_i \\
+p_i + p_i \exp \left( - \beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right) = 1 \\
+p_i \left[ 1 + \exp \left( - \beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right) \right] = 1 \\
+p_i = \frac{1}{1 + \exp \left( - \beta_0 - \sum_{j = 1}^k \beta_j X_{i, j} \right)}.
+\end{gather*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.5. Link Function's Characteristics
+
+rubric={reasoning:1}
+
+What is Equation (\ref{eq:Q1_4_function})'s name? What is one of the most important modelling characteristics of this equation? 
+
+**Answer in one or two sentences.**
+
+<!--
+# BEGIN QUESTION
+name: Q5-5-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *The equation for $p_i$ is called the **sigmoid function**. It restricts $p_i$ on the range $[0, 1]$, since $p_i$ is a probability of success in a Bernoulli trial!*
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.6. Manipulating the Link Function
+
+rubric={reasoning:1}
+
+We can show via Equation (\ref{eq:log_odds}) the following:
+
+\begin{equation}
+\label{eq:odds}
+\frac{p_i}{1 - p_i} = \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}.
+\end{equation}
+
+Thus, using Equation (\ref{eq:odds}), show that:
+
+\begin{equation}
+\label{eq:complement}
+1 - p_i = \frac{1}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j X_{i, j} \right)}.
+\end{equation}
+
+<!--
+# BEGIN QUESTION
+name: Q5-6-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+\begin{gather*}
+\frac{p_i}{1 - p_i} = \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \\
+p_i = (1 - p_i) \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \\
+p_i = \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} - p_i \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \\
+p_i + p_i \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} =  \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \\
+p_i \left[ 1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \right] = \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} \\
+p_i = \frac{\exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}}{1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}} \\
+1 - p_i = 1 - \frac{\exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}}{1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}} \\
+1 - p_i = \frac{1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)} - \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}}{1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}} \\
+1 - p_i = \frac{1}{1 + \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j X_{i, j}\right)}}.
+\end{gather*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.7. Manipulating the Likelihood Function
+
+rubric={reasoning:1}
+
+Using the likelihood function from **Q5.3.**, along with Equations (\ref{eq:odds}) and (\ref{eq:complement}), show that:
+
+\begin{align*}
+l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) &= \prod_{i = 1}^n \left[ \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j x_{i, j}\right)} \right]^{y_i} \\
+& \qquad \qquad \left[ \frac{1}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right].
+\end{align*}
+
+<!--
+# BEGIN QUESTION
+name: Q5-7-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Firstly, we will make some further algebraic rearrangements:*
+
+\begin{align*}
+l(p_1, \dots, p_n \mid y_1, \dots , y_{n}) &= \prod_{i = 1}^n p_i^{y_i} (1 - p_i)^{1 - y_i} \\
+&= \prod_{i = 1}^n \left( \frac{p_i}{1 - p_i} \right)^{y_i} (1 - p_i).
+\end{align*}
+
+> *Now, we will change the left-hand side accordingly since we are using Equations (\ref{eq:odds}) and (\ref{eq:complement}). We also plug in Equations (\ref{eq:odds}) and (\ref{eq:complement}) on the right-hand side of the likelihood function:*
+
+\begin{align*}
+l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) &= \prod_{i = 1}^n \left[ \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j x_{i, j}\right)} \right]^{y_i} \\
+& \qquad \qquad \left[ \frac{1}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right].
+\end{align*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Challenging) Q5.8. Log-likelihood Function
+
+rubric={reasoning:1}
+
+Using the function from **Q5.7**, execute **step 4**: *obtaining the log-likelihood function*.
+
+$$\log \left[ l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) \right].$$
+
+<!--
+# BEGIN QUESTION
+name: Q5-8-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *Let us play around with the algebra:*
+
+\begin{align*}
+l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) &= \prod_{i = 1}^n \left[ \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j x_{i, j}\right)} \right]^{y_i} \times \\
+& \qquad\left[ \frac{1}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right] \\
+&= \prod_{i = 1}^n \frac{\left[ \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j x_{i, j}\right)} \right]^{y_i}}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)}.
+\end{align*}
+
+> *Now, we obtain the log-likelihood function along with the corresponding logarithmic properties:*
+
+\begin{align*}
+\log \left[ l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) \right] &= \log \left\{ \prod_{i = 1}^n \frac{\left[ \exp{\left(\beta_0 + \sum_{j = 1}^k \beta_j x_{i, j}\right)} \right]^{y_i}}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right\} \\
+&= \sum_{i = 1}^n \Bigg\{ y_i \Bigg( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \Bigg) \\ 
+& \qquad - \log \Bigg[ 1 +  \exp \Bigg( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \Bigg) \Bigg] \Bigg\}.
+\end{align*}
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Optional and not for marks) Q5.9. Optimizing the Log-likelihood Function
+
+rubric={reasoning:1}
+
+Using the log-likelihood function from **Q5.8**, execute **step 5**: *obtaining the first partial derivatives with respect to $\beta_0, \beta_1, \dots, \beta_k$*.
+
+<!--
+# BEGIN QUESTION
+name: Q5-9-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *For $\beta_0$, we have:*
+
+$$
+\frac{\partial}{\partial \beta_0} \log \left[ l(\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) \right] = \sum_{i = 1}^n \left[ y_i - \frac{\exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right].
+$$
+
+> *For $j = 1, \dots, k$; we have:*
+
+$$
+\frac{\partial}{\partial \beta_j} \log l \left[ (\beta_0, \dots, \beta_k \mid y_1, \dots , y_{n}, x_{1,1}, \dots, x_{1,k}, \dots, x_{n,1}, \dots, x_{n,k}) \right] = \sum_{i = 1}^n \left[ y_i x_{i, j} - x_{i, j} \frac{\exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)}{1 + \exp \left( \beta_0 + \sum_{j = 1}^k \beta_j x_{i, j} \right)} \right].
+$$
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+## (Optional and not for marks) Q5.10. No Analytical Solution
+
+rubric={reasoning:1}
+
+**In three or four sentences**, state why we cannot continue with **step 6** *to obtain the analytical MLEs $\hat{\beta}_0, \hat{\beta}_1, \dots, \hat{\beta}_k$*. Moreover, explain an alternative to solve this issue.
+
+<!--
+# BEGIN QUESTION
+name: Q5-10-reasoning
+manual: true
+-->
+
+**ANSWER:**
+
+<!-- # BEGIN SOLUTION -->
+
+> *We cannot continue with **step 6**, i.e., solving the system of $k + 1$ equations if we set the first partial derivatives equal to zero. Mathematically, there is no closed-form solution for this system. Nonetheless, we can solve it through numerical optimization. Note that regression models, such as Binary Logistic regression, have their fitting function with embedded optimization. In this case, the function to use is `glm()`*.
+
+<!-- # END SOLUTION -->
+
+<!-- # END QUESTION -->
+
+\newpage
+
+# Submission
+
+Congratulations! You are done the lab. Do not forget to:
+
+- Knit the assignment to generate the `.pdf` file and push everything to your Github repo.
+- Double check all the figures, texts, equations are rendered properly in the `.pdf` file
+- Submit the `.Rmd` and the `.pdf` files to Gradescope.
+
+# Reference
+
+- Gareth James, Daniela Witten, Trevor Hastie and Rob Tibshirani (2022). ISLR2: Introduction to Statistical Learning, Second Edition. R package version 1.3-2. https://CRAN.R-project.org/package=ISLR2
